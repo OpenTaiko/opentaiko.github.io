@@ -4,6 +4,7 @@
         <link rel="icon" type="image/x-icon" href="src/image/favicon.ico">
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="songs.css">
+        <link rel="preload" as="image" href="src/image/loading.gif">
     </head>
     <body>
         <header>
@@ -14,14 +15,17 @@
         </header>
 
         <div class="content">
-            <h1>Song List</h1>
+            <h1 style="color:white;">Song List</h1>
             <div class="buttons">
                 <div class="button ch1" onclick="show_songs('01 OpenTaiko Chapter I', 'ch1');">OpenTaiko Chapter I</div>
                 <div class="button ch2" onclick="show_songs('02 OpenTaiko Chapter II', 'ch2');">OpenTaiko Chapter II</div>
                 <div class="button ch3" onclick="show_songs('03 OpenTaiko Chapter III', 'ch3');">OpenTaiko Chapter III</div>
                 <div class="button ch4" onclick="show_songs('04 OpenTaiko Chapter IV', 'ch4');">OpenTaiko Chapter IV</div>
             </div>
-            <div id="songs"><h1>Loading Songs... Please wait.</h1></div>
+            <div id="songs">
+                <h1 style="text-align: center; color:white;">Fetching Songs... Please wait.</h1>
+                <img src="src/image/loading.gif" style="display:block; margin-left:auto; margin-right:auto;">
+            </div>
         </div>
 
         <footer>
