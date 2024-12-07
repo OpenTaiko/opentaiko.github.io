@@ -1,9 +1,9 @@
 <!DOCTYPE html>
     <head>
-        <title>OpenTaiko</title>
+        <title>OpenTaiko - Song List</title>
         <link rel="icon" type="image/x-icon" href="src/image/favicon.ico">
-        <link rel="preload" href="placeholder.png" as="image" type="image/png">
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="songs.css">
     </head>
     <body>
         <header>
@@ -14,9 +14,14 @@
         </header>
 
         <div class="content">
-            <img src="placeholder.png"/>
-            <h1>Under Construction</h1>
-            <h1>工事中</h1>
+            <h1>Song List</h1>
+            <div class="buttons">
+                <div class="button ch1" onclick="show_songs('01 OpenTaiko Chapter I', 'ch1');">OpenTaiko Chapter I</div>
+                <div class="button ch2" onclick="show_songs('02 OpenTaiko Chapter II', 'ch2');">OpenTaiko Chapter II</div>
+                <div class="button ch3" onclick="show_songs('03 OpenTaiko Chapter III', 'ch3');">OpenTaiko Chapter III</div>
+                <div class="button ch4" onclick="show_songs('04 OpenTaiko Chapter IV', 'ch4');">OpenTaiko Chapter IV</div>
+            </div>
+            <div id="songs"><h1>Loading Songs... Please wait.</h1></div>
         </div>
 
         <footer>
@@ -25,4 +30,5 @@
             <a href="https://bsky.app/profile/opentaiko.bsky.social" target="_blank"><img src="src/image/bluesky.png"></img></a>
         </footer>
     </body>
+    <script src="songs.js"></script>
 </html>

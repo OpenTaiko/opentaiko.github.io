@@ -1,0 +1,74 @@
+@keyframes slide {
+    from {
+        background-position-x: 0px;
+    }
+    to {
+        background-position-x: -1920px;
+    }
+}
+
+html {
+    background-image: url("src/image/bg_songs.png");
+    background-size: cover;
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+    
+    animation: slide 90s linear infinite;
+}
+
+#songs {
+    text-align: left;
+    margin: auto;
+    padding: 0px 100px;
+    max-width: 900px;
+}
+#songs div {
+    margin: 8px;
+    padding: 1px 8px;
+    border-radius: 4px;
+}
+#songs h3, #songs h4 {
+    margin: 4px 0px;
+}
+
+.ch1 {
+    border: 2px solid #994314;
+    background-color: #f76b20;
+    color: white;
+}
+.ch2 {
+    border: 2px solid #282c75;
+    background-color: #474ed6;
+    color: white;
+}
+.ch3 {
+    border: 2px solid #2c9684;
+    background-color: #48f7da;
+    color: black;
+}
+.ch4 {
+    border: 2px solid #85912a;
+    background-color: #e5f748;
+    color: black;
+}
+
+.button.ch1 {
+    border: none;
+    background-image: linear-gradient(#ff8f53, #f76b20);
+    color: white;
+}
+.button.ch2 {
+    border: none;
+    background-image: linear-gradient(#575fff, #474ed6);
+    color: white;
+}
+.button.ch3 {
+    border: none;
+    background-image: linear-gradient(#6effe7, #48f7da);
+    color: black;
+}
+.button.ch4 {
+    border: none;
+    background-image: linear-gradient(#f3ff87, #e5f748);
+    color: black;
+}
