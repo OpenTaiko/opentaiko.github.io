@@ -53,6 +53,26 @@ html {
     background-color: #e5f748;
     color: black;
 }
+.deceiver {
+    border: 2px solid #2e0404;
+    background-color: #700b0b;
+    color: white;
+}
+.dashy {
+    border: 2px solid #888888;
+    background-color: #ffffff;
+    color: black;
+}
+.rainy {
+    border: 2px solid #030f01;
+    background-color: #092d02;
+    color: white;
+}
+.hq {
+    border: 2px solid #696969;
+    background-color: #999999;
+    color: black;
+}
 
 .button.ch1 {
     border: none;
@@ -72,5 +92,25 @@ html {
 .button.ch4 {
     border: none;
     background-image: linear-gradient(#f3ff87, #e5f748);
+    color: black;
+}
+.button.deceiver {
+    border: none;
+    background-image: linear-gradient(#700b0b, #520808);
+    color: white;
+}
+.button.dashy {
+    border: none;
+    background-image: linear-gradient(#ffffff, #bebebe);
+    color: black;
+}
+.button.rainy {
+    border: none;
+    background-image: linear-gradient(#0c3803, #092d02);
+    color: white;
+}
+.button.hq {
+    border: none;
+    background-image: linear-gradient(#cccccc, #999999);
     color: black;
 }
