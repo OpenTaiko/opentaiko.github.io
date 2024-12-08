@@ -15,7 +15,7 @@ function show_songs(genre, classname) {
         + song["chartDifficulties"]["Oni"] +
         (song["chartDifficulties"]["Edit"] ? ( " / Extra: " + song["chartDifficulties"]["Edit"]) : "")
         + "</span>"
-        text += "<div><audio controls muted preload='none'><source src='https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/" + song['chartAudioFilePath'] + "'></audio></div>"
+        text += "<div><audio controls muted preload='none'><source src=\"https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/" + song['chartAudioFilePath'] + "\"></audio></div>"
         text += "</div>"
     })
 
