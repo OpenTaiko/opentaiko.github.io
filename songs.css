@@ -114,3 +114,8 @@ html {
     background-image: linear-gradient(#cccccc, #999999);
     color: black;
 }
+.button.secret {
+    border: none;
+    background-image: linear-gradient(#000000,#000000);
+    color: white;
+}
