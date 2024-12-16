@@ -3,6 +3,7 @@
 	import Home from "./routes/Home.svelte";
 	import Download from "./routes/Download.svelte";
 	import Songlist from "./routes/Songlist.svelte";
+	import Secret from "./routes/Secret.svelte";
 
 	import Footer from "./components/Footer.svelte";
 
@@ -24,6 +25,9 @@
 		</Route>
 		<Route path="/songlist">
 			<Songlist />
+		</Route>
+		<Route path="/secret">
+			<Secret />
 		</Route>
 	</div>
 	<Footer />

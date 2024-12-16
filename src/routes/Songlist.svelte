@@ -61,6 +61,13 @@
             text: "OpenTaiko Headquarters",
             OnClick: () => FilterSongs("hq", "E02 OpenTaiko Headquarters")
         },
+        {
+            color1: "black",
+            color2: "black",
+            textColor: "white",
+            text: "???",
+            OnClick: () => window.location.replace('secret')
+        },
     ];
 
     let Fetching = false;
