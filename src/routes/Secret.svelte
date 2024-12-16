@@ -34,7 +34,7 @@
         if (url) {
             const downloadurl = document.createElement("a");
             downloadurl.href = url;
-            downloadurl.target = "_secret";
+            downloadurl.target = "_blank";
             downloadurl.click();
         }
     }
