@@ -8,7 +8,7 @@
         {
             color1: "#ff8f53",
             color2: "#f76b20",
-            textColor: "white",
+            textColor: "black",
             text: "OpenTaiko Chapter I",
             OnClick: () => FilterSongs("ch1", "01 OpenTaiko Chapter I")
         },
@@ -32,6 +32,13 @@
             textColor: "black",
             text: "OpenTaiko Chapter IV",
             OnClick: () => FilterSongs("ch4", "04 OpenTaiko Chapter IV")
+        },
+        {
+            color1: "#ff87ab",
+            color2: "#f74848",
+            textColor: "black",
+            text: "OpenTaiko Chapter V",
+            OnClick: () => FilterSongs("ch5", "05 OpenTaiko Chapter V")
         },
         {
             color1: "#700b0b",
@@ -116,7 +123,7 @@
 
         //console.log(SongsInfo);
 
-        FilterSongs("ch4", "04 OpenTaiko Chapter IV");
+        FilterSongs("ch5", "05 OpenTaiko Chapter V");
     });
 
 

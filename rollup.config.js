@@ -3,8 +3,10 @@ import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
+import polyfillNode from 'rollup-plugin-polyfill-node';
 import livereload from 'rollup-plugin-livereload';
 import css from 'rollup-plugin-css-only';
+import wasm from '@rollup/plugin-wasm';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -59,6 +61,8 @@ export default {
 			exportConditions: ['svelte']
 		}),
 		commonjs(),
+		polyfillNode(),
+		wasm(),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
