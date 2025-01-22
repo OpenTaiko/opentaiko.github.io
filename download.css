@@ -1,0 +1,44 @@
+p{
+    font-size: 28px;
+}
+
+.downloadOuterLayer /* Overall Division Box for the Download Section*/ {
+    background-image: url('public/image/bg_songs.png');
+    background-size: cover;
+    border-top:solid rgb(144, 32, 8);
+    border-bottom: solid rgb(0, 10, 120);
+    border-right: solid rgb(0, 10, 120);
+    border-left: solid rgb(144, 32, 8);
+    border-radius: 2px;
+    margin: 35px 100px;
+}
+
+.OpenTaikoHub /*Individual Sections for The main download, download tutorial and source code & Assets*/ {
+    background-color: rgb(232,232,232,0.5);
+    border-top:solid rgb(144, 32, 8);
+    border-bottom: solid rgb(0, 10, 120);
+    border-right: solid rgb(0, 10, 120);
+    border-left: solid rgb(144, 32, 8);
+    border-radius: 5px;
+    padding-bottom: 10px;
+    margin: 20px 200px;
+}
+
+#download-page {
+    overflow: scroll;
+    background-image: url('public/image/bg_songs2.png');
+    background-size: cover;
+    background-repeat: repeat-x;
+    background-position:0 0;
+    animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground{
+    0% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: -2000px 0; 
+      }
+}
