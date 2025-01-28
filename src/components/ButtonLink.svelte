@@ -3,6 +3,7 @@
     export let color2 = "rgb(255, 102, 42)";
     export let href = "#";
     export let text = "";
+    export let logo = "";
 
     let isActive = false;
 </script>
@@ -15,6 +16,7 @@
     on:mouseup={() => (isActive = false)}
     on:mouseleave={() => (isActive = false)}
 >
+    {#if logo !== ""}<img src={logo} alt=""/>{/if}
     <a href={href} target="_blank">{text}</a>
 </div>
 
@@ -30,9 +32,17 @@
         color: white;
         text-decoration: none;
         cursor: pointer;
+
+        display: flex;
     }
     .button a {
         color: white;
         text-decoration: none;
+    }
+    .button img {
+        margin:auto;
+        padding-right: 5px;
+        width: 24px;
+        height: 24px;
     }
 </style>
