@@ -17,6 +17,7 @@
 		<h3><Link to="/download">Download</Link></h3>
 		<h3><Link to="/songlist">Songlist</Link></h3>
 		<h3><Link to="/hof">Hall of Fame</Link></h3>
+		<h3><a href="https://opentaiko.wiki.gg" target="_blank">Wiki</a></h3>
 	</header>
 	<div class="content">
 		<Route path="/">
