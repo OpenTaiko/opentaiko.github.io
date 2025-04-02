@@ -105,8 +105,11 @@
     }
     .ch5 {
         border: 2px solid #6d1f1f;
-        background-color: #f74848;
         color: black;
+        background: linear-gradient(to bottom, #f74848 0%, #f74848 5%, 
+        transparent 30%, transparent 70%, #f74848 95%), url('/image/genreBar/ch5.png');
+        background-size: cover;
+        background-position: center;
     }
     .deceiver {
         border: 2px solid #2e0404;
@@ -153,6 +156,14 @@
         color: white;
         background: linear-gradient(to bottom, #6028aa 0%, #6028aa 5%, 
         rgba(111, 3, 126, 0.5) 30%, rgba(111, 3, 126, 0.5) 70%, #6028aa 95%), url('/image/genreBar/touhou.png');
+        background-size: cover;
+        background-position: center;
+    }
+    .kart {
+        border: 2px solid #6d1f1f;
+        color: black;
+        background: linear-gradient(to bottom, pink 0%, pink 5%, 
+        transparent 30%, transparent 70%, pink 95%), url('/image/genreBar/kart.png');
         background-size: cover;
         background-position: center;
     }

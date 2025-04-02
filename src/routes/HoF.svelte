@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import SongBar from "../components/SongBar.svelte";
+    import Button from "../components/Button.svelte";
     import initSqlJs from "sql.js";
 
     let db;
@@ -47,6 +48,8 @@
                 return 'outfox';
             case "C02 Touhou Arrangements":
                 return 'touhou';
+            case "C03 OpenTaiko Karting":
+                return 'kart';
         }
     }
 
@@ -75,6 +78,7 @@
             if (song !== null) {
                 SInfo = {
                     Rank: idx + 1,
+                    UniqueId: row[1],
                     Genre: GenreToCSS(song['tjaGenreFolder']),
                     Title: song["chartTitle"],
                     Subtitle: song["chartSubtitle"],
@@ -93,6 +97,7 @@
             else {
                 SInfo = {
                     Rank: idx + 1,
+                    UniqueId: row[1],
                     Genre: 'hq',
                     Title: `#${idx+1}. Not Found`,
                     Subtitle: "",
@@ -126,12 +131,42 @@
     });
 
 
-    
+    const DownloadAsJson = () => {
+        let _ret = {};
+
+        SongCards.forEach((card) => {
+            let _cardObj = _ret?.[card.UniqueId] ?? {};
+
+            if (card.Difficulties[3] >= 0) _cardObj["Oni"] = card.Rank;
+            if (card.Difficulties[4] >= 0) _cardObj["Edit"] = card.Rank;
+
+            _ret[card.UniqueId] = _cardObj;
+        });
+
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(_ret));
+        let downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "hof.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
 
 </script>
 
 <div class="bg_optk"></div>
 <h1 style="color:white;">Hall of Fame</h1>
+
+<div class="buttons">
+    <Button
+            color1="#6effe7"
+            color2="#48f7da"
+            textColor="black"
+            text="Download as json"
+            OnClick={() => DownloadAsJson()}
+        />
+
+</div>
 
 <div id="songs">
     {#if Fetching === true}
@@ -186,5 +221,15 @@
         padding-bottom: 64px;
         max-width: 900px;
     }
+
+    .buttons {
+        display:flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        vertical-align: middle;
+        margin: 0px auto;
+        padding: 0px auto;
+    } 
 
 </style>
