@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
     'use strict';
 
@@ -1627,12 +1627,12 @@ var app = (function () {
     const get_default_slot_context$1 = ctx => ({ params: /*routeParams*/ ctx[2] });
 
     // (42:0) {#if $activeRoute && $activeRoute.route === route}
-    function create_if_block$5(ctx) {
+    function create_if_block$7(ctx) {
     	let current_block_type_index;
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block_1$1, create_else_block$3];
+    	const if_block_creators = [create_if_block_1$2, create_else_block$4];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -1697,7 +1697,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$5.name,
+    		id: create_if_block$7.name,
     		type: "if",
     		source: "(42:0) {#if $activeRoute && $activeRoute.route === route}",
     		ctx
@@ -1707,7 +1707,7 @@ var app = (function () {
     }
 
     // (51:4) {:else}
-    function create_else_block$3(ctx) {
+    function create_else_block$4(ctx) {
     	let current;
     	const default_slot_template = /*#slots*/ ctx[8].default;
     	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[7], get_default_slot_context$1);
@@ -1755,7 +1755,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$3.name,
+    		id: create_else_block$4.name,
     		type: "else",
     		source: "(51:4) {:else}",
     		ctx
@@ -1765,7 +1765,7 @@ var app = (function () {
     }
 
     // (43:4) {#if component}
-    function create_if_block_1$1(ctx) {
+    function create_if_block_1$2(ctx) {
     	let await_block_anchor;
     	let promise;
     	let current;
@@ -1827,7 +1827,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$1.name,
+    		id: create_if_block_1$2.name,
     		type: "if",
     		source: "(43:4) {#if component}",
     		ctx
@@ -1976,7 +1976,7 @@ var app = (function () {
     function create_fragment$e(ctx) {
     	let if_block_anchor;
     	let current;
-    	let if_block = /*$activeRoute*/ ctx[1] && /*$activeRoute*/ ctx[1].route === /*route*/ ctx[5] && create_if_block$5(ctx);
+    	let if_block = /*$activeRoute*/ ctx[1] && /*$activeRoute*/ ctx[1].route === /*route*/ ctx[5] && create_if_block$7(ctx);
 
     	const block = {
     		c: function create() {
@@ -2000,7 +2000,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$5(ctx);
+    					if_block = create_if_block$7(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -2386,7 +2386,7 @@ var app = (function () {
     });
 
     // (143:0) {:else}
-    function create_else_block$2(ctx) {
+    function create_else_block$3(ctx) {
     	let current;
     	const default_slot_template = /*#slots*/ ctx[15].default;
     	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[14], get_default_slot_context_1);
@@ -2434,7 +2434,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$2.name,
+    		id: create_else_block$3.name,
     		type: "else",
     		source: "(143:0) {:else}",
     		ctx
@@ -2444,7 +2444,7 @@ var app = (function () {
     }
 
     // (134:0) {#if viewtransition}
-    function create_if_block$4(ctx) {
+    function create_if_block$6(ctx) {
     	let previous_key = /*$location*/ ctx[1].pathname;
     	let key_block_anchor;
     	let current;
@@ -2490,7 +2490,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$4.name,
+    		id: create_if_block$6.name,
     		type: "if",
     		source: "(134:0) {#if viewtransition}",
     		ctx
@@ -2581,7 +2581,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$4, create_else_block$2];
+    	const if_block_creators = [create_if_block$6, create_else_block$3];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -3022,61 +3022,117 @@ var app = (function () {
 
     const file$b = "src\\components\\ButtonLink.svelte";
 
+    // (19:4) {#if logo !== ""}
+    function create_if_block$5(ctx) {
+    	let img;
+    	let img_src_value;
+
+    	const block = {
+    		c: function create() {
+    			img = element("img");
+    			if (!src_url_equal(img.src, img_src_value = /*logo*/ ctx[4])) attr_dev(img, "src", img_src_value);
+    			attr_dev(img, "alt", "");
+    			attr_dev(img, "class", "svelte-1o9eyxq");
+    			add_location(img, file$b, 18, 21, 520);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, img, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*logo*/ 16 && !src_url_equal(img.src, img_src_value = /*logo*/ ctx[4])) {
+    				attr_dev(img, "src", img_src_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(img);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$5.name,
+    		type: "if",
+    		source: "(19:4) {#if logo !== \\\"\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
     function create_fragment$b(ctx) {
     	let div;
+    	let t0;
     	let a;
-    	let t;
+    	let t1;
     	let mounted;
     	let dispose;
+    	let if_block = /*logo*/ ctx[4] !== "" && create_if_block$5(ctx);
 
     	const block = {
     		c: function create() {
     			div = element("div");
+    			if (if_block) if_block.c();
+    			t0 = space();
     			a = element("a");
-    			t = text(/*text*/ ctx[3]);
+    			t1 = text(/*text*/ ctx[3]);
     			attr_dev(a, "href", /*href*/ ctx[2]);
     			attr_dev(a, "target", "_blank");
-    			attr_dev(a, "class", "svelte-1b49yfs");
-    			add_location(a, file$b, 17, 4, 476);
-    			attr_dev(div, "class", "button svelte-1b49yfs");
+    			attr_dev(a, "class", "svelte-1o9eyxq");
+    			add_location(a, file$b, 19, 4, 555);
+    			attr_dev(div, "class", "button svelte-1o9eyxq");
 
-    			set_style(div, "background-image", "linear-gradient(" + (/*isActive*/ ctx[4]
+    			set_style(div, "background-image", "linear-gradient(" + (/*isActive*/ ctx[5]
     			? /*color2*/ ctx[1]
-    			: /*color1*/ ctx[0]) + ", " + (/*isActive*/ ctx[4]
+    			: /*color1*/ ctx[0]) + ", " + (/*isActive*/ ctx[5]
     			? /*color1*/ ctx[0]
     			: /*color2*/ ctx[1]) + ")");
 
-    			add_location(div, file$b, 10, 0, 201);
+    			add_location(div, file$b, 11, 0, 228);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
+    			if (if_block) if_block.m(div, null);
+    			append_dev(div, t0);
     			append_dev(div, a);
-    			append_dev(a, t);
+    			append_dev(a, t1);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(div, "mousedown", /*mousedown_handler*/ ctx[5], false, false, false, false),
-    					listen_dev(div, "mouseup", /*mouseup_handler*/ ctx[6], false, false, false, false),
-    					listen_dev(div, "mouseleave", /*mouseleave_handler*/ ctx[7], false, false, false, false)
+    					listen_dev(div, "mousedown", /*mousedown_handler*/ ctx[6], false, false, false, false),
+    					listen_dev(div, "mouseup", /*mouseup_handler*/ ctx[7], false, false, false, false),
+    					listen_dev(div, "mouseleave", /*mouseleave_handler*/ ctx[8], false, false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*text*/ 8) set_data_dev(t, /*text*/ ctx[3]);
+    			if (/*logo*/ ctx[4] !== "") {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block$5(ctx);
+    					if_block.c();
+    					if_block.m(div, t0);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+
+    			if (dirty & /*text*/ 8) set_data_dev(t1, /*text*/ ctx[3]);
 
     			if (dirty & /*href*/ 4) {
     				attr_dev(a, "href", /*href*/ ctx[2]);
     			}
 
-    			if (dirty & /*isActive, color2, color1*/ 19) {
-    				set_style(div, "background-image", "linear-gradient(" + (/*isActive*/ ctx[4]
+    			if (dirty & /*isActive, color2, color1*/ 35) {
+    				set_style(div, "background-image", "linear-gradient(" + (/*isActive*/ ctx[5]
     				? /*color2*/ ctx[1]
-    				: /*color1*/ ctx[0]) + ", " + (/*isActive*/ ctx[4]
+    				: /*color1*/ ctx[0]) + ", " + (/*isActive*/ ctx[5]
     				? /*color1*/ ctx[0]
     				: /*color2*/ ctx[1]) + ")");
     			}
@@ -3085,6 +3141,7 @@ var app = (function () {
     		o: noop$1,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
+    			if (if_block) if_block.d();
     			mounted = false;
     			run_all(dispose);
     		}
@@ -3108,32 +3165,42 @@ var app = (function () {
     	let { color2 = "rgb(255, 102, 42)" } = $$props;
     	let { href = "#" } = $$props;
     	let { text = "" } = $$props;
+    	let { logo = "" } = $$props;
     	let isActive = false;
-    	const writable_props = ['color1', 'color2', 'href', 'text'];
+    	const writable_props = ['color1', 'color2', 'href', 'text', 'logo'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<ButtonLink> was created with unknown prop '${key}'`);
     	});
 
-    	const mousedown_handler = () => $$invalidate(4, isActive = true);
-    	const mouseup_handler = () => $$invalidate(4, isActive = false);
-    	const mouseleave_handler = () => $$invalidate(4, isActive = false);
+    	const mousedown_handler = () => $$invalidate(5, isActive = true);
+    	const mouseup_handler = () => $$invalidate(5, isActive = false);
+    	const mouseleave_handler = () => $$invalidate(5, isActive = false);
 
     	$$self.$$set = $$props => {
     		if ('color1' in $$props) $$invalidate(0, color1 = $$props.color1);
     		if ('color2' in $$props) $$invalidate(1, color2 = $$props.color2);
     		if ('href' in $$props) $$invalidate(2, href = $$props.href);
     		if ('text' in $$props) $$invalidate(3, text = $$props.text);
+    		if ('logo' in $$props) $$invalidate(4, logo = $$props.logo);
     	};
 
-    	$$self.$capture_state = () => ({ color1, color2, href, text, isActive });
+    	$$self.$capture_state = () => ({
+    		color1,
+    		color2,
+    		href,
+    		text,
+    		logo,
+    		isActive
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ('color1' in $$props) $$invalidate(0, color1 = $$props.color1);
     		if ('color2' in $$props) $$invalidate(1, color2 = $$props.color2);
     		if ('href' in $$props) $$invalidate(2, href = $$props.href);
     		if ('text' in $$props) $$invalidate(3, text = $$props.text);
-    		if ('isActive' in $$props) $$invalidate(4, isActive = $$props.isActive);
+    		if ('logo' in $$props) $$invalidate(4, logo = $$props.logo);
+    		if ('isActive' in $$props) $$invalidate(5, isActive = $$props.isActive);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -3145,6 +3212,7 @@ var app = (function () {
     		color2,
     		href,
     		text,
+    		logo,
     		isActive,
     		mousedown_handler,
     		mouseup_handler,
@@ -3155,7 +3223,14 @@ var app = (function () {
     class ButtonLink extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$1(this, options, instance$b, create_fragment$b, safe_not_equal, { color1: 0, color2: 1, href: 2, text: 3 });
+
+    		init$1(this, options, instance$b, create_fragment$b, safe_not_equal, {
+    			color1: 0,
+    			color2: 1,
+    			href: 2,
+    			text: 3,
+    			logo: 4
+    		});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -3196,122 +3271,230 @@ var app = (function () {
     	set text(value) {
     		throw new Error("<ButtonLink>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
+
+    	get logo() {
+    		throw new Error("<ButtonLink>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set logo(value) {
+    		throw new Error("<ButtonLink>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     /* src\routes\Download.svelte generated by Svelte v3.59.2 */
     const file$a = "src\\routes\\Download.svelte";
 
-    function create_fragment$a(ctx) {
-    	let h1;
+    // (53:46) {:else}
+    function create_else_block_3(ctx) {
+    	let t0;
     	let t1;
-    	let p0;
-    	let t3;
-    	let h20;
-    	let t5;
-    	let p1;
-    	let t7;
-    	let div0;
+
+    	const block = {
+    		c: function create() {
+    			t0 = text("Current Version: ");
+    			t1 = text(/*download_version*/ ctx[1]);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, t1, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*download_version*/ 2) set_data_dev(t1, /*download_version*/ ctx[1]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(t1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block_3.name,
+    		type: "else",
+    		source: "(53:46) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (53:4) {#if Fetching}
+    function create_if_block_3(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Current Version: Fetching...");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(53:4) {#if Fetching}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (75:4) {:else}
+    function create_else_block_2(ctx) {
     	let buttonlink0;
-    	let t8;
-    	let h21;
-    	let t10;
-    	let p2;
-    	let t12;
-    	let div1;
+    	let t0;
     	let buttonlink1;
-    	let t13;
+    	let t1;
     	let buttonlink2;
     	let current;
 
     	buttonlink0 = new ButtonLink({
     			props: {
-    				href: "https://github.com/OpenTaiko/OpenTaiko-Hub/releases/latest",
-    				text: "Download (GitHub)"
+    				href: /*download_exe*/ ctx[4],
+    				text: "Download (.exe)",
+    				logo: "image/windows.png"
     			},
     			$$inline: true
     		});
 
     	buttonlink1 = new ButtonLink({
     			props: {
-    				href: "https://github.com/0auBSQ/OpenTaiko",
-    				text: "Main Repository",
-    				color1: "rgb(53, 157, 255)",
-    				color2: "rgb(42, 117, 255)"
+    				href: /*download_deb*/ ctx[3],
+    				text: "Download (.deb)",
+    				logo: "image/linux.png"
     			},
     			$$inline: true
     		});
 
     	buttonlink2 = new ButtonLink({
     			props: {
-    				href: "https://github.com/OpenTaiko",
-    				text: "GitHub Organization",
-    				color1: "rgb(53, 157, 255)",
-    				color2: "rgb(42, 117, 255)"
+    				href: /*download_app*/ ctx[2],
+    				text: "Download (.AppImage)",
+    				logo: "image/linux.png"
     			},
     			$$inline: true
     		});
 
     	const block = {
     		c: function create() {
-    			h1 = element("h1");
-    			h1.textContent = "Download";
-    			t1 = space();
-    			p0 = element("p");
-    			p0.textContent = "OpenTaiko is available for Windows, and is also available for Linux under experimental builds.";
-    			t3 = space();
-    			h20 = element("h2");
-    			h20.textContent = "OpenTaiko Hub";
-    			t5 = space();
-    			p1 = element("p");
-    			p1.textContent = "Installer & updater for the base game, songs, skins, characters, and more.";
-    			t7 = space();
-    			div0 = element("div");
     			create_component(buttonlink0.$$.fragment);
-    			t8 = space();
-    			h21 = element("h2");
-    			h21.textContent = "Source Code & Assets";
-    			t10 = space();
-    			p2 = element("p");
-    			p2.textContent = "Open-source repositories used for OpenTaiko. The main project is licensed under the MIT License, but other assets may have differing licenses. Please refer to each project's README for further details.";
-    			t12 = space();
-    			div1 = element("div");
+    			t0 = space();
     			create_component(buttonlink1.$$.fragment);
-    			t13 = space();
+    			t1 = space();
     			create_component(buttonlink2.$$.fragment);
-    			add_location(h1, file$a, 5, 0, 88);
-    			add_location(p0, file$a, 6, 0, 107);
-    			add_location(h20, file$a, 7, 0, 210);
-    			add_location(p1, file$a, 8, 0, 234);
-    			attr_dev(div0, "class", "buttons svelte-1woiggu");
-    			add_location(div0, file$a, 9, 0, 317);
-    			add_location(h21, file$a, 16, 0, 484);
-    			add_location(p2, file$a, 17, 0, 515);
-    			attr_dev(div1, "class", "buttons svelte-1woiggu");
-    			add_location(div1, file$a, 18, 0, 725);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h1, anchor);
+    			mount_component(buttonlink0, target, anchor);
+    			insert_dev(target, t0, anchor);
+    			mount_component(buttonlink1, target, anchor);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, p0, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, h20, anchor);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, p1, anchor);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, div0, anchor);
-    			mount_component(buttonlink0, div0, null);
-    			insert_dev(target, t8, anchor);
-    			insert_dev(target, h21, anchor);
-    			insert_dev(target, t10, anchor);
-    			insert_dev(target, p2, anchor);
-    			insert_dev(target, t12, anchor);
-    			insert_dev(target, div1, anchor);
-    			mount_component(buttonlink1, div1, null);
-    			append_dev(div1, t13);
-    			mount_component(buttonlink2, div1, null);
+    			mount_component(buttonlink2, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const buttonlink0_changes = {};
+    			if (dirty & /*download_exe*/ 16) buttonlink0_changes.href = /*download_exe*/ ctx[4];
+    			buttonlink0.$set(buttonlink0_changes);
+    			const buttonlink1_changes = {};
+    			if (dirty & /*download_deb*/ 8) buttonlink1_changes.href = /*download_deb*/ ctx[3];
+    			buttonlink1.$set(buttonlink1_changes);
+    			const buttonlink2_changes = {};
+    			if (dirty & /*download_app*/ 4) buttonlink2_changes.href = /*download_app*/ ctx[2];
+    			buttonlink2.$set(buttonlink2_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttonlink0.$$.fragment, local);
+    			transition_in(buttonlink1.$$.fragment, local);
+    			transition_in(buttonlink2.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(buttonlink0.$$.fragment, local);
+    			transition_out(buttonlink1.$$.fragment, local);
+    			transition_out(buttonlink2.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(buttonlink0, detaching);
+    			if (detaching) detach_dev(t0);
+    			destroy_component(buttonlink1, detaching);
+    			if (detaching) detach_dev(t1);
+    			destroy_component(buttonlink2, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block_2.name,
+    		type: "else",
+    		source: "(75:4) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (56:4) {#if Fetching === true}
+    function create_if_block_2(ctx) {
+    	let buttonlink0;
+    	let t0;
+    	let buttonlink1;
+    	let t1;
+    	let buttonlink2;
+    	let current;
+
+    	buttonlink0 = new ButtonLink({
+    			props: {
+    				text: "Fetching...",
+    				color1: "rgb(80, 80, 80)",
+    				color2: "rgb(60, 60, 60)",
+    				logo: "image/windows.png"
+    			},
+    			$$inline: true
+    		});
+
+    	buttonlink1 = new ButtonLink({
+    			props: {
+    				text: "Fetching...",
+    				color1: "rgb(80, 80, 80)",
+    				color2: "rgb(60, 60, 60)",
+    				logo: "image/linux.png"
+    			},
+    			$$inline: true
+    		});
+
+    	buttonlink2 = new ButtonLink({
+    			props: {
+    				text: "Fetching...",
+    				color1: "rgb(80, 80, 80)",
+    				color2: "rgb(60, 60, 60)",
+    				logo: "image/linux.png"
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(buttonlink0.$$.fragment);
+    			t0 = space();
+    			create_component(buttonlink1.$$.fragment);
+    			t1 = space();
+    			create_component(buttonlink2.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(buttonlink0, target, anchor);
+    			insert_dev(target, t0, anchor);
+    			mount_component(buttonlink1, target, anchor);
+    			insert_dev(target, t1, anchor);
+    			mount_component(buttonlink2, target, anchor);
     			current = true;
     		},
     		p: noop$1,
@@ -3329,24 +3512,583 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			destroy_component(buttonlink0, detaching);
+    			if (detaching) detach_dev(t0);
+    			destroy_component(buttonlink1, detaching);
+    			if (detaching) detach_dev(t1);
+    			destroy_component(buttonlink2, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(56:4) {#if Fetching === true}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (99:46) {:else}
+    function create_else_block_1(ctx) {
+    	let t0;
+    	let t1;
+
+    	const block = {
+    		c: function create() {
+    			t0 = text("Current Version: ");
+    			t1 = text(/*game_version*/ ctx[5]);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, t1, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*game_version*/ 32) set_data_dev(t1, /*game_version*/ ctx[5]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(t1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block_1.name,
+    		type: "else",
+    		source: "(99:46) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (99:4) {#if Fetching}
+    function create_if_block_1$1(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Current Version: Fetching...");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$1.name,
+    		type: "if",
+    		source: "(99:4) {#if Fetching}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (114:4) {:else}
+    function create_else_block$2(ctx) {
+    	let buttonlink0;
+    	let t;
+    	let buttonlink1;
+    	let current;
+
+    	buttonlink0 = new ButtonLink({
+    			props: {
+    				href: /*game_win*/ ctx[6],
+    				text: "Download (Windows x64)",
+    				logo: "image/windows.png"
+    			},
+    			$$inline: true
+    		});
+
+    	buttonlink1 = new ButtonLink({
+    			props: {
+    				href: /*game_linux*/ ctx[7],
+    				text: "Download (Linux x64)",
+    				logo: "image/linux.png"
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(buttonlink0.$$.fragment);
+    			t = space();
+    			create_component(buttonlink1.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(buttonlink0, target, anchor);
+    			insert_dev(target, t, anchor);
+    			mount_component(buttonlink1, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const buttonlink0_changes = {};
+    			if (dirty & /*game_win*/ 64) buttonlink0_changes.href = /*game_win*/ ctx[6];
+    			buttonlink0.$set(buttonlink0_changes);
+    			const buttonlink1_changes = {};
+    			if (dirty & /*game_linux*/ 128) buttonlink1_changes.href = /*game_linux*/ ctx[7];
+    			buttonlink1.$set(buttonlink1_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttonlink0.$$.fragment, local);
+    			transition_in(buttonlink1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(buttonlink0.$$.fragment, local);
+    			transition_out(buttonlink1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(buttonlink0, detaching);
+    			if (detaching) detach_dev(t);
+    			destroy_component(buttonlink1, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block$2.name,
+    		type: "else",
+    		source: "(114:4) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (101:4) {#if Fetching === true}
+    function create_if_block$4(ctx) {
+    	let buttonlink0;
+    	let t;
+    	let buttonlink1;
+    	let current;
+
+    	buttonlink0 = new ButtonLink({
+    			props: {
+    				text: "Fetching...",
+    				color1: "rgb(80, 80, 80)",
+    				color2: "rgb(60, 60, 60)",
+    				logo: "image/windows.png"
+    			},
+    			$$inline: true
+    		});
+
+    	buttonlink1 = new ButtonLink({
+    			props: {
+    				text: "Fetching...",
+    				color1: "rgb(80, 80, 80)",
+    				color2: "rgb(60, 60, 60)",
+    				logo: "image/linux.png"
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(buttonlink0.$$.fragment);
+    			t = space();
+    			create_component(buttonlink1.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(buttonlink0, target, anchor);
+    			insert_dev(target, t, anchor);
+    			mount_component(buttonlink1, target, anchor);
+    			current = true;
+    		},
+    		p: noop$1,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(buttonlink0.$$.fragment, local);
+    			transition_in(buttonlink1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(buttonlink0.$$.fragment, local);
+    			transition_out(buttonlink1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(buttonlink0, detaching);
+    			if (detaching) detach_dev(t);
+    			destroy_component(buttonlink1, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$4.name,
+    		type: "if",
+    		source: "(101:4) {#if Fetching === true}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$a(ctx) {
+    	let h1;
+    	let t1;
+    	let p0;
+    	let t3;
+    	let separator0;
+    	let t4;
+    	let h20;
+    	let t6;
+    	let p1;
+    	let t8;
+    	let h30;
+    	let t9;
+    	let div0;
+    	let current_block_type_index;
+    	let if_block1;
+    	let t10;
+    	let separator1;
+    	let t11;
+    	let h21;
+    	let t13;
+    	let p2;
+    	let t15;
+    	let p3;
+    	let i;
+    	let t17;
+    	let h31;
+    	let t18;
+    	let div1;
+    	let current_block_type_index_1;
+    	let if_block3;
+    	let t19;
+    	let separator2;
+    	let t20;
+    	let h22;
+    	let t22;
+    	let p4;
+    	let t24;
+    	let div2;
+    	let buttonlink0;
+    	let t25;
+    	let buttonlink1;
+    	let current;
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*Fetching*/ ctx[0]) return create_if_block_3;
+    		return create_else_block_3;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block0 = current_block_type(ctx);
+    	const if_block_creators = [create_if_block_2, create_else_block_2];
+    	const if_blocks = [];
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*Fetching*/ ctx[0] === true) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type_1(ctx);
+    	if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	function select_block_type_2(ctx, dirty) {
+    		if (/*Fetching*/ ctx[0]) return create_if_block_1$1;
+    		return create_else_block_1;
+    	}
+
+    	let current_block_type_1 = select_block_type_2(ctx);
+    	let if_block2 = current_block_type_1(ctx);
+    	const if_block_creators_1 = [create_if_block$4, create_else_block$2];
+    	const if_blocks_1 = [];
+
+    	function select_block_type_3(ctx, dirty) {
+    		if (/*Fetching*/ ctx[0] === true) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index_1 = select_block_type_3(ctx);
+    	if_block3 = if_blocks_1[current_block_type_index_1] = if_block_creators_1[current_block_type_index_1](ctx);
+
+    	buttonlink0 = new ButtonLink({
+    			props: {
+    				href: "https://github.com/0auBSQ/OpenTaiko",
+    				text: "Main Repository",
+    				color1: "rgb(53, 157, 255)",
+    				color2: "rgb(42, 117, 255)"
+    			},
+    			$$inline: true
+    		});
+
+    	buttonlink1 = new ButtonLink({
+    			props: {
+    				href: "https://github.com/OpenTaiko",
+    				text: "GitHub Organization",
+    				color1: "rgb(53, 157, 255)",
+    				color2: "rgb(42, 117, 255)"
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			h1 = element("h1");
+    			h1.textContent = "Download";
+    			t1 = space();
+    			p0 = element("p");
+    			p0.textContent = "OpenTaiko is available for Windows, and is also available for Linux under experimental builds.";
+    			t3 = space();
+    			separator0 = element("separator");
+    			t4 = space();
+    			h20 = element("h2");
+    			h20.textContent = "OpenTaiko Hub";
+    			t6 = space();
+    			p1 = element("p");
+    			p1.textContent = "Installer & updater for the base game, songs, skins, characters, and more.";
+    			t8 = space();
+    			h30 = element("h3");
+    			if_block0.c();
+    			t9 = space();
+    			div0 = element("div");
+    			if_block1.c();
+    			t10 = space();
+    			separator1 = element("separator");
+    			t11 = space();
+    			h21 = element("h2");
+    			h21.textContent = "Standalone";
+    			t13 = space();
+    			p2 = element("p");
+    			p2.textContent = "If you prefer to not use the installer, you can download OpenTaiko by itself here.";
+    			t15 = space();
+    			p3 = element("p");
+    			i = element("i");
+    			i.textContent = "This download does not come with any skins. You must download a skin separately, or else the game will not launch.";
+    			t17 = space();
+    			h31 = element("h3");
+    			if_block2.c();
+    			t18 = space();
+    			div1 = element("div");
+    			if_block3.c();
+    			t19 = space();
+    			separator2 = element("separator");
+    			t20 = space();
+    			h22 = element("h2");
+    			h22.textContent = "Source Code & Assets";
+    			t22 = space();
+    			p4 = element("p");
+    			p4.textContent = "Open-source repositories used for OpenTaiko. The main project is licensed under the MIT License, but other assets may have differing licenses. Please refer to each project's README for further details.";
+    			t24 = space();
+    			div2 = element("div");
+    			create_component(buttonlink0.$$.fragment);
+    			t25 = space();
+    			create_component(buttonlink1.$$.fragment);
+    			add_location(h1, file$a, 45, 0, 1832);
+    			add_location(p0, file$a, 46, 0, 1851);
+    			add_location(separator0, file$a, 48, 0, 1956);
+    			add_location(h20, file$a, 50, 0, 1972);
+    			add_location(p1, file$a, 51, 0, 1996);
+    			add_location(h30, file$a, 52, 0, 2079);
+    			attr_dev(div0, "class", "buttons svelte-1woiggu");
+    			add_location(div0, file$a, 54, 0, 2181);
+    			add_location(separator1, file$a, 93, 0, 3221);
+    			add_location(h21, file$a, 95, 0, 3237);
+    			add_location(p2, file$a, 96, 0, 3258);
+    			add_location(i, file$a, 97, 3, 3352);
+    			add_location(p3, file$a, 97, 0, 3349);
+    			add_location(h31, file$a, 98, 0, 3479);
+    			attr_dev(div1, "class", "buttons svelte-1woiggu");
+    			add_location(div1, file$a, 99, 0, 3575);
+    			add_location(separator2, file$a, 127, 0, 4301);
+    			add_location(h22, file$a, 129, 0, 4317);
+    			add_location(p4, file$a, 130, 0, 4348);
+    			attr_dev(div2, "class", "buttons svelte-1woiggu");
+    			add_location(div2, file$a, 132, 0, 4560);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, h1, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, p0, anchor);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, separator0, anchor);
+    			insert_dev(target, t4, anchor);
+    			insert_dev(target, h20, anchor);
+    			insert_dev(target, t6, anchor);
+    			insert_dev(target, p1, anchor);
+    			insert_dev(target, t8, anchor);
+    			insert_dev(target, h30, anchor);
+    			if_block0.m(h30, null);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, div0, anchor);
+    			if_blocks[current_block_type_index].m(div0, null);
+    			insert_dev(target, t10, anchor);
+    			insert_dev(target, separator1, anchor);
+    			insert_dev(target, t11, anchor);
+    			insert_dev(target, h21, anchor);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, p2, anchor);
+    			insert_dev(target, t15, anchor);
+    			insert_dev(target, p3, anchor);
+    			append_dev(p3, i);
+    			insert_dev(target, t17, anchor);
+    			insert_dev(target, h31, anchor);
+    			if_block2.m(h31, null);
+    			insert_dev(target, t18, anchor);
+    			insert_dev(target, div1, anchor);
+    			if_blocks_1[current_block_type_index_1].m(div1, null);
+    			insert_dev(target, t19, anchor);
+    			insert_dev(target, separator2, anchor);
+    			insert_dev(target, t20, anchor);
+    			insert_dev(target, h22, anchor);
+    			insert_dev(target, t22, anchor);
+    			insert_dev(target, p4, anchor);
+    			insert_dev(target, t24, anchor);
+    			insert_dev(target, div2, anchor);
+    			mount_component(buttonlink0, div2, null);
+    			append_dev(div2, t25);
+    			mount_component(buttonlink1, div2, null);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+    				if_block0.p(ctx, dirty);
+    			} else {
+    				if_block0.d(1);
+    				if_block0 = current_block_type(ctx);
+
+    				if (if_block0) {
+    					if_block0.c();
+    					if_block0.m(h30, null);
+    				}
+    			}
+
+    			let previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type_1(ctx);
+
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+    					if_blocks[previous_block_index] = null;
+    				});
+
+    				check_outros();
+    				if_block1 = if_blocks[current_block_type_index];
+
+    				if (!if_block1) {
+    					if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block1.c();
+    				} else {
+    					if_block1.p(ctx, dirty);
+    				}
+
+    				transition_in(if_block1, 1);
+    				if_block1.m(div0, null);
+    			}
+
+    			if (current_block_type_1 === (current_block_type_1 = select_block_type_2(ctx)) && if_block2) {
+    				if_block2.p(ctx, dirty);
+    			} else {
+    				if_block2.d(1);
+    				if_block2 = current_block_type_1(ctx);
+
+    				if (if_block2) {
+    					if_block2.c();
+    					if_block2.m(h31, null);
+    				}
+    			}
+
+    			let previous_block_index_1 = current_block_type_index_1;
+    			current_block_type_index_1 = select_block_type_3(ctx);
+
+    			if (current_block_type_index_1 === previous_block_index_1) {
+    				if_blocks_1[current_block_type_index_1].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks_1[previous_block_index_1], 1, 1, () => {
+    					if_blocks_1[previous_block_index_1] = null;
+    				});
+
+    				check_outros();
+    				if_block3 = if_blocks_1[current_block_type_index_1];
+
+    				if (!if_block3) {
+    					if_block3 = if_blocks_1[current_block_type_index_1] = if_block_creators_1[current_block_type_index_1](ctx);
+    					if_block3.c();
+    				} else {
+    					if_block3.p(ctx, dirty);
+    				}
+
+    				transition_in(if_block3, 1);
+    				if_block3.m(div1, null);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block1);
+    			transition_in(if_block3);
+    			transition_in(buttonlink0.$$.fragment, local);
+    			transition_in(buttonlink1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block1);
+    			transition_out(if_block3);
+    			transition_out(buttonlink0.$$.fragment, local);
+    			transition_out(buttonlink1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
     			if (detaching) detach_dev(h1);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(p0);
     			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(separator0);
+    			if (detaching) detach_dev(t4);
     			if (detaching) detach_dev(h20);
-    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(t6);
     			if (detaching) detach_dev(p1);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(div0);
-    			destroy_component(buttonlink0);
     			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(h21);
+    			if (detaching) detach_dev(h30);
+    			if_block0.d();
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(div0);
+    			if_blocks[current_block_type_index].d();
     			if (detaching) detach_dev(t10);
+    			if (detaching) detach_dev(separator1);
+    			if (detaching) detach_dev(t11);
+    			if (detaching) detach_dev(h21);
+    			if (detaching) detach_dev(t13);
     			if (detaching) detach_dev(p2);
-    			if (detaching) detach_dev(t12);
+    			if (detaching) detach_dev(t15);
+    			if (detaching) detach_dev(p3);
+    			if (detaching) detach_dev(t17);
+    			if (detaching) detach_dev(h31);
+    			if_block2.d();
+    			if (detaching) detach_dev(t18);
     			if (detaching) detach_dev(div1);
+    			if_blocks_1[current_block_type_index_1].d();
+    			if (detaching) detach_dev(t19);
+    			if (detaching) detach_dev(separator2);
+    			if (detaching) detach_dev(t20);
+    			if (detaching) detach_dev(h22);
+    			if (detaching) detach_dev(t22);
+    			if (detaching) detach_dev(p4);
+    			if (detaching) detach_dev(t24);
+    			if (detaching) detach_dev(div2);
+    			destroy_component(buttonlink0);
     			destroy_component(buttonlink1);
-    			destroy_component(buttonlink2);
     		}
     	};
 
@@ -3364,14 +4106,88 @@ var app = (function () {
     function instance$a($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Download', slots, []);
+    	let Fetching = true;
+    	let download_version = "";
+    	let download_app = "#";
+    	let download_deb = "#";
+    	let download_exe = "#";
+    	let DownloadsInfo = {};
+    	let game_version = "";
+    	let game_win = "#";
+    	let game_linux = "#";
+    	let GamesInfo = {};
+
+    	const FetchDownloads = async () => {
+    		$$invalidate(0, Fetching = true);
+    		let download_text = await fetch("https://api.github.com/repos/OpenTaiko/OpenTaiko-Hub/releases/latest");
+    		let download_text_value = (await download_text.text()).valueOf();
+    		DownloadsInfo = JSON.parse(download_text_value);
+    		$$invalidate(1, download_version = DownloadsInfo["tag_name"]);
+    		$$invalidate(2, download_app = DownloadsInfo["assets"].find(asset => asset["browser_download_url"].endsWith(".AppImage"))["browser_download_url"]);
+    		$$invalidate(3, download_deb = DownloadsInfo["assets"].find(asset => asset["browser_download_url"].endsWith(".deb"))["browser_download_url"]);
+    		$$invalidate(4, download_exe = DownloadsInfo["assets"].find(asset => asset["browser_download_url"].endsWith(".exe"))["browser_download_url"]);
+    		let game_text = await fetch("https://api.github.com/repos/0auBSQ/OpenTaiko/releases/latest");
+    		let game_text_value = (await game_text.text()).valueOf();
+    		GamesInfo = JSON.parse(game_text_value);
+    		$$invalidate(5, game_version = GamesInfo["tag_name"]);
+    		$$invalidate(6, game_win = GamesInfo["assets"].find(asset => asset["browser_download_url"].endsWith("Win.x64.zip"))["browser_download_url"]);
+    		$$invalidate(7, game_linux = GamesInfo["assets"].find(asset => asset["browser_download_url"].endsWith("Linux.x64.zip"))["browser_download_url"]);
+    		$$invalidate(0, Fetching = false);
+    	};
+
+    	onMount(async () => {
+    		await FetchDownloads();
+    	});
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Download> was created with unknown prop '${key}'`);
     	});
 
-    	$$self.$capture_state = () => ({ ButtonLink });
-    	return [];
+    	$$self.$capture_state = () => ({
+    		onMount,
+    		ButtonLink,
+    		Fetching,
+    		download_version,
+    		download_app,
+    		download_deb,
+    		download_exe,
+    		DownloadsInfo,
+    		game_version,
+    		game_win,
+    		game_linux,
+    		GamesInfo,
+    		FetchDownloads
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('Fetching' in $$props) $$invalidate(0, Fetching = $$props.Fetching);
+    		if ('download_version' in $$props) $$invalidate(1, download_version = $$props.download_version);
+    		if ('download_app' in $$props) $$invalidate(2, download_app = $$props.download_app);
+    		if ('download_deb' in $$props) $$invalidate(3, download_deb = $$props.download_deb);
+    		if ('download_exe' in $$props) $$invalidate(4, download_exe = $$props.download_exe);
+    		if ('DownloadsInfo' in $$props) DownloadsInfo = $$props.DownloadsInfo;
+    		if ('game_version' in $$props) $$invalidate(5, game_version = $$props.game_version);
+    		if ('game_win' in $$props) $$invalidate(6, game_win = $$props.game_win);
+    		if ('game_linux' in $$props) $$invalidate(7, game_linux = $$props.game_linux);
+    		if ('GamesInfo' in $$props) GamesInfo = $$props.GamesInfo;
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		Fetching,
+    		download_version,
+    		download_app,
+    		download_deb,
+    		download_exe,
+    		game_version,
+    		game_win,
+    		game_linux
+    	];
     }
 
     class Download extends SvelteComponentDev {
@@ -4384,9 +5200,9 @@ var app = (function () {
     			span = element("span");
     			t0 = text("#");
     			t1 = text(/*Rank*/ ctx[0]);
-    			attr_dev(span, "class", "song_bar_rank_nb svelte-1uhf0d0");
+    			attr_dev(span, "class", "song_bar_rank_nb svelte-gnzc3f");
     			add_location(span, file$5, 18, 8, 565);
-    			attr_dev(div, "class", "song_bar_rank svelte-1uhf0d0");
+    			attr_dev(div, "class", "song_bar_rank svelte-gnzc3f");
     			add_location(div, file$5, 17, 4, 528);
     		},
     		m: function mount(target, anchor) {
@@ -4579,11 +5395,11 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "song_bar_main_info svelte-1uhf0d0");
+    			attr_dev(div0, "class", "song_bar_main_info svelte-gnzc3f");
     			add_location(div0, file$5, 22, 4, 645);
-    			attr_dev(div1, "class", "song_bar_push svelte-1uhf0d0");
+    			attr_dev(div1, "class", "song_bar_push svelte-gnzc3f");
     			add_location(div1, file$5, 30, 4, 826);
-    			attr_dev(div2, "class", div2_class_value = "" + (/*Genre*/ ctx[4] + " song_bar" + " svelte-1uhf0d0"));
+    			attr_dev(div2, "class", div2_class_value = "" + (/*Genre*/ ctx[4] + " song_bar" + " svelte-gnzc3f"));
     			add_location(div2, file$5, 15, 0, 462);
     		},
     		l: function claim(nodes) {
@@ -4655,7 +5471,7 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (!current || dirty & /*Genre*/ 16 && div2_class_value !== (div2_class_value = "" + (/*Genre*/ ctx[4] + " song_bar" + " svelte-1uhf0d0"))) {
+    			if (!current || dirty & /*Genre*/ 16 && div2_class_value !== (div2_class_value = "" + (/*Genre*/ ctx[4] + " song_bar" + " svelte-gnzc3f"))) {
     				attr_dev(div2, "class", div2_class_value);
     			}
     		},
@@ -8389,11 +9205,11 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
+    	child_ctx[13] = list[i];
     	return child_ctx;
     }
 
-    // (140:4) {:else}
+    // (175:4) {:else}
     function create_else_block(ctx) {
     	let each_1_anchor;
     	let current;
@@ -8484,14 +9300,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(140:4) {:else}",
+    		source: "(175:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (137:4) {#if Fetching === true}
+    // (172:4) {#if Fetching === true}
     function create_if_block(ctx) {
     	let h1;
     	let t1;
@@ -8506,13 +9322,13 @@ var app = (function () {
     			img = element("img");
     			set_style(h1, "text-align", "center");
     			set_style(h1, "color", "white");
-    			add_location(h1, file$2, 137, 8, 4408);
+    			add_location(h1, file$2, 172, 8, 5638);
     			if (!src_url_equal(img.src, img_src_value = "image/loading.gif")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Loading");
     			set_style(img, "display", "block");
     			set_style(img, "margin-left", "auto");
     			set_style(img, "margin-right", "auto");
-    			add_location(img, file$2, 138, 8, 4498);
+    			add_location(img, file$2, 173, 8, 5728);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
@@ -8533,26 +9349,26 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(137:4) {#if Fetching === true}",
+    		source: "(172:4) {#if Fetching === true}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (142:12) {#key Card.AudioFilePath}
+    // (177:12) {#key Card.AudioFilePath}
     function create_key_block(ctx) {
     	let songbar;
     	let current;
 
     	songbar = new SongBar({
     			props: {
-    				Rank: /*Card*/ ctx[11].Rank,
-    				Title: /*Card*/ ctx[11].Title,
-    				Subtitle: /*Card*/ ctx[11].Subtitle,
-    				Difficulties: /*Card*/ ctx[11].Difficulties,
-    				AudioFilePath: /*Card*/ ctx[11].AudioFilePath,
-    				Genre: /*Card*/ ctx[11].Genre
+    				Rank: /*Card*/ ctx[13].Rank,
+    				Title: /*Card*/ ctx[13].Title,
+    				Subtitle: /*Card*/ ctx[13].Subtitle,
+    				Difficulties: /*Card*/ ctx[13].Difficulties,
+    				AudioFilePath: /*Card*/ ctx[13].AudioFilePath,
+    				Genre: /*Card*/ ctx[13].Genre
     			},
     			$$inline: true
     		});
@@ -8567,12 +9383,12 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const songbar_changes = {};
-    			if (dirty & /*SongCards*/ 2) songbar_changes.Rank = /*Card*/ ctx[11].Rank;
-    			if (dirty & /*SongCards*/ 2) songbar_changes.Title = /*Card*/ ctx[11].Title;
-    			if (dirty & /*SongCards*/ 2) songbar_changes.Subtitle = /*Card*/ ctx[11].Subtitle;
-    			if (dirty & /*SongCards*/ 2) songbar_changes.Difficulties = /*Card*/ ctx[11].Difficulties;
-    			if (dirty & /*SongCards*/ 2) songbar_changes.AudioFilePath = /*Card*/ ctx[11].AudioFilePath;
-    			if (dirty & /*SongCards*/ 2) songbar_changes.Genre = /*Card*/ ctx[11].Genre;
+    			if (dirty & /*SongCards*/ 2) songbar_changes.Rank = /*Card*/ ctx[13].Rank;
+    			if (dirty & /*SongCards*/ 2) songbar_changes.Title = /*Card*/ ctx[13].Title;
+    			if (dirty & /*SongCards*/ 2) songbar_changes.Subtitle = /*Card*/ ctx[13].Subtitle;
+    			if (dirty & /*SongCards*/ 2) songbar_changes.Difficulties = /*Card*/ ctx[13].Difficulties;
+    			if (dirty & /*SongCards*/ 2) songbar_changes.AudioFilePath = /*Card*/ ctx[13].AudioFilePath;
+    			if (dirty & /*SongCards*/ 2) songbar_changes.Genre = /*Card*/ ctx[13].Genre;
     			songbar.$set(songbar_changes);
     		},
     		i: function intro(local) {
@@ -8593,16 +9409,16 @@ var app = (function () {
     		block,
     		id: create_key_block.name,
     		type: "key",
-    		source: "(142:12) {#key Card.AudioFilePath}",
+    		source: "(177:12) {#key Card.AudioFilePath}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (141:8) {#each SongCards as Card}
+    // (176:8) {#each SongCards as Card}
     function create_each_block(ctx) {
-    	let previous_key = /*Card*/ ctx[11].AudioFilePath;
+    	let previous_key = /*Card*/ ctx[13].AudioFilePath;
     	let key_block_anchor;
     	let current;
     	let key_block = create_key_block(ctx);
@@ -8618,7 +9434,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*SongCards*/ 2 && safe_not_equal(previous_key, previous_key = /*Card*/ ctx[11].AudioFilePath)) {
+    			if (dirty & /*SongCards*/ 2 && safe_not_equal(previous_key, previous_key = /*Card*/ ctx[13].AudioFilePath)) {
     				group_outros();
     				transition_out(key_block, 1, 1, noop$1);
     				check_outros();
@@ -8649,7 +9465,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(141:8) {#each SongCards as Card}",
+    		source: "(176:8) {#each SongCards as Card}",
     		ctx
     	});
 
@@ -8662,9 +9478,24 @@ var app = (function () {
     	let h1;
     	let t2;
     	let div1;
+    	let button;
+    	let t3;
+    	let div2;
     	let current_block_type_index;
     	let if_block;
     	let current;
+
+    	button = new Button({
+    			props: {
+    				color1: "#6effe7",
+    				color2: "#48f7da",
+    				textColor: "black",
+    				text: "Download as json",
+    				OnClick: /*func*/ ctx[3]
+    			},
+    			$$inline: true
+    		});
+
     	const if_block_creators = [create_if_block, create_else_block];
     	const if_blocks = [];
 
@@ -8684,14 +9515,19 @@ var app = (function () {
     			h1.textContent = "Hall of Fame";
     			t2 = space();
     			div1 = element("div");
+    			create_component(button.$$.fragment);
+    			t3 = space();
+    			div2 = element("div");
     			if_block.c();
-    			attr_dev(div0, "class", "bg_optk svelte-ecylyj");
-    			add_location(div0, file$2, 132, 0, 4278);
+    			attr_dev(div0, "class", "bg_optk svelte-7saw0m");
+    			add_location(div0, file$2, 156, 0, 5274);
     			set_style(h1, "color", "white");
-    			add_location(h1, file$2, 133, 0, 4307);
-    			attr_dev(div1, "id", "songs");
-    			attr_dev(div1, "class", "svelte-ecylyj");
-    			add_location(div1, file$2, 135, 0, 4353);
+    			add_location(h1, file$2, 157, 0, 5303);
+    			attr_dev(div1, "class", "buttons svelte-7saw0m");
+    			add_location(div1, file$2, 159, 0, 5349);
+    			attr_dev(div2, "id", "songs");
+    			attr_dev(div2, "class", "svelte-7saw0m");
+    			add_location(div2, file$2, 170, 0, 5583);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8702,7 +9538,10 @@ var app = (function () {
     			insert_dev(target, h1, anchor);
     			insert_dev(target, t2, anchor);
     			insert_dev(target, div1, anchor);
-    			if_blocks[current_block_type_index].m(div1, null);
+    			mount_component(button, div1, null);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, div2, anchor);
+    			if_blocks[current_block_type_index].m(div2, null);
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
@@ -8729,15 +9568,17 @@ var app = (function () {
     				}
 
     				transition_in(if_block, 1);
-    				if_block.m(div1, null);
+    				if_block.m(div2, null);
     			}
     		},
     		i: function intro(local) {
     			if (current) return;
+    			transition_in(button.$$.fragment, local);
     			transition_in(if_block);
     			current = true;
     		},
     		o: function outro(local) {
+    			transition_out(button.$$.fragment, local);
     			transition_out(if_block);
     			current = false;
     		},
@@ -8747,6 +9588,9 @@ var app = (function () {
     			if (detaching) detach_dev(h1);
     			if (detaching) detach_dev(t2);
     			if (detaching) detach_dev(div1);
+    			destroy_component(button);
+    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(div2);
     			if_blocks[current_block_type_index].d();
     		}
     	};
@@ -8805,6 +9649,8 @@ var app = (function () {
     				return 'outfox';
     			case "C02 Touhou Arrangements":
     				return 'touhou';
+    			case "C03 OpenTaiko Karting":
+    				return 'kart';
     		}
     	};
 
@@ -8837,6 +9683,7 @@ var app = (function () {
     			if (song !== null) {
     				SInfo = {
     					Rank: idx + 1,
+    					UniqueId: row[1],
     					Genre: GenreToCSS(song['tjaGenreFolder']),
     					Title: song["chartTitle"],
     					Subtitle: song["chartSubtitle"],
@@ -8854,6 +9701,7 @@ var app = (function () {
     			} else {
     				SInfo = {
     					Rank: idx + 1,
+    					UniqueId: row[1],
     					Genre: 'hq',
     					Title: `#${idx + 1}. Not Found`,
     					Subtitle: "",
@@ -8874,15 +9722,37 @@ var app = (function () {
     		console.log(rows);
     	});
 
+    	const DownloadAsJson = () => {
+    		let _ret = {};
+
+    		SongCards.forEach(card => {
+    			let _cardObj = _ret?.[card.UniqueId] ?? {};
+    			if (card.Difficulties[3] >= 0) _cardObj["Oni"] = card.Rank;
+    			if (card.Difficulties[4] >= 0) _cardObj["Edit"] = card.Rank;
+    			_ret[card.UniqueId] = _cardObj;
+    		});
+
+    		let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(_ret));
+    		let downloadAnchorNode = document.createElement('a');
+    		downloadAnchorNode.setAttribute("href", dataStr);
+    		downloadAnchorNode.setAttribute("download", "hof.json");
+    		document.body.appendChild(downloadAnchorNode);
+    		downloadAnchorNode.click();
+    		downloadAnchorNode.remove();
+    	};
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<HoF> was created with unknown prop '${key}'`);
     	});
 
+    	const func = () => DownloadAsJson();
+
     	$$self.$capture_state = () => ({
     		onMount,
     		SongBar,
+    		Button,
     		initSqlJs,
     		db,
     		rows,
@@ -8894,6 +9764,7 @@ var app = (function () {
     		GetSongByUniqueId,
     		FetchSongs,
     		GetSongsByRank,
+    		DownloadAsJson,
     		SongCards
     	});
 
@@ -8910,7 +9781,7 @@ var app = (function () {
     	}
 
     	$$invalidate(1, SongCards = []);
-    	return [Fetching, SongCards];
+    	return [Fetching, SongCards, DownloadAsJson, func];
     }
 
     class HoF extends SvelteComponentDev {
@@ -8944,6 +9815,10 @@ var app = (function () {
     	let a2;
     	let img2;
     	let img2_src_value;
+    	let t2;
+    	let a3;
+    	let img3;
+    	let img3_src_value;
 
     	const block = {
     		c: function create() {
@@ -8956,6 +9831,9 @@ var app = (function () {
     			t1 = space();
     			a2 = element("a");
     			img2 = element("img");
+    			t2 = space();
+    			a3 = element("a");
+    			img3 = element("img");
     			if (!src_url_equal(img0.src, img0_src_value = "image/github.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "alt", "Github");
     			attr_dev(img0, "class", "svelte-1jhlcbi");
@@ -8977,6 +9855,13 @@ var app = (function () {
     			attr_dev(a2, "href", "https://bsky.app/profile/opentaiko.bsky.social");
     			attr_dev(a2, "target", "_blank");
     			add_location(a2, file$1, 7, 4, 252);
+    			if (!src_url_equal(img3.src, img3_src_value = "image/discord.png")) attr_dev(img3, "src", img3_src_value);
+    			attr_dev(img3, "alt", "Discord");
+    			attr_dev(img3, "class", "svelte-1jhlcbi");
+    			add_location(img3, file$1, 8, 60, 436);
+    			attr_dev(a3, "href", "https://discord.gg/aA8scTvZ6B");
+    			attr_dev(a3, "target", "_blank");
+    			add_location(a3, file$1, 8, 4, 380);
     			attr_dev(footer, "class", "svelte-1jhlcbi");
     			add_location(footer, file$1, 4, 0, 25);
     		},
@@ -8993,6 +9878,9 @@ var app = (function () {
     			append_dev(footer, t1);
     			append_dev(footer, a2);
     			append_dev(a2, img2);
+    			append_dev(footer, t2);
+    			append_dev(footer, a3);
+    			append_dev(a3, img3);
     		},
     		p: noop$1,
     		i: noop$1,
@@ -9150,7 +10038,7 @@ var app = (function () {
     	return block;
     }
 
-    // (22:2) <Route path="/">
+    // (23:2) <Route path="/">
     function create_default_slot_5(ctx) {
     	let home;
     	let current;
@@ -9182,14 +10070,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(22:2) <Route path=\\\"/\\\">",
+    		source: "(23:2) <Route path=\\\"/\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (25:2) <Route path="/download">
+    // (26:2) <Route path="/download">
     function create_default_slot_4(ctx) {
     	let download;
     	let current;
@@ -9221,14 +10109,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(25:2) <Route path=\\\"/download\\\">",
+    		source: "(26:2) <Route path=\\\"/download\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (28:2) <Route path="/songlist">
+    // (29:2) <Route path="/songlist">
     function create_default_slot_3(ctx) {
     	let songlist;
     	let current;
@@ -9260,14 +10148,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(28:2) <Route path=\\\"/songlist\\\">",
+    		source: "(29:2) <Route path=\\\"/songlist\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (31:2) <Route path="/secret">
+    // (32:2) <Route path="/secret">
     function create_default_slot_2(ctx) {
     	let secret;
     	let current;
@@ -9299,14 +10187,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(31:2) <Route path=\\\"/secret\\\">",
+    		source: "(32:2) <Route path=\\\"/secret\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (34:2) <Route path="/hof">
+    // (35:2) <Route path="/hof">
     function create_default_slot_1(ctx) {
     	let hof;
     	let current;
@@ -9338,7 +10226,7 @@ var app = (function () {
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(34:2) <Route path=\\\"/hof\\\">",
+    		source: "(35:2) <Route path=\\\"/hof\\\">",
     		ctx
     	});
 
@@ -9360,17 +10248,20 @@ var app = (function () {
     	let h33;
     	let link3;
     	let t3;
+    	let h34;
+    	let a;
+    	let t5;
     	let div;
     	let route0;
-    	let t4;
-    	let route1;
-    	let t5;
-    	let route2;
     	let t6;
-    	let route3;
+    	let route1;
     	let t7;
-    	let route4;
+    	let route2;
     	let t8;
+    	let route3;
+    	let t9;
+    	let route4;
+    	let t10;
     	let footer;
     	let current;
 
@@ -9472,17 +10363,21 @@ var app = (function () {
     			h33 = element("h3");
     			create_component(link3.$$.fragment);
     			t3 = space();
+    			h34 = element("h3");
+    			a = element("a");
+    			a.textContent = "Wiki";
+    			t5 = space();
     			div = element("div");
     			create_component(route0.$$.fragment);
-    			t4 = space();
-    			create_component(route1.$$.fragment);
-    			t5 = space();
-    			create_component(route2.$$.fragment);
     			t6 = space();
-    			create_component(route3.$$.fragment);
+    			create_component(route1.$$.fragment);
     			t7 = space();
-    			create_component(route4.$$.fragment);
+    			create_component(route2.$$.fragment);
     			t8 = space();
+    			create_component(route3.$$.fragment);
+    			t9 = space();
+    			create_component(route4.$$.fragment);
+    			t10 = space();
     			create_component(footer.$$.fragment);
     			attr_dev(h30, "class", "svelte-1ixpmii");
     			add_location(h30, file, 15, 2, 404);
@@ -9492,10 +10387,15 @@ var app = (function () {
     			add_location(h32, file, 17, 2, 488);
     			attr_dev(h33, "class", "svelte-1ixpmii");
     			add_location(h33, file, 18, 2, 536);
+    			attr_dev(a, "href", "https://opentaiko.wiki.gg");
+    			attr_dev(a, "target", "_blank");
+    			add_location(a, file, 19, 6, 587);
+    			attr_dev(h34, "class", "svelte-1ixpmii");
+    			add_location(h34, file, 19, 2, 583);
     			attr_dev(header, "class", "svelte-1ixpmii");
     			add_location(header, file, 14, 1, 393);
     			attr_dev(div, "class", "content svelte-1ixpmii");
-    			add_location(div, file, 20, 1, 593);
+    			add_location(div, file, 21, 1, 665);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, header, anchor);
@@ -9510,18 +10410,21 @@ var app = (function () {
     			append_dev(header, t2);
     			append_dev(header, h33);
     			mount_component(link3, h33, null);
-    			insert_dev(target, t3, anchor);
+    			append_dev(header, t3);
+    			append_dev(header, h34);
+    			append_dev(h34, a);
+    			insert_dev(target, t5, anchor);
     			insert_dev(target, div, anchor);
     			mount_component(route0, div, null);
-    			append_dev(div, t4);
-    			mount_component(route1, div, null);
-    			append_dev(div, t5);
-    			mount_component(route2, div, null);
     			append_dev(div, t6);
-    			mount_component(route3, div, null);
+    			mount_component(route1, div, null);
     			append_dev(div, t7);
+    			mount_component(route2, div, null);
+    			append_dev(div, t8);
+    			mount_component(route3, div, null);
+    			append_dev(div, t9);
     			mount_component(route4, div, null);
-    			insert_dev(target, t8, anchor);
+    			insert_dev(target, t10, anchor);
     			mount_component(footer, target, anchor);
     			current = true;
     		},
@@ -9623,14 +10526,14 @@ var app = (function () {
     			destroy_component(link1);
     			destroy_component(link2);
     			destroy_component(link3);
-    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(div);
     			destroy_component(route0);
     			destroy_component(route1);
     			destroy_component(route2);
     			destroy_component(route3);
     			destroy_component(route4);
-    			if (detaching) detach_dev(t8);
+    			if (detaching) detach_dev(t10);
     			destroy_component(footer, detaching);
     		}
     	};
