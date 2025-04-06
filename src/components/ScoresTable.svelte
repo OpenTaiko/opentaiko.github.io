@@ -2,6 +2,29 @@
     import { onMount } from "svelte";
     export let SongCard;
     export let Difficulty;
+    import initSqlJs from "sql.js";
+
+    let db;
+    let rows = [];
+
+    const loadDatabase = async () => {
+        const sqlPromise = await initSqlJs({
+            locateFile: file => `sql-wasm.wasm`
+        });
+
+        console.log(sqlPromise.locateFile());
+
+        const dataPromise = fetch("hof.db3").then(res => res.arrayBuffer());
+        const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
+        console.log(buf);
+        console.log(SQL);
+        const db = new SQL.Database(new Uint8Array(buf));
+        const result = db.exec(`SELECT * FROM scores WHERE entryId='${SongCard.UniqueId}' AND difficulty=${Difficulty} ORDER BY score DESC`);
+
+        rows = result[0] ? result[0].values : [];
+
+        console.log(rows);
+    };
 
     let previewImg;
 
@@ -57,26 +80,52 @@
     const FetchBestScores = async () => {
         BestScores = [];
 
-        let _sample = {
-            Player: "Komi is testing stuff",
-            Status: "Clear",
-            Score: 923000,
-            Grade: "A",
-            Good: 910,
-            Ok: 102,
-            Bad: 12,
-            Video: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            Image: "https://i.imgur.com/a5BmHTT.png",
+        let _sample = {};
+
+        rows.forEach((score) => {
+            _sample = {
+                Player: score[3],
+                Status: score[4],
+                Score: score[5],
+                Grade: score[6],
+                Good: score[7],
+                Ok: score[8],
+                Bad: score[9],
+                Video: score[10],
+                Image: score[11],
+            }
+
+            _sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
+            _sample.LP = parseInt(ScoreToListPointsRatio(_sample) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
+            _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
+
+            BestScores.push(_sample);
+        })
+
+        if (rows.length === 0) {
+            _sample = {
+                Player: "Komi is testing stuff",
+                Status: "Clear",
+                Score: 923000,
+                Grade: "A",
+                Good: 910,
+                Ok: 102,
+                Bad: 12,
+                Video: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                Image: "https://i.imgur.com/a5BmHTT.png",
+            }
+
+            _sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
+            _sample.LP = parseInt(ScoreToListPointsRatio(_sample) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
+            _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
+
+            BestScores.push(_sample);
         }
-
-        _sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
-        _sample.LP = parseInt(ScoreToListPointsRatio(_sample) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
-        _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
-
-        BestScores.push(_sample);
+        
     }
 
     onMount(async () => {
+        await loadDatabase();
         await FetchBestScores();
 
         console.log(BestScores);
@@ -102,11 +151,15 @@
         <tr>
             <td>{BestScore.Player}</td>
             <td>{BestScore.Status}</td>
-            <td
-                on:mouseenter={() => showPreview(BestScore.Image)}
-                on:mouseleave={hidePreview}
-                on:mousemove={movePreview}
-            >{BestScore.Score}</td>
+            {#if BestScores.Image !== ""}
+                <td
+                    on:mouseenter={() => showPreview(BestScore.Image)}
+                    on:mouseleave={hidePreview}
+                    on:mousemove={movePreview}
+                >{BestScore.Score}</td>
+            {:else}
+                <td>{BestScore.Score}</td>
+            {/if}
             <td>{BestScore.Grade}</td>
             <td>{BestScore.Good}</td>
             <td>{BestScore.Ok}</td>
@@ -143,6 +196,7 @@
     }
 
     #scores tr:nth-child(even){background-color: #f2f2f2;}
+    #scores tr:nth-child(odd){background-color: rgb(236, 236, 236)}
 
     #scores tr:hover {background-color: #ddd;}
 
