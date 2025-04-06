@@ -3,6 +3,7 @@
 	import Home from "./routes/Home.svelte";
 	import Download from "./routes/Download.svelte";
 	import Songlist from "./routes/Songlist.svelte";
+	import Songinfo from "./routes/Songinfo.svelte";
 	import Secret from "./routes/Secret.svelte";
 	import HoF from "./routes/HoF.svelte";
 
@@ -34,6 +35,9 @@
 		</Route>
 		<Route path="/hof">
 			<HoF />
+		</Route>
+		<Route path=":UniqueId" let:params>
+			<Songinfo UniqueId={params.UniqueId}/>
 		</Route>
 	</div>
 	<Footer />

@@ -110,6 +110,7 @@
                     song["chartDifficulties"]["Tower"] ?? -1,
                     song["chartDifficulties"]["Dan"] ?? -1
                 ],
+                UniqueId: song["uniqueId"],
             };
 
             SongCards.push(SInfo);
@@ -157,6 +158,7 @@
                     Difficulties={Card.Difficulties}
                     AudioFilePath={Card.AudioFilePath}
                     Genre={Card.Genre}
+                    UniqueId={Card.UniqueId}
                 />
             {/key}
         {/each}

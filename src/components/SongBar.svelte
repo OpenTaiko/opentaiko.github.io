@@ -1,4 +1,6 @@
 <script>
+    import { navigate } from 'svelte-routing';
+
     import DifficultyBlock from "../components/DifficultyBlock.svelte";
     import AudioPlayer from "../components/AudioPlayer.svelte";
 
@@ -8,19 +10,32 @@
     export let Difficulties = [-1, -1, -1, -1, -1, -1, -1];
     export let AudioFilePath;
     export let Genre;
+    export let MaxListPoints;
+    export let UniqueId;
 
-    $: AudioLink = `https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/${AudioFilePath}`
+    let boxEl = null;
+    
+    $: AudioLink = `https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/${AudioFilePath}`;
+    $: SongDetailsUrl = `/${UniqueId}`;
 
+    const MoveToSongInfo = (e) => {
+        if (UniqueId === undefined) return;
+        if (!e.target.closest('.song_bar_main_info')) 
+            navigate(SongDetailsUrl);
+    }
+    
 </script>
 
-<div class="{Genre} song_bar">
+<div class="{Genre} song_bar {(UniqueId !== undefined) ? "song_bar_clickable" : ""}" on:click={MoveToSongInfo}>
     {#if Rank !== undefined}
     <div class="song_bar_rank">
         <span class="song_bar_rank_nb">#{Rank}</span>
+        <span>Max List Points:</span>
+        <span>{MaxListPoints}</span>
     </div>
     {/if}
     
-    <div class="song_bar_main_info">
+    <div class="song_bar_main_info" bind:this={boxEl}>
         <AudioPlayer
             Title={Title}
             Subtitle={Subtitle}
@@ -43,6 +58,24 @@
 </div>
 
 <style>
+    @keyframes flashy-glow {
+        0% {
+            box-shadow: 0 0 2px #0080ff, 0 0 4px #0080ff, 0 0 6px #0080ff;
+        }
+        50% {
+            box-shadow: 0 0 5px #0080ff, 0 0 13px #0080ff, 0 0 20px #0080ff;
+        }
+        100% {
+            box-shadow: 0 0 2px #0080ff, 0 0 4px #0080ff, 0 0 6px #0080ff;
+        }
+    }
+
+    .song_bar_clickable:hover:not(:has(.song_bar_main_info:hover)) {
+        outline: 2px solid #0080ff;
+        animation: flashy-glow 1.4s ease-in-out infinite;
+        cursor: pointer;
+    }
+
     .song_bar {
         margin: 8px;
         padding: 1px 8px;
@@ -61,6 +94,8 @@
 
     .song_bar_rank {
         width: 150px;
+        display: flex;
+        flex-direction: column;
     }
 
     .song_bar_rank_nb {

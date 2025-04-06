@@ -70,14 +70,23 @@
         Fetching = false;
     }
 
+    const ComputeMaxListPoints = (rank) => {
+        let base = 1000;
+        let decreaseRatio = 0.95;
+        return parseInt(base * Math.pow(decreaseRatio, rank - 1));
+    }
+
     const GetSongsByRank = async () => {
         SongCards = [];
         rows.forEach((row, idx) => {
             const song = GetSongByUniqueId(row[1]);
             let SInfo = {};
+
+            const rank = idx + 1;
+
             if (song !== null) {
                 SInfo = {
-                    Rank: idx + 1,
+                    Rank: rank,
                     UniqueId: row[1],
                     Genre: GenreToCSS(song['tjaGenreFolder']),
                     Title: song["chartTitle"],
@@ -92,11 +101,12 @@
                         -1,
                         -1
                     ],
+                    MaxListPoints: ComputeMaxListPoints(rank),
                 };
             }
             else {
                 SInfo = {
-                    Rank: idx + 1,
+                    Rank: rank,
                     UniqueId: row[1],
                     Genre: 'hq',
                     Title: `#${idx+1}. Not Found`,
@@ -111,6 +121,7 @@
                         -1,
                         -1
                     ],
+                    MaxListPoints: ComputeMaxListPoints(rank),
                 };
             }
 
@@ -182,6 +193,8 @@
                     Difficulties={Card.Difficulties}
                     AudioFilePath={Card.AudioFilePath}
                     Genre={Card.Genre}
+                    MaxListPoints={Card.MaxListPoints}
+                    UniqueId={Card.UniqueId}
                 />
             {/key}
         {/each}
