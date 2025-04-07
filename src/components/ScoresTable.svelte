@@ -150,7 +150,7 @@
     {#each BestScores as BestScore}
         <tr>
             <td>{BestScore.Player}</td>
-            <td>{BestScore.Status}</td>
+            <td class="status{BestScore.Status.replace(/\s/g, "")}">{BestScore.Status}</td>
             {#if BestScores.Image !== ""}
                 <td
                     on:mouseenter={() => showPreview(BestScore.Image)}
@@ -160,7 +160,7 @@
             {:else}
                 <td>{BestScore.Score}</td>
             {/if}
-            <td>{BestScore.Grade}</td>
+            <td class="grade{BestScore.Grade}">{BestScore.Grade}</td>
             <td>{BestScore.Good}</td>
             <td>{BestScore.Ok}</td>
             <td>{BestScore.Bad}</td>
@@ -184,10 +184,51 @@
 <img bind:this={previewImg} class="preview-image" />
 
 <style>
+    td.gradeΩ {
+        background-color: #c1b7fa;
+    }
+
+    td.gradeS {
+        background-color: #cbf9ff;
+    }
+
+    td.gradeA {
+        background-color: #b5f8e0;
+    }
+
+    td.gradeB {
+        background-color: #f9ffc2;
+    }
+
+    td.gradeC {
+        background-color: #ffe5c3;
+    }
+
+    td.gradeD {
+        background-color: #fcc2c2;
+    }
+
+    td.statusPerfect {
+        background-color: #dbc2fc;
+    }
+
+    td.statusFullCombo {
+        background-color: #fff4b4;
+    }
+
+    td.statusClear {
+        background-color: #fcc2c2;
+    }
+
+    td.statusFailed {
+        background-color: #c2e0fc;
+    }
+
+
     #scores {
-        font-family: Arial, Helvetica, sans-serif;
         border-collapse: collapse;
         width: 100%;
+        text-align: center;
     }
 
     #scores td, #scores th {
@@ -203,8 +244,7 @@
     #scores th {
         padding-top: 12px;
         padding-bottom: 12px;
-        text-align: left;
-        background-color: #04AA6D;
+        background-color: #6455e6;
         color: white;
     }
 
