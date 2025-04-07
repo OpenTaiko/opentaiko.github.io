@@ -9667,8 +9667,8 @@ var app = (function () {
     		c: function create() {
     			td = element("td");
     			t = text(t_value);
-    			attr_dev(td, "class", "svelte-umdjy7");
-    			add_location(td, file$6, 160, 16, 4622);
+    			attr_dev(td, "class", "svelte-myzg2r");
+    			add_location(td, file$6, 160, 16, 4674);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
@@ -9709,8 +9709,8 @@ var app = (function () {
     		c: function create() {
     			td = element("td");
     			t = text(t_value);
-    			attr_dev(td, "class", "svelte-umdjy7");
-    			add_location(td, file$6, 154, 16, 4370);
+    			attr_dev(td, "class", "svelte-myzg2r");
+    			add_location(td, file$6, 154, 16, 4422);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
@@ -9789,16 +9789,16 @@ var app = (function () {
     			svg = svg_element("svg");
     			path = svg_element("path");
     			attr_dev(path, "d", "M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z");
-    			add_location(path, file$6, 172, 28, 5172);
+    			add_location(path, file$6, 172, 28, 5255);
     			attr_dev(svg, "width", "24");
     			attr_dev(svg, "height", "24");
     			attr_dev(svg, "viewBox", "0 0 24 24");
     			attr_dev(svg, "fill", "black");
-    			add_location(svg, file$6, 171, 24, 5081);
+    			add_location(svg, file$6, 171, 24, 5164);
     			attr_dev(a, "href", a_href_value = /*BestScore*/ ctx[15].Video);
     			attr_dev(a, "target", "_blank");
     			attr_dev(a, "rel", "noopener noreferrer");
-    			add_location(a, file$6, 170, 20, 4987);
+    			add_location(a, file$6, 170, 20, 5070);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9836,11 +9836,13 @@ var app = (function () {
     	let td1;
     	let t2_value = /*BestScore*/ ctx[15].Status + "";
     	let t2;
+    	let td1_class_value;
     	let t3;
     	let t4;
     	let td2;
     	let t5_value = /*BestScore*/ ctx[15].Grade + "";
     	let t5;
+    	let td2_class_value;
     	let t6;
     	let td3;
     	let t7_value = /*BestScore*/ ctx[15].Good + "";
@@ -9913,25 +9915,25 @@ var app = (function () {
     			td8 = element("td");
     			if_block1.c();
     			t17 = space();
-    			attr_dev(td0, "class", "svelte-umdjy7");
+    			attr_dev(td0, "class", "svelte-myzg2r");
     			add_location(td0, file$6, 151, 12, 4241);
-    			attr_dev(td1, "class", "svelte-umdjy7");
+    			attr_dev(td1, "class", td1_class_value = "status" + /*BestScore*/ ctx[15].Status.replace(/\s/g, "") + " svelte-myzg2r");
     			add_location(td1, file$6, 152, 12, 4282);
-    			attr_dev(td2, "class", "svelte-umdjy7");
-    			add_location(td2, file$6, 162, 12, 4681);
-    			attr_dev(td3, "class", "svelte-umdjy7");
-    			add_location(td3, file$6, 163, 12, 4721);
-    			attr_dev(td4, "class", "svelte-umdjy7");
-    			add_location(td4, file$6, 164, 12, 4760);
-    			attr_dev(td5, "class", "svelte-umdjy7");
-    			add_location(td5, file$6, 165, 12, 4797);
-    			attr_dev(td6, "class", "svelte-umdjy7");
-    			add_location(td6, file$6, 166, 12, 4835);
-    			attr_dev(td7, "class", "svelte-umdjy7");
-    			add_location(td7, file$6, 167, 12, 4878);
-    			attr_dev(td8, "class", "svelte-umdjy7");
-    			add_location(td8, file$6, 168, 12, 4915);
-    			attr_dev(tr, "class", "svelte-umdjy7");
+    			attr_dev(td2, "class", td2_class_value = "grade" + /*BestScore*/ ctx[15].Grade + " svelte-myzg2r");
+    			add_location(td2, file$6, 162, 12, 4733);
+    			attr_dev(td3, "class", "svelte-myzg2r");
+    			add_location(td3, file$6, 163, 12, 4804);
+    			attr_dev(td4, "class", "svelte-myzg2r");
+    			add_location(td4, file$6, 164, 12, 4843);
+    			attr_dev(td5, "class", "svelte-myzg2r");
+    			add_location(td5, file$6, 165, 12, 4880);
+    			attr_dev(td6, "class", "svelte-myzg2r");
+    			add_location(td6, file$6, 166, 12, 4918);
+    			attr_dev(td7, "class", "svelte-myzg2r");
+    			add_location(td7, file$6, 167, 12, 4961);
+    			attr_dev(td8, "class", "svelte-myzg2r");
+    			add_location(td8, file$6, 168, 12, 4998);
+    			attr_dev(tr, "class", "svelte-myzg2r");
     			add_location(tr, file$6, 150, 8, 4223);
     		},
     		m: function mount(target, anchor) {
@@ -9970,6 +9972,10 @@ var app = (function () {
     			if (dirty & /*BestScores*/ 2 && t0_value !== (t0_value = /*BestScore*/ ctx[15].Player + "")) set_data_dev(t0, t0_value);
     			if (dirty & /*BestScores*/ 2 && t2_value !== (t2_value = /*BestScore*/ ctx[15].Status + "")) set_data_dev(t2, t2_value);
 
+    			if (dirty & /*BestScores*/ 2 && td1_class_value !== (td1_class_value = "status" + /*BestScore*/ ctx[15].Status.replace(/\s/g, "") + " svelte-myzg2r")) {
+    				attr_dev(td1, "class", td1_class_value);
+    			}
+
     			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
     				if_block0.p(ctx, dirty);
     			} else {
@@ -9983,6 +9989,11 @@ var app = (function () {
     			}
 
     			if (dirty & /*BestScores*/ 2 && t5_value !== (t5_value = /*BestScore*/ ctx[15].Grade + "")) set_data_dev(t5, t5_value);
+
+    			if (dirty & /*BestScores*/ 2 && td2_class_value !== (td2_class_value = "grade" + /*BestScore*/ ctx[15].Grade + " svelte-myzg2r")) {
+    				attr_dev(td2, "class", td2_class_value);
+    			}
+
     			if (dirty & /*BestScores*/ 2 && t7_value !== (t7_value = /*BestScore*/ ctx[15].Good + "")) set_data_dev(t7, t7_value);
     			if (dirty & /*BestScores*/ 2 && t9_value !== (t9_value = /*BestScore*/ ctx[15].Ok + "")) set_data_dev(t9, t9_value);
     			if (dirty & /*BestScores*/ 2 && t11_value !== (t11_value = /*BestScore*/ ctx[15].Bad + "")) set_data_dev(t11, t11_value);
@@ -10093,33 +10104,33 @@ var app = (function () {
 
     			t20 = space();
     			img = element("img");
-    			attr_dev(th0, "class", "svelte-umdjy7");
+    			attr_dev(th0, "class", "svelte-myzg2r");
     			add_location(th0, file$6, 138, 8, 3930);
-    			attr_dev(th1, "class", "svelte-umdjy7");
+    			attr_dev(th1, "class", "svelte-myzg2r");
     			add_location(th1, file$6, 139, 8, 3955);
-    			attr_dev(th2, "class", "svelte-umdjy7");
+    			attr_dev(th2, "class", "svelte-myzg2r");
     			add_location(th2, file$6, 140, 8, 3980);
-    			attr_dev(th3, "class", "svelte-umdjy7");
+    			attr_dev(th3, "class", "svelte-myzg2r");
     			add_location(th3, file$6, 141, 8, 4004);
-    			attr_dev(th4, "class", "svelte-umdjy7");
+    			attr_dev(th4, "class", "svelte-myzg2r");
     			add_location(th4, file$6, 142, 8, 4028);
-    			attr_dev(th5, "class", "svelte-umdjy7");
+    			attr_dev(th5, "class", "svelte-myzg2r");
     			add_location(th5, file$6, 143, 8, 4051);
-    			attr_dev(th6, "class", "svelte-umdjy7");
+    			attr_dev(th6, "class", "svelte-myzg2r");
     			add_location(th6, file$6, 144, 8, 4072);
-    			attr_dev(th7, "class", "svelte-umdjy7");
+    			attr_dev(th7, "class", "svelte-myzg2r");
     			add_location(th7, file$6, 145, 8, 4094);
-    			attr_dev(th8, "class", "svelte-umdjy7");
+    			attr_dev(th8, "class", "svelte-myzg2r");
     			add_location(th8, file$6, 146, 8, 4121);
-    			attr_dev(th9, "class", "svelte-umdjy7");
+    			attr_dev(th9, "class", "svelte-myzg2r");
     			add_location(th9, file$6, 147, 8, 4151);
-    			attr_dev(tr, "class", "svelte-umdjy7");
+    			attr_dev(tr, "class", "svelte-myzg2r");
     			add_location(tr, file$6, 137, 4, 3916);
     			attr_dev(table, "id", "scores");
-    			attr_dev(table, "class", "svelte-umdjy7");
+    			attr_dev(table, "class", "svelte-myzg2r");
     			add_location(table, file$6, 136, 0, 3891);
-    			attr_dev(img, "class", "preview-image svelte-umdjy7");
-    			add_location(img, file$6, 183, 0, 5467);
+    			attr_dev(img, "class", "preview-image svelte-myzg2r");
+    			add_location(img, file$6, 183, 0, 5550);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
