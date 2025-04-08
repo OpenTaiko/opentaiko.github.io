@@ -12,10 +12,10 @@
 
     const loadDatabase = async () => {
         const sqlPromise = await initSqlJs({
-            locateFile: file => `sql-wasm.wasm`
+            locateFile: file => `/sql-wasm.wasm`
         });
 
-        const dataPromise = fetch("hof.db3").then(res => res.arrayBuffer());
+        const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
         const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
         const db = new SQL.Database(new Uint8Array(buf));
         const result = db.exec("SELECT * FROM entries ORDER BY internalDifficultyIndex DESC");

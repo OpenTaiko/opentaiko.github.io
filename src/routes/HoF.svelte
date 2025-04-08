@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { navigate } from 'svelte-routing';
     import SongBar from "../components/SongBar.svelte";
     import Button from "../components/Button.svelte";
     import initSqlJs from "sql.js";
@@ -9,12 +10,12 @@
 
     const loadDatabase = async () => {
         const sqlPromise = await initSqlJs({
-            locateFile: file => `sql-wasm.wasm`
+            locateFile: file => `/sql-wasm.wasm`
         });
 
         console.log(sqlPromise.locateFile());
 
-        const dataPromise = fetch("hof.db3").then(res => res.arrayBuffer());
+        const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
         const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
         console.log(buf);
         console.log(SQL);
@@ -163,6 +164,10 @@
         downloadAnchorNode.remove();
     }
 
+    const MoveToLeaderboards = (e) => {
+        navigate("/leaderboards");
+    }
+
 </script>
 
 <div class="bg_optk"></div>
@@ -170,13 +175,19 @@
 
 <div class="buttons">
     <Button
-            color1="#6effe7"
-            color2="#48f7da"
-            textColor="black"
-            text="Download as json"
-            OnClick={() => DownloadAsJson()}
-        />
-
+        color1="#6effe7"
+        color2="#48f7da"
+        textColor="black"
+        text="Download as json"
+        OnClick={() => DownloadAsJson()}
+    />
+    <Button
+        color1="#f3ff6e"
+        color2="#f7e848"
+        textColor="black"
+        text="Leaderboards"
+        OnClick={() => MoveToLeaderboards()}
+    />
 </div>
 
 <div id="songs">

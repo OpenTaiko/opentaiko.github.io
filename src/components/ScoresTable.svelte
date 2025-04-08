@@ -9,12 +9,12 @@
 
     const loadDatabase = async () => {
         const sqlPromise = await initSqlJs({
-            locateFile: file => `sql-wasm.wasm`
+            locateFile: file => `/sql-wasm.wasm`
         });
 
         console.log(sqlPromise.locateFile());
 
-        const dataPromise = fetch("hof.db3").then(res => res.arrayBuffer());
+        const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
         const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
         console.log(buf);
         console.log(SQL);

@@ -16,12 +16,12 @@
     let boxEl = null;
     
     $: AudioLink = `https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/${AudioFilePath}`;
-    $: SongDetailsUrl = `/${UniqueId}`;
+    $: SongDetailsUrl = `/songinfo/${UniqueId}`;
 
     const MoveToSongInfo = (e) => {
         if (UniqueId === undefined) return;
-        if (!e.target.closest('.song_bar_main_info')) 
-            navigate(SongDetailsUrl);
+        if (!e.target.closest('.song_bar_main_info'))
+            window.open(SongDetailsUrl, '_blank');
     }
     
 </script>

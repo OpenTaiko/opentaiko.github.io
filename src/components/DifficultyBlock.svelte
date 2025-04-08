@@ -8,7 +8,7 @@
 </script>
 
 <div class="difficulty_block">
-    <img src="image/difficulty/{Difficulty}.png" alt="{Difficulty}" />
+    <img src="/image/difficulty/{Difficulty}.png" alt="{Difficulty}" />
     <CoolNumber
         number={Level}
         color={DifficultyColors[Difficulty]}

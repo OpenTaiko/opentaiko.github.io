@@ -6,6 +6,7 @@
 	import Songinfo from "./routes/Songinfo.svelte";
 	import Secret from "./routes/Secret.svelte";
 	import HoF from "./routes/HoF.svelte";
+	import Leaderboards from "./routes/Leaderboards.svelte";
 
 	import Footer from "./components/Footer.svelte";
 
@@ -36,7 +37,10 @@
 		<Route path="/hof">
 			<HoF />
 		</Route>
-		<Route path=":UniqueId" let:params>
+		<Route path="/leaderboards">
+			<Leaderboards />
+		</Route>
+		<Route path="/songinfo/:UniqueId" let:params>
 			<Songinfo UniqueId={params.UniqueId}/>
 		</Route>
 	</div>

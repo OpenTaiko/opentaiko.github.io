@@ -3,10 +3,10 @@
 </script>
 
 <footer>
-    <a href="https://github.com/OpenTaiko" target="_blank"><img src="image/github.png" alt="Github" /></a>
-    <a href="https://x.com/OpenTaiko" target="_blank"><img src="image/twitter.png" alt="Twitter" /></a>
-    <a href="https://bsky.app/profile/opentaiko.bsky.social" target="_blank"><img src="image/bluesky.png" alt="Bluesky" /></a>
-    <a href="https://discord.gg/aA8scTvZ6B" target="_blank"><img src="image/discord.png" alt="Discord" /></a>
+    <a href="https://github.com/OpenTaiko" target="_blank"><img src="/image/github.png" alt="Github" /></a>
+    <a href="https://x.com/OpenTaiko" target="_blank"><img src="/image/twitter.png" alt="Twitter" /></a>
+    <a href="https://bsky.app/profile/opentaiko.bsky.social" target="_blank"><img src="/image/bluesky.png" alt="Bluesky" /></a>
+    <a href="https://discord.gg/aA8scTvZ6B" target="_blank"><img src="/image/discord.png" alt="Discord" /></a>
 </footer>
 
 <style>
