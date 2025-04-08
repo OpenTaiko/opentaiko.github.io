@@ -9657,7 +9657,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (160:12) {:else}
+    // (163:12) {:else}
     function create_else_block_1$1(ctx) {
     	let td;
     	let t_value = /*BestScore*/ ctx[15].Score + "";
@@ -9668,7 +9668,7 @@ var app = (function () {
     			td = element("td");
     			t = text(t_value);
     			attr_dev(td, "class", "svelte-myzg2r");
-    			add_location(td, file$7, 160, 16, 4676);
+    			add_location(td, file$7, 163, 16, 4899);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
@@ -9686,14 +9686,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1$1.name,
     		type: "else",
-    		source: "(160:12) {:else}",
+    		source: "(163:12) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (154:12) {#if BestScores.Image !== ""}
+    // (157:12) {#if BestScores.Image !== ""}
     function create_if_block_1$1(ctx) {
     	let td;
     	let t_value = /*BestScore*/ ctx[15].Score + "";
@@ -9710,7 +9710,7 @@ var app = (function () {
     			td = element("td");
     			t = text(t_value);
     			attr_dev(td, "class", "svelte-myzg2r");
-    			add_location(td, file$7, 154, 16, 4424);
+    			add_location(td, file$7, 157, 16, 4647);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
@@ -9741,14 +9741,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(154:12) {#if BestScores.Image !== \\\"\\\"}",
+    		source: "(157:12) {#if BestScores.Image !== \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (176:16) {:else}
+    // (179:16) {:else}
     function create_else_block$4(ctx) {
     	let t;
 
@@ -9769,14 +9769,14 @@ var app = (function () {
     		block,
     		id: create_else_block$4.name,
     		type: "else",
-    		source: "(176:16) {:else}",
+    		source: "(179:16) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (170:16) {#if BestScore.Video !== ""}
+    // (173:16) {#if BestScore.Video !== ""}
     function create_if_block$4(ctx) {
     	let a;
     	let svg;
@@ -9789,16 +9789,16 @@ var app = (function () {
     			svg = svg_element("svg");
     			path = svg_element("path");
     			attr_dev(path, "d", "M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z");
-    			add_location(path, file$7, 172, 28, 5257);
+    			add_location(path, file$7, 175, 28, 5480);
     			attr_dev(svg, "width", "24");
     			attr_dev(svg, "height", "24");
     			attr_dev(svg, "viewBox", "0 0 24 24");
     			attr_dev(svg, "fill", "black");
-    			add_location(svg, file$7, 171, 24, 5166);
+    			add_location(svg, file$7, 174, 24, 5389);
     			attr_dev(a, "href", a_href_value = /*BestScore*/ ctx[15].Video);
     			attr_dev(a, "target", "_blank");
     			attr_dev(a, "rel", "noopener noreferrer");
-    			add_location(a, file$7, 170, 20, 5072);
+    			add_location(a, file$7, 173, 20, 5295);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9819,14 +9819,14 @@ var app = (function () {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(170:16) {#if BestScore.Video !== \\\"\\\"}",
+    		source: "(173:16) {#if BestScore.Video !== \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (150:4) {#each BestScores as BestScore}
+    // (153:4) {#each BestScores as BestScore}
     function create_each_block$2(ctx) {
     	let tr;
     	let td0;
@@ -9916,25 +9916,25 @@ var app = (function () {
     			if_block1.c();
     			t17 = space();
     			attr_dev(td0, "class", "svelte-myzg2r");
-    			add_location(td0, file$7, 151, 12, 4243);
+    			add_location(td0, file$7, 154, 12, 4466);
     			attr_dev(td1, "class", td1_class_value = "status" + /*BestScore*/ ctx[15].Status.replace(/\s/g, "") + " svelte-myzg2r");
-    			add_location(td1, file$7, 152, 12, 4284);
+    			add_location(td1, file$7, 155, 12, 4507);
     			attr_dev(td2, "class", td2_class_value = "grade" + /*BestScore*/ ctx[15].Grade + " svelte-myzg2r");
-    			add_location(td2, file$7, 162, 12, 4735);
+    			add_location(td2, file$7, 165, 12, 4958);
     			attr_dev(td3, "class", "svelte-myzg2r");
-    			add_location(td3, file$7, 163, 12, 4806);
+    			add_location(td3, file$7, 166, 12, 5029);
     			attr_dev(td4, "class", "svelte-myzg2r");
-    			add_location(td4, file$7, 164, 12, 4845);
+    			add_location(td4, file$7, 167, 12, 5068);
     			attr_dev(td5, "class", "svelte-myzg2r");
-    			add_location(td5, file$7, 165, 12, 4882);
+    			add_location(td5, file$7, 168, 12, 5105);
     			attr_dev(td6, "class", "svelte-myzg2r");
-    			add_location(td6, file$7, 166, 12, 4920);
+    			add_location(td6, file$7, 169, 12, 5143);
     			attr_dev(td7, "class", "svelte-myzg2r");
-    			add_location(td7, file$7, 167, 12, 4963);
+    			add_location(td7, file$7, 170, 12, 5186);
     			attr_dev(td8, "class", "svelte-myzg2r");
-    			add_location(td8, file$7, 168, 12, 5000);
+    			add_location(td8, file$7, 171, 12, 5223);
     			attr_dev(tr, "class", "svelte-myzg2r");
-    			add_location(tr, file$7, 150, 8, 4225);
+    			add_location(tr, file$7, 153, 8, 4448);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -10023,7 +10023,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(150:4) {#each BestScores as BestScore}",
+    		source: "(153:4) {#each BestScores as BestScore}",
     		ctx
     	});
 
@@ -10105,32 +10105,32 @@ var app = (function () {
     			t20 = space();
     			img = element("img");
     			attr_dev(th0, "class", "svelte-myzg2r");
-    			add_location(th0, file$7, 138, 8, 3932);
+    			add_location(th0, file$7, 141, 8, 4155);
     			attr_dev(th1, "class", "svelte-myzg2r");
-    			add_location(th1, file$7, 139, 8, 3957);
+    			add_location(th1, file$7, 142, 8, 4180);
     			attr_dev(th2, "class", "svelte-myzg2r");
-    			add_location(th2, file$7, 140, 8, 3982);
+    			add_location(th2, file$7, 143, 8, 4205);
     			attr_dev(th3, "class", "svelte-myzg2r");
-    			add_location(th3, file$7, 141, 8, 4006);
+    			add_location(th3, file$7, 144, 8, 4229);
     			attr_dev(th4, "class", "svelte-myzg2r");
-    			add_location(th4, file$7, 142, 8, 4030);
+    			add_location(th4, file$7, 145, 8, 4253);
     			attr_dev(th5, "class", "svelte-myzg2r");
-    			add_location(th5, file$7, 143, 8, 4053);
+    			add_location(th5, file$7, 146, 8, 4276);
     			attr_dev(th6, "class", "svelte-myzg2r");
-    			add_location(th6, file$7, 144, 8, 4074);
+    			add_location(th6, file$7, 147, 8, 4297);
     			attr_dev(th7, "class", "svelte-myzg2r");
-    			add_location(th7, file$7, 145, 8, 4096);
+    			add_location(th7, file$7, 148, 8, 4319);
     			attr_dev(th8, "class", "svelte-myzg2r");
-    			add_location(th8, file$7, 146, 8, 4123);
+    			add_location(th8, file$7, 149, 8, 4346);
     			attr_dev(th9, "class", "svelte-myzg2r");
-    			add_location(th9, file$7, 147, 8, 4153);
+    			add_location(th9, file$7, 150, 8, 4376);
     			attr_dev(tr, "class", "svelte-myzg2r");
-    			add_location(tr, file$7, 137, 4, 3918);
+    			add_location(tr, file$7, 140, 4, 4141);
     			attr_dev(table, "id", "scores");
     			attr_dev(table, "class", "svelte-myzg2r");
-    			add_location(table, file$7, 136, 0, 3893);
+    			add_location(table, file$7, 139, 0, 4116);
     			attr_dev(img, "class", "preview-image svelte-myzg2r");
-    			add_location(img, file$7, 183, 0, 5552);
+    			add_location(img, file$7, 186, 0, 5775);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -10261,9 +10261,10 @@ var app = (function () {
     		return parseInt(base * Math.pow(decreaseRatio, rank - 1));
     	};
 
-    	const ScoreToListPointsRatio = score => {
+    	const ScoreToListPointsRatio = (score, badRatio) => {
     		let _ratio = 1;
-    		_ratio = _ratio * Math.pow(score.Accuracy, 6);
+    		_ratio *= Math.pow(score.Accuracy, 6);
+    		_ratio *= Math.pow(1 - badRatio, 18);
 
     		switch (score.Status) {
     			case "Full Combo":
@@ -10305,7 +10306,8 @@ var app = (function () {
     			};
 
     			_sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
-    			_sample.LP = parseInt(ScoreToListPointsRatio(_sample) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
+    			const _br = _sample.Bad / (_sample.Good + _sample.Ok + _sample.Bad);
+    			_sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
     			_sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
     			BestScores.push(_sample);
     		});
@@ -10324,7 +10326,8 @@ var app = (function () {
     			};
 
     			_sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
-    			_sample.LP = parseInt(ScoreToListPointsRatio(_sample) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
+    			const _br = _sample.Bad / (_sample.Good + _sample.Ok + _sample.Bad);
+    			_sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
     			_sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
     			BestScores.push(_sample);
     		}
@@ -12097,7 +12100,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (215:8) {#each TopPlayers as TopPlayer, idx}
+    // (217:8) {#each TopPlayers as TopPlayer, idx}
     function create_each_block_1(ctx) {
     	let tr;
     	let td0;
@@ -12129,13 +12132,13 @@ var app = (function () {
     			t6 = space();
     			set_style(td0, "font-weight", "bold");
     			attr_dev(td0, "class", "top" + (/*idx*/ ctx[26] + 1) + " svelte-uo548d");
-    			add_location(td0, file$2, 216, 16, 6383);
+    			add_location(td0, file$2, 218, 16, 6519);
     			attr_dev(td1, "class", "svelte-uo548d");
-    			add_location(td1, file$2, 217, 16, 6462);
+    			add_location(td1, file$2, 219, 16, 6598);
     			attr_dev(td2, "class", "svelte-uo548d");
-    			add_location(td2, file$2, 218, 16, 6507);
+    			add_location(td2, file$2, 220, 16, 6643);
     			attr_dev(tr, "class", "svelte-uo548d");
-    			add_location(tr, file$2, 215, 12, 6361);
+    			add_location(tr, file$2, 217, 12, 6497);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -12163,14 +12166,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(215:8) {#each TopPlayers as TopPlayer, idx}",
+    		source: "(217:8) {#each TopPlayers as TopPlayer, idx}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (232:4) {:else}
+    // (234:4) {:else}
     function create_else_block(ctx) {
     	let table;
     	let tr;
@@ -12242,30 +12245,30 @@ var app = (function () {
     			}
 
     			attr_dev(th0, "class", "svelte-uo548d");
-    			add_location(th0, file$2, 234, 16, 6965);
+    			add_location(th0, file$2, 236, 16, 7101);
     			attr_dev(th1, "class", "svelte-uo548d");
-    			add_location(th1, file$2, 235, 16, 6996);
+    			add_location(th1, file$2, 237, 16, 7132);
     			attr_dev(th2, "class", "svelte-uo548d");
-    			add_location(th2, file$2, 236, 16, 7033);
+    			add_location(th2, file$2, 238, 16, 7169);
     			attr_dev(th3, "class", "svelte-uo548d");
-    			add_location(th3, file$2, 237, 16, 7065);
+    			add_location(th3, file$2, 239, 16, 7201);
     			attr_dev(th4, "class", "svelte-uo548d");
-    			add_location(th4, file$2, 238, 16, 7098);
+    			add_location(th4, file$2, 240, 16, 7234);
     			attr_dev(th5, "class", "svelte-uo548d");
-    			add_location(th5, file$2, 239, 16, 7131);
+    			add_location(th5, file$2, 241, 16, 7267);
     			attr_dev(th6, "class", "svelte-uo548d");
-    			add_location(th6, file$2, 240, 16, 7163);
+    			add_location(th6, file$2, 242, 16, 7299);
     			attr_dev(th7, "class", "svelte-uo548d");
-    			add_location(th7, file$2, 241, 16, 7195);
+    			add_location(th7, file$2, 243, 16, 7331);
     			attr_dev(th8, "class", "svelte-uo548d");
-    			add_location(th8, file$2, 242, 16, 7230);
+    			add_location(th8, file$2, 244, 16, 7366);
     			attr_dev(th9, "class", "svelte-uo548d");
-    			add_location(th9, file$2, 243, 16, 7268);
+    			add_location(th9, file$2, 245, 16, 7404);
     			attr_dev(tr, "class", "svelte-uo548d");
-    			add_location(tr, file$2, 233, 12, 6943);
+    			add_location(tr, file$2, 235, 12, 7079);
     			attr_dev(table, "id", "scores");
     			attr_dev(table, "class", "svelte-uo548d");
-    			add_location(table, file$2, 232, 8, 6910);
+    			add_location(table, file$2, 234, 8, 7046);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, table, anchor);
@@ -12332,14 +12335,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(232:4) {:else}",
+    		source: "(234:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (229:4) {#if Fetching === true}
+    // (231:4) {#if Fetching === true}
     function create_if_block(ctx) {
     	let h1;
     	let t1;
@@ -12354,13 +12357,13 @@ var app = (function () {
     			img = element("img");
     			set_style(h1, "text-align", "center");
     			set_style(h1, "color", "white");
-    			add_location(h1, file$2, 229, 8, 6694);
+    			add_location(h1, file$2, 231, 8, 6830);
     			if (!src_url_equal(img.src, img_src_value = "image/loading.gif")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Loading");
     			set_style(img, "display", "block");
     			set_style(img, "margin-left", "auto");
     			set_style(img, "margin-right", "auto");
-    			add_location(img, file$2, 230, 8, 6784);
+    			add_location(img, file$2, 232, 8, 6920);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
@@ -12379,14 +12382,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(229:4) {#if Fetching === true}",
+    		source: "(231:4) {#if Fetching === true}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (264:24) {:else}
+    // (266:24) {:else}
     function create_else_block_1(ctx) {
     	let t;
 
@@ -12407,14 +12410,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(264:24) {:else}",
+    		source: "(266:24) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (258:24) {#if BestScore.Video !== ""}
+    // (260:24) {#if BestScore.Video !== ""}
     function create_if_block_1(ctx) {
     	let a;
     	let svg;
@@ -12427,16 +12430,16 @@ var app = (function () {
     			svg = svg_element("svg");
     			path = svg_element("path");
     			attr_dev(path, "d", "M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z");
-    			add_location(path, file$2, 260, 36, 8499);
+    			add_location(path, file$2, 262, 36, 8635);
     			attr_dev(svg, "width", "24");
     			attr_dev(svg, "height", "24");
     			attr_dev(svg, "viewBox", "0 0 24 24");
     			attr_dev(svg, "fill", "black");
-    			add_location(svg, file$2, 259, 32, 8400);
+    			add_location(svg, file$2, 261, 32, 8536);
     			attr_dev(a, "href", a_href_value = /*BestScore*/ ctx[21].Video);
     			attr_dev(a, "target", "_blank");
     			attr_dev(a, "rel", "noopener noreferrer");
-    			add_location(a, file$2, 258, 28, 8298);
+    			add_location(a, file$2, 260, 28, 8434);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -12457,14 +12460,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(258:24) {#if BestScore.Video !== \\\"\\\"}",
+    		source: "(260:24) {#if BestScore.Video !== \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (246:12) {#each BestScores as BestScore}
+    // (248:12) {#each BestScores as BestScore}
     function create_each_block(ctx) {
     	let tr;
     	let td0;
@@ -12565,28 +12568,28 @@ var app = (function () {
     			t20 = space();
     			attr_dev(td0, "class", "pointer svelte-uo548d");
     			attr_dev(td0, "title", td0_title_value = /*SongDetailsUrl*/ ctx[1](/*BestScore*/ ctx[21].SongUid));
-    			add_location(td0, file$2, 247, 20, 7390);
+    			add_location(td0, file$2, 249, 20, 7526);
     			attr_dev(td1, "class", td1_class_value = "difficulty" + /*BestScore*/ ctx[21].SongDifficulty + " svelte-uo548d");
-    			add_location(td1, file$2, 248, 20, 7555);
+    			add_location(td1, file$2, 250, 20, 7691);
     			attr_dev(td2, "class", "svelte-uo548d");
-    			add_location(td2, file$2, 249, 20, 7657);
+    			add_location(td2, file$2, 251, 20, 7793);
     			attr_dev(td3, "class", "svelte-uo548d");
-    			add_location(td3, file$2, 250, 20, 7765);
+    			add_location(td3, file$2, 252, 20, 7901);
     			attr_dev(td4, "class", td4_class_value = "status" + /*BestScore*/ ctx[21].Status.replace(/\s/g, "") + " svelte-uo548d");
-    			add_location(td4, file$2, 251, 20, 7814);
+    			add_location(td4, file$2, 253, 20, 7950);
     			attr_dev(td5, "title", td5_title_value = "" + (/*BestScore*/ ctx[21].Good + "/" + /*BestScore*/ ctx[21].Ok + "/" + /*BestScore*/ ctx[21].Bad));
     			attr_dev(td5, "class", "pointer svelte-uo548d");
-    			add_location(td5, file$2, 252, 20, 7915);
+    			add_location(td5, file$2, 254, 20, 8051);
     			attr_dev(td6, "class", td6_class_value = "grade" + /*BestScore*/ ctx[21].Grade + " svelte-uo548d");
-    			add_location(td6, file$2, 253, 20, 8035);
+    			add_location(td6, file$2, 255, 20, 8171);
     			attr_dev(td7, "class", "svelte-uo548d");
-    			add_location(td7, file$2, 254, 20, 8114);
+    			add_location(td7, file$2, 256, 20, 8250);
     			attr_dev(td8, "class", "svelte-uo548d");
-    			add_location(td8, file$2, 255, 20, 8165);
+    			add_location(td8, file$2, 257, 20, 8301);
     			attr_dev(td9, "class", "svelte-uo548d");
-    			add_location(td9, file$2, 256, 20, 8210);
+    			add_location(td9, file$2, 258, 20, 8346);
     			attr_dev(tr, "class", "svelte-uo548d");
-    			add_location(tr, file$2, 246, 16, 7364);
+    			add_location(tr, file$2, 248, 16, 7500);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -12690,7 +12693,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(246:12) {#each BestScores as BestScore}",
+    		source: "(248:12) {#each BestScores as BestScore}",
     		ctx
     	});
 
@@ -12767,30 +12770,30 @@ var app = (function () {
     			div2 = element("div");
     			if_block.c();
     			attr_dev(div0, "class", "bg_optk svelte-uo548d");
-    			add_location(div0, file$2, 201, 0, 6013);
+    			add_location(div0, file$2, 203, 0, 6149);
     			set_style(h1, "color", "white");
-    			add_location(h1, file$2, 203, 0, 6044);
+    			add_location(h1, file$2, 205, 0, 6180);
     			set_style(h20, "color", "white");
-    			add_location(h20, file$2, 205, 0, 6090);
+    			add_location(h20, file$2, 207, 0, 6226);
     			attr_dev(th0, "class", "svelte-uo548d");
-    			add_location(th0, file$2, 210, 12, 6210);
+    			add_location(th0, file$2, 212, 12, 6346);
     			attr_dev(th1, "class", "svelte-uo548d");
-    			add_location(th1, file$2, 211, 12, 6237);
+    			add_location(th1, file$2, 213, 12, 6373);
     			attr_dev(th2, "class", "svelte-uo548d");
-    			add_location(th2, file$2, 212, 12, 6266);
+    			add_location(th2, file$2, 214, 12, 6402);
     			attr_dev(tr, "class", "svelte-uo548d");
-    			add_location(tr, file$2, 209, 8, 6192);
+    			add_location(tr, file$2, 211, 8, 6328);
     			attr_dev(table, "id", "scores");
     			attr_dev(table, "class", "svelte-uo548d");
-    			add_location(table, file$2, 208, 4, 6163);
+    			add_location(table, file$2, 210, 4, 6299);
     			attr_dev(div1, "id", "top_players");
     			attr_dev(div1, "class", "svelte-uo548d");
-    			add_location(div1, file$2, 207, 0, 6135);
+    			add_location(div1, file$2, 209, 0, 6271);
     			set_style(h21, "color", "white");
-    			add_location(h21, file$2, 225, 0, 6594);
+    			add_location(h21, file$2, 227, 0, 6730);
     			attr_dev(div2, "id", "songs");
     			attr_dev(div2, "class", "svelte-uo548d");
-    			add_location(div2, file$2, 227, 0, 6639);
+    			add_location(div2, file$2, 229, 0, 6775);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -12936,9 +12939,10 @@ var app = (function () {
     		return parseInt(base * Math.pow(decreaseRatio, rank - 1));
     	};
 
-    	const ScoreToListPointsRatio = score => {
+    	const ScoreToListPointsRatio = (score, badRatio) => {
     		let _ratio = 1;
-    		_ratio = _ratio * Math.pow(score.Accuracy, 6);
+    		_ratio *= Math.pow(score.Accuracy, 6);
+    		_ratio *= Math.pow(1 - badRatio, 18);
 
     		switch (score.Status) {
     			case "Full Combo":
@@ -13025,7 +13029,8 @@ var app = (function () {
     			};
 
     			_sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
-    			_sample.LP = parseInt(ScoreToListPointsRatio(_sample) * ComputeMaxListPoints(_sample.Rank));
+    			const _br = _sample.Bad / (_sample.Good + _sample.Ok + _sample.Bad);
+    			_sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(_sample.Rank));
     			_sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
     			BestScores.push(_sample);
     		});
