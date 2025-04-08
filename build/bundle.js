@@ -9653,14 +9653,14 @@ var app = (function () {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
+    	child_ctx[16] = list[i];
     	return child_ctx;
     }
 
-    // (163:12) {:else}
+    // (172:12) {:else}
     function create_else_block_1$1(ctx) {
     	let td;
-    	let t_value = /*BestScore*/ ctx[15].Score + "";
+    	let t_value = /*BestScore*/ ctx[16].Score + "";
     	let t;
 
     	const block = {
@@ -9668,14 +9668,14 @@ var app = (function () {
     			td = element("td");
     			t = text(t_value);
     			attr_dev(td, "class", "svelte-myzg2r");
-    			add_location(td, file$7, 163, 16, 4899);
+    			add_location(td, file$7, 172, 16, 5291);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
     			append_dev(td, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*BestScores*/ 2 && t_value !== (t_value = /*BestScore*/ ctx[15].Score + "")) set_data_dev(t, t_value);
+    			if (dirty & /*BestScores*/ 2 && t_value !== (t_value = /*BestScore*/ ctx[16].Score + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(td);
@@ -9686,23 +9686,23 @@ var app = (function () {
     		block,
     		id: create_else_block_1$1.name,
     		type: "else",
-    		source: "(163:12) {:else}",
+    		source: "(172:12) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (157:12) {#if BestScores.Image !== ""}
+    // (166:12) {#if BestScores.Image !== ""}
     function create_if_block_1$1(ctx) {
     	let td;
-    	let t_value = /*BestScore*/ ctx[15].Score + "";
+    	let t_value = /*BestScore*/ ctx[16].Score + "";
     	let t;
     	let mounted;
     	let dispose;
 
     	function mouseenter_handler() {
-    		return /*mouseenter_handler*/ ctx[7](/*BestScore*/ ctx[15]);
+    		return /*mouseenter_handler*/ ctx[8](/*BestScore*/ ctx[16]);
     	}
 
     	const block = {
@@ -9710,7 +9710,7 @@ var app = (function () {
     			td = element("td");
     			t = text(t_value);
     			attr_dev(td, "class", "svelte-myzg2r");
-    			add_location(td, file$7, 157, 16, 4647);
+    			add_location(td, file$7, 166, 16, 5039);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
@@ -9728,7 +9728,7 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*BestScores*/ 2 && t_value !== (t_value = /*BestScore*/ ctx[15].Score + "")) set_data_dev(t, t_value);
+    			if (dirty & /*BestScores*/ 2 && t_value !== (t_value = /*BestScore*/ ctx[16].Score + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(td);
@@ -9741,14 +9741,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(157:12) {#if BestScores.Image !== \\\"\\\"}",
+    		source: "(166:12) {#if BestScores.Image !== \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (179:16) {:else}
+    // (188:16) {:else}
     function create_else_block$4(ctx) {
     	let t;
 
@@ -9769,14 +9769,14 @@ var app = (function () {
     		block,
     		id: create_else_block$4.name,
     		type: "else",
-    		source: "(179:16) {:else}",
+    		source: "(188:16) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (173:16) {#if BestScore.Video !== ""}
+    // (182:16) {#if BestScore.Video !== ""}
     function create_if_block$4(ctx) {
     	let a;
     	let svg;
@@ -9789,16 +9789,16 @@ var app = (function () {
     			svg = svg_element("svg");
     			path = svg_element("path");
     			attr_dev(path, "d", "M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z");
-    			add_location(path, file$7, 175, 28, 5480);
+    			add_location(path, file$7, 184, 28, 5872);
     			attr_dev(svg, "width", "24");
     			attr_dev(svg, "height", "24");
     			attr_dev(svg, "viewBox", "0 0 24 24");
     			attr_dev(svg, "fill", "black");
-    			add_location(svg, file$7, 174, 24, 5389);
-    			attr_dev(a, "href", a_href_value = /*BestScore*/ ctx[15].Video);
+    			add_location(svg, file$7, 183, 24, 5781);
+    			attr_dev(a, "href", a_href_value = /*BestScore*/ ctx[16].Video);
     			attr_dev(a, "target", "_blank");
     			attr_dev(a, "rel", "noopener noreferrer");
-    			add_location(a, file$7, 173, 20, 5295);
+    			add_location(a, file$7, 182, 20, 5687);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -9806,7 +9806,7 @@ var app = (function () {
     			append_dev(svg, path);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*BestScores*/ 2 && a_href_value !== (a_href_value = /*BestScore*/ ctx[15].Video)) {
+    			if (dirty & /*BestScores*/ 2 && a_href_value !== (a_href_value = /*BestScore*/ ctx[16].Video)) {
     				attr_dev(a, "href", a_href_value);
     			}
     		},
@@ -9819,49 +9819,49 @@ var app = (function () {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(173:16) {#if BestScore.Video !== \\\"\\\"}",
+    		source: "(182:16) {#if BestScore.Video !== \\\"\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (153:4) {#each BestScores as BestScore}
+    // (162:4) {#each BestScores as BestScore}
     function create_each_block$2(ctx) {
     	let tr;
     	let td0;
-    	let t0_value = /*BestScore*/ ctx[15].Player + "";
+    	let t0_value = /*BestScore*/ ctx[16].Player + "";
     	let t0;
     	let t1;
     	let td1;
-    	let t2_value = /*BestScore*/ ctx[15].Status + "";
+    	let t2_value = /*BestScore*/ ctx[16].Status + "";
     	let t2;
     	let td1_class_value;
     	let t3;
     	let t4;
     	let td2;
-    	let t5_value = /*BestScore*/ ctx[15].Grade + "";
+    	let t5_value = /*BestScore*/ ctx[16].Grade + "";
     	let t5;
     	let td2_class_value;
     	let t6;
     	let td3;
-    	let t7_value = /*BestScore*/ ctx[15].Good + "";
+    	let t7_value = /*BestScore*/ ctx[16].Good + "";
     	let t7;
     	let t8;
     	let td4;
-    	let t9_value = /*BestScore*/ ctx[15].Ok + "";
+    	let t9_value = /*BestScore*/ ctx[16].Ok + "";
     	let t9;
     	let t10;
     	let td5;
-    	let t11_value = /*BestScore*/ ctx[15].Bad + "";
+    	let t11_value = /*BestScore*/ ctx[16].Bad + "";
     	let t11;
     	let t12;
     	let td6;
-    	let t13_value = /*BestScore*/ ctx[15].Accuracy + "";
+    	let t13_value = /*BestScore*/ ctx[16].Accuracy + "";
     	let t13;
     	let t14;
     	let td7;
-    	let t15_value = /*BestScore*/ ctx[15].LP + "";
+    	let t15_value = /*BestScore*/ ctx[16].LP + "";
     	let t15;
     	let t16;
     	let td8;
@@ -9876,7 +9876,7 @@ var app = (function () {
     	let if_block0 = current_block_type(ctx);
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*BestScore*/ ctx[15].Video !== "") return create_if_block$4;
+    		if (/*BestScore*/ ctx[16].Video !== "") return create_if_block$4;
     		return create_else_block$4;
     	}
 
@@ -9916,25 +9916,25 @@ var app = (function () {
     			if_block1.c();
     			t17 = space();
     			attr_dev(td0, "class", "svelte-myzg2r");
-    			add_location(td0, file$7, 154, 12, 4466);
-    			attr_dev(td1, "class", td1_class_value = "status" + /*BestScore*/ ctx[15].Status.replace(/\s/g, "") + " svelte-myzg2r");
-    			add_location(td1, file$7, 155, 12, 4507);
-    			attr_dev(td2, "class", td2_class_value = "grade" + /*BestScore*/ ctx[15].Grade + " svelte-myzg2r");
-    			add_location(td2, file$7, 165, 12, 4958);
+    			add_location(td0, file$7, 163, 12, 4858);
+    			attr_dev(td1, "class", td1_class_value = "status" + /*BestScore*/ ctx[16].Status.replace(/\s/g, "") + " svelte-myzg2r");
+    			add_location(td1, file$7, 164, 12, 4899);
+    			attr_dev(td2, "class", td2_class_value = "grade" + /*BestScore*/ ctx[16].Grade + " svelte-myzg2r");
+    			add_location(td2, file$7, 174, 12, 5350);
     			attr_dev(td3, "class", "svelte-myzg2r");
-    			add_location(td3, file$7, 166, 12, 5029);
+    			add_location(td3, file$7, 175, 12, 5421);
     			attr_dev(td4, "class", "svelte-myzg2r");
-    			add_location(td4, file$7, 167, 12, 5068);
+    			add_location(td4, file$7, 176, 12, 5460);
     			attr_dev(td5, "class", "svelte-myzg2r");
-    			add_location(td5, file$7, 168, 12, 5105);
+    			add_location(td5, file$7, 177, 12, 5497);
     			attr_dev(td6, "class", "svelte-myzg2r");
-    			add_location(td6, file$7, 169, 12, 5143);
+    			add_location(td6, file$7, 178, 12, 5535);
     			attr_dev(td7, "class", "svelte-myzg2r");
-    			add_location(td7, file$7, 170, 12, 5186);
+    			add_location(td7, file$7, 179, 12, 5578);
     			attr_dev(td8, "class", "svelte-myzg2r");
-    			add_location(td8, file$7, 171, 12, 5223);
+    			add_location(td8, file$7, 180, 12, 5615);
     			attr_dev(tr, "class", "svelte-myzg2r");
-    			add_location(tr, file$7, 153, 8, 4448);
+    			add_location(tr, file$7, 162, 8, 4840);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tr, anchor);
@@ -9969,10 +9969,10 @@ var app = (function () {
     			append_dev(tr, t17);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*BestScores*/ 2 && t0_value !== (t0_value = /*BestScore*/ ctx[15].Player + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*BestScores*/ 2 && t2_value !== (t2_value = /*BestScore*/ ctx[15].Status + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*BestScores*/ 2 && t0_value !== (t0_value = /*BestScore*/ ctx[16].Player + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*BestScores*/ 2 && t2_value !== (t2_value = /*BestScore*/ ctx[16].Status + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*BestScores*/ 2 && td1_class_value !== (td1_class_value = "status" + /*BestScore*/ ctx[15].Status.replace(/\s/g, "") + " svelte-myzg2r")) {
+    			if (dirty & /*BestScores*/ 2 && td1_class_value !== (td1_class_value = "status" + /*BestScore*/ ctx[16].Status.replace(/\s/g, "") + " svelte-myzg2r")) {
     				attr_dev(td1, "class", td1_class_value);
     			}
 
@@ -9988,17 +9988,17 @@ var app = (function () {
     				}
     			}
 
-    			if (dirty & /*BestScores*/ 2 && t5_value !== (t5_value = /*BestScore*/ ctx[15].Grade + "")) set_data_dev(t5, t5_value);
+    			if (dirty & /*BestScores*/ 2 && t5_value !== (t5_value = /*BestScore*/ ctx[16].Grade + "")) set_data_dev(t5, t5_value);
 
-    			if (dirty & /*BestScores*/ 2 && td2_class_value !== (td2_class_value = "grade" + /*BestScore*/ ctx[15].Grade + " svelte-myzg2r")) {
+    			if (dirty & /*BestScores*/ 2 && td2_class_value !== (td2_class_value = "grade" + /*BestScore*/ ctx[16].Grade + " svelte-myzg2r")) {
     				attr_dev(td2, "class", td2_class_value);
     			}
 
-    			if (dirty & /*BestScores*/ 2 && t7_value !== (t7_value = /*BestScore*/ ctx[15].Good + "")) set_data_dev(t7, t7_value);
-    			if (dirty & /*BestScores*/ 2 && t9_value !== (t9_value = /*BestScore*/ ctx[15].Ok + "")) set_data_dev(t9, t9_value);
-    			if (dirty & /*BestScores*/ 2 && t11_value !== (t11_value = /*BestScore*/ ctx[15].Bad + "")) set_data_dev(t11, t11_value);
-    			if (dirty & /*BestScores*/ 2 && t13_value !== (t13_value = /*BestScore*/ ctx[15].Accuracy + "")) set_data_dev(t13, t13_value);
-    			if (dirty & /*BestScores*/ 2 && t15_value !== (t15_value = /*BestScore*/ ctx[15].LP + "")) set_data_dev(t15, t15_value);
+    			if (dirty & /*BestScores*/ 2 && t7_value !== (t7_value = /*BestScore*/ ctx[16].Good + "")) set_data_dev(t7, t7_value);
+    			if (dirty & /*BestScores*/ 2 && t9_value !== (t9_value = /*BestScore*/ ctx[16].Ok + "")) set_data_dev(t9, t9_value);
+    			if (dirty & /*BestScores*/ 2 && t11_value !== (t11_value = /*BestScore*/ ctx[16].Bad + "")) set_data_dev(t11, t11_value);
+    			if (dirty & /*BestScores*/ 2 && t13_value !== (t13_value = /*BestScore*/ ctx[16].Accuracy + "")) set_data_dev(t13, t13_value);
+    			if (dirty & /*BestScores*/ 2 && t15_value !== (t15_value = /*BestScore*/ ctx[16].LP + "")) set_data_dev(t15, t15_value);
 
     			if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block1) {
     				if_block1.p(ctx, dirty);
@@ -10023,7 +10023,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(153:4) {#each BestScores as BestScore}",
+    		source: "(162:4) {#each BestScores as BestScore}",
     		ctx
     	});
 
@@ -10031,30 +10031,34 @@ var app = (function () {
     }
 
     function create_fragment$7(ctx) {
+    	let button;
+    	let t1;
     	let table;
     	let tr;
     	let th0;
-    	let t1;
-    	let th1;
     	let t3;
-    	let th2;
+    	let th1;
     	let t5;
-    	let th3;
+    	let th2;
     	let t7;
-    	let th4;
+    	let th3;
     	let t9;
-    	let th5;
+    	let th4;
     	let t11;
-    	let th6;
+    	let th5;
     	let t13;
-    	let th7;
+    	let th6;
     	let t15;
-    	let th8;
+    	let th7;
     	let t17;
-    	let th9;
+    	let th8;
     	let t19;
-    	let t20;
+    	let th9;
+    	let t21;
+    	let t22;
     	let img;
+    	let mounted;
+    	let dispose;
     	let each_value = /*BestScores*/ ctx[1];
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -10065,99 +10069,105 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			button = element("button");
+    			button.textContent = "Submit a score";
+    			t1 = space();
     			table = element("table");
     			tr = element("tr");
     			th0 = element("th");
     			th0.textContent = "Player";
-    			t1 = space();
+    			t3 = space();
     			th1 = element("th");
     			th1.textContent = "Status";
-    			t3 = space();
+    			t5 = space();
     			th2 = element("th");
     			th2.textContent = "Score";
-    			t5 = space();
+    			t7 = space();
     			th3 = element("th");
     			th3.textContent = "Grade";
-    			t7 = space();
+    			t9 = space();
     			th4 = element("th");
     			th4.textContent = "Good";
-    			t9 = space();
+    			t11 = space();
     			th5 = element("th");
     			th5.textContent = "Ok";
-    			t11 = space();
+    			t13 = space();
     			th6 = element("th");
     			th6.textContent = "Bad";
-    			t13 = space();
+    			t15 = space();
     			th7 = element("th");
     			th7.textContent = "Accuracy";
-    			t15 = space();
+    			t17 = space();
     			th8 = element("th");
     			th8.textContent = "List Points";
-    			t17 = space();
+    			t19 = space();
     			th9 = element("th");
     			th9.textContent = "Video";
-    			t19 = space();
+    			t21 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t20 = space();
+    			t22 = space();
     			img = element("img");
+    			add_location(button, file$7, 144, 0, 4439);
     			attr_dev(th0, "class", "svelte-myzg2r");
-    			add_location(th0, file$7, 141, 8, 4155);
+    			add_location(th0, file$7, 150, 8, 4547);
     			attr_dev(th1, "class", "svelte-myzg2r");
-    			add_location(th1, file$7, 142, 8, 4180);
+    			add_location(th1, file$7, 151, 8, 4572);
     			attr_dev(th2, "class", "svelte-myzg2r");
-    			add_location(th2, file$7, 143, 8, 4205);
+    			add_location(th2, file$7, 152, 8, 4597);
     			attr_dev(th3, "class", "svelte-myzg2r");
-    			add_location(th3, file$7, 144, 8, 4229);
+    			add_location(th3, file$7, 153, 8, 4621);
     			attr_dev(th4, "class", "svelte-myzg2r");
-    			add_location(th4, file$7, 145, 8, 4253);
+    			add_location(th4, file$7, 154, 8, 4645);
     			attr_dev(th5, "class", "svelte-myzg2r");
-    			add_location(th5, file$7, 146, 8, 4276);
+    			add_location(th5, file$7, 155, 8, 4668);
     			attr_dev(th6, "class", "svelte-myzg2r");
-    			add_location(th6, file$7, 147, 8, 4297);
+    			add_location(th6, file$7, 156, 8, 4689);
     			attr_dev(th7, "class", "svelte-myzg2r");
-    			add_location(th7, file$7, 148, 8, 4319);
+    			add_location(th7, file$7, 157, 8, 4711);
     			attr_dev(th8, "class", "svelte-myzg2r");
-    			add_location(th8, file$7, 149, 8, 4346);
+    			add_location(th8, file$7, 158, 8, 4738);
     			attr_dev(th9, "class", "svelte-myzg2r");
-    			add_location(th9, file$7, 150, 8, 4376);
+    			add_location(th9, file$7, 159, 8, 4768);
     			attr_dev(tr, "class", "svelte-myzg2r");
-    			add_location(tr, file$7, 140, 4, 4141);
+    			add_location(tr, file$7, 149, 4, 4533);
     			attr_dev(table, "id", "scores");
     			attr_dev(table, "class", "svelte-myzg2r");
-    			add_location(table, file$7, 139, 0, 4116);
+    			add_location(table, file$7, 148, 0, 4508);
     			attr_dev(img, "class", "preview-image svelte-myzg2r");
-    			add_location(img, file$7, 186, 0, 5775);
+    			add_location(img, file$7, 195, 0, 6167);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+    			insert_dev(target, t1, anchor);
     			insert_dev(target, table, anchor);
     			append_dev(table, tr);
     			append_dev(tr, th0);
-    			append_dev(tr, t1);
-    			append_dev(tr, th1);
     			append_dev(tr, t3);
-    			append_dev(tr, th2);
+    			append_dev(tr, th1);
     			append_dev(tr, t5);
-    			append_dev(tr, th3);
+    			append_dev(tr, th2);
     			append_dev(tr, t7);
-    			append_dev(tr, th4);
+    			append_dev(tr, th3);
     			append_dev(tr, t9);
-    			append_dev(tr, th5);
+    			append_dev(tr, th4);
     			append_dev(tr, t11);
-    			append_dev(tr, th6);
+    			append_dev(tr, th5);
     			append_dev(tr, t13);
-    			append_dev(tr, th7);
+    			append_dev(tr, th6);
     			append_dev(tr, t15);
-    			append_dev(tr, th8);
+    			append_dev(tr, th7);
     			append_dev(tr, t17);
+    			append_dev(tr, th8);
+    			append_dev(tr, t19);
     			append_dev(tr, th9);
-    			append_dev(table, t19);
+    			append_dev(table, t21);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				if (each_blocks[i]) {
@@ -10165,9 +10175,14 @@ var app = (function () {
     				}
     			}
 
-    			insert_dev(target, t20, anchor);
+    			insert_dev(target, t22, anchor);
     			insert_dev(target, img, anchor);
-    			/*img_binding*/ ctx[8](img);
+    			/*img_binding*/ ctx[9](img);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", /*OpenSubmitForm*/ ctx[5], false, false, false, false);
+    				mounted = true;
+    			}
     		},
     		p: function update(ctx, [dirty]) {
     			if (dirty & /*BestScores, showPreview, hidePreview, movePreview*/ 30) {
@@ -10197,11 +10212,15 @@ var app = (function () {
     		i: noop$1,
     		o: noop$1,
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(table);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t20);
+    			if (detaching) detach_dev(t22);
     			if (detaching) detach_dev(img);
-    			/*img_binding*/ ctx[8](null);
+    			/*img_binding*/ ctx[9](null);
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -10339,6 +10358,11 @@ var app = (function () {
     		console.log(BestScores);
     	});
 
+    	const OpenSubmitForm = e => {
+    		const _url = `https://docs.google.com/forms/d/e/1FAIpQLSc-35dkvrUNdzBaoVP5JoGwpruiaypqU6IV2LV28ORlP7Bong/viewform?usp=pp_url&entry.618863437=${SongCard.Title}&entry.1494222525=${SongCard.UniqueId}&entry.1320089911=${Difficulty}`;
+    		window.open(_url, '_blank');
+    	};
+
     	$$self.$$.on_mount.push(function () {
     		if (SongCard === undefined && !('SongCard' in $$props || $$self.$$.bound[$$self.$$.props['SongCard']])) {
     			console_1$4.warn("<ScoresTable> was created without expected prop 'SongCard'");
@@ -10365,8 +10389,8 @@ var app = (function () {
     	}
 
     	$$self.$$set = $$props => {
-    		if ('SongCard' in $$props) $$invalidate(5, SongCard = $$props.SongCard);
-    		if ('Difficulty' in $$props) $$invalidate(6, Difficulty = $$props.Difficulty);
+    		if ('SongCard' in $$props) $$invalidate(6, SongCard = $$props.SongCard);
+    		if ('Difficulty' in $$props) $$invalidate(7, Difficulty = $$props.Difficulty);
     	};
 
     	$$self.$capture_state = () => ({
@@ -10384,12 +10408,13 @@ var app = (function () {
     		BestScores,
     		ComputeMaxListPoints,
     		ScoreToListPointsRatio,
-    		FetchBestScores
+    		FetchBestScores,
+    		OpenSubmitForm
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('SongCard' in $$props) $$invalidate(5, SongCard = $$props.SongCard);
-    		if ('Difficulty' in $$props) $$invalidate(6, Difficulty = $$props.Difficulty);
+    		if ('SongCard' in $$props) $$invalidate(6, SongCard = $$props.SongCard);
+    		if ('Difficulty' in $$props) $$invalidate(7, Difficulty = $$props.Difficulty);
     		if ('db' in $$props) db = $$props.db;
     		if ('rows' in $$props) rows = $$props.rows;
     		if ('previewImg' in $$props) $$invalidate(0, previewImg = $$props.previewImg);
@@ -10406,6 +10431,7 @@ var app = (function () {
     		showPreview,
     		hidePreview,
     		movePreview,
+    		OpenSubmitForm,
     		SongCard,
     		Difficulty,
     		mouseenter_handler,
@@ -10416,7 +10442,7 @@ var app = (function () {
     class ScoresTable extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$1(this, options, instance$7, create_fragment$7, safe_not_equal, { SongCard: 5, Difficulty: 6 });
+    		init$1(this, options, instance$7, create_fragment$7, safe_not_equal, { SongCard: 6, Difficulty: 7 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
