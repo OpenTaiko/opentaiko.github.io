@@ -54,10 +54,11 @@
         return parseInt(base * Math.pow(decreaseRatio, rank - 1));
     }
 
-    const ScoreToListPointsRatio = (score) => {
+    const ScoreToListPointsRatio = (score, badRatio) => {
         let _ratio = 1;
 
-        _ratio = _ratio * Math.pow(score.Accuracy, 6);
+        _ratio *= Math.pow(score.Accuracy, 6);
+        _ratio *= Math.pow(1 - badRatio, 18);
 
         switch (score.Status) {
             case "Full Combo":
@@ -147,7 +148,8 @@
             }
 
             _sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
-            _sample.LP = parseInt(ScoreToListPointsRatio(_sample) * ComputeMaxListPoints(_sample.Rank));
+            const _br = _sample.Bad / (_sample.Good + _sample.Ok + _sample.Bad);
+            _sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(_sample.Rank));
             _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
 
             BestScores.push(_sample);
