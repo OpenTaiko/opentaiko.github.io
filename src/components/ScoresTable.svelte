@@ -134,8 +134,17 @@
         console.log(BestScores);
     });
 
+    const OpenSubmitForm = (e) => {
+        const _url = `https://docs.google.com/forms/d/e/1FAIpQLSc-35dkvrUNdzBaoVP5JoGwpruiaypqU6IV2LV28ORlP7Bong/viewform?usp=pp_url&entry.618863437=${SongCard.Title}&entry.1494222525=${SongCard.UniqueId}&entry.1320089911=${Difficulty}`;
+        window.open(_url, '_blank');
+    }
+
 </script>
 
+
+<button on:click={OpenSubmitForm}>
+    Submit a score
+</button>
 
 <table id="scores">
     <tr>
