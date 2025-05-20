@@ -61,6 +61,10 @@
         _ratio *= Math.pow(1 - badRatio, 18);
 
         switch (score.Status) {
+            case "Perfect":
+                {
+                    break;
+                }
             case "Full Combo":
                 {
                     _ratio *= 0.9;
