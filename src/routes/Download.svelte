@@ -43,9 +43,9 @@
         let skin_text_value = (await skin_text.text()).valueOf();
         SkinsInfo = JSON.parse(skin_text_value);
 
-        skinver_owm = SkinsInfo["Skins"].find(skin => skin["skinName"] == "Open-World Memories")["skinVersion"]
-        skinver_simple = SkinsInfo["Skins"].find(skin => skin["skinName"] == "SimpleStyle")["skinVersion"]
-        skinver_simple1080 = SkinsInfo["Skins"].find(skin => skin["skinName"] == "SimpleStyle (1080p)")["skinVersion"]
+        skinver_owm = SkinsInfo["Skins"].find(skin => skin["skinFolder"] == "Open-World Memories")["skinVersion"]
+        skinver_simple = SkinsInfo["Skins"].find(skin => skin["skinFolder"] == "SimpleStyle")["skinVersion"]
+        skinver_simple1080 = SkinsInfo["Skins"].find(skin => skin["skinFolder"] == "SimpleStyle (1080p)")["skinVersion"]
 
         Fetching = false;
     }
