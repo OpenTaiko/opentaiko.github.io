@@ -146,6 +146,14 @@
         background-size: cover;
         background-position: center;
     }
+	.ch6 {
+        border: 2px solid #1b5561;
+        color: black;
+        background: linear-gradient(to bottom, #47c1f5 0%, #47c1f5 5%, 
+        transparent 30%, transparent 70%, #47c1f5 95%), url('/image/genreBar/ch6.png');
+        background-size: cover;
+        background-position: center;
+    }
     .deceiver {
         border: 2px solid #2e0404;
         color: white;

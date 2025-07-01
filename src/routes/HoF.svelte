@@ -37,6 +37,8 @@
                 return 'ch4';
             case '05 OpenTaiko Chapter V':
                 return 'ch5';
+			case '06 OpenTaiko Chapter VI':
+                return 'ch6';
             case "C10 Deceiver's Defiances":
                 return 'deceiver';
             case "C12 Dashy's Secrets":

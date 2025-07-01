@@ -40,6 +40,13 @@
             text: "OpenTaiko Chapter V",
             OnClick: () => FilterSongs("ch5", "05 OpenTaiko Chapter V")
         },
+		{
+            color1: "#a6daff",
+            color2: "#8aceff",
+            textColor: "black",
+            text: "OpenTaiko Chapter VI",
+            OnClick: () => FilterSongs("ch6", "06 OpenTaiko Chapter VI")
+        },
         {
             color1: "#700b0b",
             color2: "#520808",
@@ -124,7 +131,7 @@
 
         //console.log(SongsInfo);
 
-        FilterSongs("ch5", "05 OpenTaiko Chapter V");
+        FilterSongs("ch6", "06 OpenTaiko Chapter VI");
     });
 
 
