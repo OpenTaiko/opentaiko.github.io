@@ -157,7 +157,7 @@
             _sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(_sample.Rank));
             _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
 
-            BestScores.push(_sample);
+			if (_sample.SongLevel >= 0) BestScores.push(_sample);
         });
 
         BestScores.sort((a, b) => b.LP - a.LP);
