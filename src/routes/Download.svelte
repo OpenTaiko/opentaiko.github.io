@@ -162,32 +162,32 @@
                     text="Fetching..."
                     color1="rgb(80, 80, 80)"
                     color2="rgb(60, 60, 60)"
-                    href="https://mew.js.cool/DownGit/#/home?url=https://github.com/OpenTaiko/OpenTaiko-Skins/tree/main/System/Open-World%20Memories"
+                    href="https://drive.google.com/file/d/1OWjEi3ic6JZbm2ukhdbbtzZPrJBJpX2x/view?usp=sharing"
                 />
                 <ButtonLink
                     text="Fetching..."
                     color1="rgb(80, 80, 80)"
                     color2="rgb(60, 60, 60)"
-                    href="https://mew.js.cool/DownGit/#/home?url=https://github.com/OpenTaiko/OpenTaiko-Skins/tree/main/System/SimpleStyle%20(1080p)"
+                    href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link"
                 />
                 <ButtonLink
                     text="Fetching..."
                     color1="rgb(80, 80, 80)"
                     color2="rgb(60, 60, 60)"
-                    href="https://mew.js.cool/DownGit/#/home?url=https://github.com/OpenTaiko/OpenTaiko-Skins/tree/main/System/SimpleStyle"
+                    href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link"
                 />
             {:else}
                 <ButtonLink
                     text="Open-World Memories (v{skinver_owm})"
-                    href="https://mew.js.cool/DownGit/#/home?url=https://github.com/OpenTaiko/OpenTaiko-Skins/tree/main/System/Open-World%20Memories"
+                    href="https://drive.google.com/file/d/1OWjEi3ic6JZbm2ukhdbbtzZPrJBJpX2x/view?usp=sharing"
                 />
                 <ButtonLink
                     text="SimpleStyle (1080p) (v{skinver_simple1080})"
-                    href="https://mew.js.cool/DownGit/#/home?url=https://github.com/OpenTaiko/OpenTaiko-Skins/tree/main/System/SimpleStyle%20(1080p)"
+                    href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link"
                 />
                 <ButtonLink
                     text="SimpleStyle (v{skinver_simple})"
-                    href="https://mew.js.cool/DownGit/#/home?url=https://github.com/OpenTaiko/OpenTaiko-Skins/tree/main/System/SimpleStyle"
+                    href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link"
                 />
             {/if}
         </div>
