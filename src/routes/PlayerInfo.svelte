@@ -6,6 +6,8 @@
     import DiffTab from "../components/DiffTab.svelte";
     import initSqlJs from "sql.js";
 
+    export let Player;
+
     let db;
     let rows = [];
 
@@ -32,7 +34,7 @@
     let SongsInfo = {};
     $: SongDict = {};
     $: BestScores = [];
-    $: TopPlayers = [];
+    $: TopPlayerInfo = {};
 
     const GetSongByUniqueId = (uid) => {return SongsInfo.filter(song => song["uniqueId"] === uid)?.[0] ?? null}
 
@@ -155,7 +157,7 @@
             _sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(_sample.Rank));
             _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
 
-			if (_sample.SongLevel >= 0) BestScores.push(_sample);
+			if (_sample.SongLevel >= 0 && _sample.Player === Player) BestScores.push(_sample);
         });
 
         BestScores.sort((a, b) => b.LP - a.LP);
@@ -163,26 +165,27 @@
         console.log(BestScores);
     }
 
-    const ProcessTopPlayers = () => {
-        TopPlayers = [];
-
-        let _tmpDict = {};
+    const ProcessTopPlayerInfo = () => {
+        TopPlayerInfo = {};
 
         BestScores.forEach((score) => {
-            if (_tmpDict[score.Player] === undefined) {
-                _tmpDict[score.Player] = {
-                    Player: score.Player,
+
+            if (TopPlayerInfo.LP === undefined) {
+                TopPlayerInfo = {
                     LP: score.LP
                 };
             }
             else {
-                _tmpDict[score.Player].LP += score.LP;
+                TopPlayerInfo.LP += score.LP;
             }
 
+            const _best = TopPlayerInfo[`Best${score.Status}`] ?? null;
+            if (_best === null || _best.Rank === -1 || score.Rank < _best.Rank) {
+              TopPlayerInfo[`Best${score.Status}`] = score;
+            }
         })
 
-        TopPlayers = Object.values(_tmpDict).sort((a, b) => b.LP - a.LP);
-        console.log(TopPlayers);
+        console.log(TopPlayerInfo);
     }
 
     onMount(async () => {
@@ -191,20 +194,14 @@
 
         GetSongInfo();
         ProcessBestScores();
-        ProcessTopPlayers();
+        ProcessTopPlayerInfo();
     });
 
     $: SongDetailsUrl = (UniqueId) => `/songinfo/${UniqueId}`;
-    $: PlayerInfoUrl = (Player) => `/playerinfo/${Player}`;
 
     const MoveToSongInfo = (e, uid) => {
         if (uid === undefined) return;
         window.open(SongDetailsUrl(uid), '_blank');
-    }
-
-    const MoveToPlayerInfo = (e, player) => {
-      if (player === undefined) return;
-      window.open(PlayerInfoUrl(player), '_blank');
     }
 
 
@@ -212,27 +209,15 @@
 
 <div class="bg_optk"></div>
 
-<h1 style="color:white;">Leaderboards</h1>
+<h1 style="color:white;">{Player}</h1>
 
-<h2 style="color:white;">Top Players</h2>
+<h2 style="color:white;">List Points: {TopPlayerInfo.LP}</h2>
 
-<div id="top_players">
-    <table id="scores">
-        <tr>
-            <th>Rank</th>
-            <th>Player</th>
-            <th>List Points</th>
-        </tr>
-        {#each TopPlayers as TopPlayer, idx}
-            <tr>
-                <td style="font-weight:bold" class="top{idx+1}">#{idx+1}</td>
-                <td class="pointer" on:click={(e) => MoveToPlayerInfo(e, TopPlayer.Player)}>{TopPlayer.Player}</td>
-                <td>{TopPlayer.LP}</td>
-            </tr>
-        {/each}
-    </table>
-
-</div>
+{#each ["Clear", "Full Combo", "Perfect"] as st}
+  {#if TopPlayerInfo[`Best${st}`] !== undefined}
+    <h3 style="color:white;">Best {st}: {TopPlayerInfo[`Best${st}`].SongTitle} {TopPlayerInfo[`Best${st}`].SongDifficulty} (#{TopPlayerInfo[`Best${st}`].Rank})</h3>
+  {/if}
+{/each}
 
 <h2 style="color:white;">Best Scores</h2>
 

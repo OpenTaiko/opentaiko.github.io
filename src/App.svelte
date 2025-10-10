@@ -4,6 +4,7 @@
 	import Download from "./routes/Download.svelte";
 	import Songlist from "./routes/Songlist.svelte";
 	import Songinfo from "./routes/Songinfo.svelte";
+	import PlayerInfo from "./routes/PlayerInfo.svelte";
 	import Secret from "./routes/Secret.svelte";
 	import HoF from "./routes/HoF.svelte";
 	import Leaderboards from "./routes/Leaderboards.svelte";
@@ -44,6 +45,10 @@
 		<Route path="/songinfo/:UniqueId" let:params>
 			<Songinfo UniqueId={params.UniqueId}/>
 		</Route>
+		<Route path="/playerinfo/:Player" let:params>
+			<PlayerInfo Player={params.Player}/>
+		</Route>
+
 	</div>
 	<Footer />
 </Router>
