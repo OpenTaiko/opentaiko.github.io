@@ -134,12 +134,19 @@
         FilterSongs("ch6", "06 OpenTaiko Chapter VI");
     });
 
-
-    
-
+    const bg_optk_slide = (id) => {
+        requestAnimationFrame(slide)
+        function slide() {
+            const pos = (performance.now() / 90000) * window.screen.width
+            const bg = document.getElementById(id)
+            if (bg != null)
+                bg.style.backgroundPositionX = -pos + "px"
+            requestAnimationFrame(slide)
+        }
+    }
 </script>
 
-<div class="bg_optk"></div>
+<div id="bg_optk" onload={bg_optk_slide("bg_optk")}></div>
 <h1 style="color:white;">Song List</h1>
 <div class="buttons">
     {#each AvailableGenres as GBox}
@@ -173,16 +180,7 @@
 </div>
 
 <style>
-    @keyframes slide {
-        from {
-            background-position-x: 0px;
-        }
-        to {
-            background-position-x: -1920px;
-        }
-    }
-
-    .bg_optk {
+    #bg_optk {
         float: right;
         position: fixed;
         height: 100vh;
@@ -195,7 +193,6 @@
         background-size: cover;
         background-repeat: repeat-x;
         background-attachment: fixed;
-        animation: slide 90s linear infinite;
     }
 
     #songs {
