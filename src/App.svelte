@@ -56,6 +56,10 @@
 		<Route path="/special/karting">
 			<Karting />
 		</Route>
+		<Route path="/special/optk_k.html">
+			<!-- Redirect old URL -->
+			<script>window.location.replace("/special/karting")</script>
+		</Route>
 	</div>
 	<Footer />
 </Router>
