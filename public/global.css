@@ -1,6 +1,6 @@
 @font-face {
     font-family: "mplus";
-    src: url("/font/mplus.ttf") format("truetype");;
+    src: url("/font/mplus/mplus.ttf") format("truetype");;
 }
 
 html, body {

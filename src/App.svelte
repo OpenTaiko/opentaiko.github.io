@@ -9,6 +9,9 @@
 	import HoF from "./routes/HoF.svelte";
 	import Leaderboards from "./routes/Leaderboards.svelte";
 
+	/* Special/Event Pages */
+	import Karting from "./routes/special/Karting.svelte";
+
 	import Footer from "./components/Footer.svelte";
 
 	export let url = "";
@@ -49,6 +52,10 @@
 			<PlayerInfo Player={params.Player}/>
 		</Route>
 
+		<!-- Special/Event Pages -->
+		<Route path="/special/karting">
+			<Karting />
+		</Route>
 	</div>
 	<Footer />
 </Router>
