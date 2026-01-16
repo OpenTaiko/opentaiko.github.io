@@ -48,6 +48,13 @@
             OnClick: () => FilterSongs("ch6", "06 OpenTaiko Chapter VI")
         },
         {
+            color1: "#a6ffb9",
+            color2: "#78f098",
+            textColor: "black",
+            text: "OpenTaiko Chapter VII",
+            OnClick: () => FilterSongs("ch7", "07 OpenTaiko Chapter VII")
+        },
+        {
             color1: "#700b0b",
             color2: "#520808",
             textColor: "white",
@@ -74,6 +81,41 @@
             textColor: "black",
             text: "OpenTaiko Headquarters",
             OnClick: () => FilterSongs("hq", "E02 OpenTaiko Headquarters")
+        },
+        {
+            color1: "gold",
+            color2: "gold",
+            textColor: "black",
+            text: "Classical Arrangements",
+            OnClick: () => FilterSongs("classical", "E03 Classical Arrangements")
+        },
+        {
+            color1: "#040a85",
+            color2: "#040a85",
+            textColor: "white",
+            text: "Project Outfox Serenity",
+            OnClick: () => FilterSongs("outfox", "C01 Project Outfox Serenity")
+        },
+        {
+            color1: "#6028aa",
+            color2: "#6028aa",
+            textColor: "white",
+            text: "Touhou Arrangements Vol.1",
+            OnClick: () => FilterSongs("touhou", "C02 Touhou Arrangements")
+        },
+        {
+            color1: "pink",
+            color2: "pink",
+            textColor: "black",
+            text: "OpenTaiko Karting",
+            OnClick: () => FilterSongs("kart", "C03 OpenTaiko Karting")
+        },
+        {
+            color1: "#994314",
+            color2: "#994314",
+            textColor: "white",
+            text: "Project Pentjet",
+            OnClick: () => FilterSongs("pentjet", "C04 Project Pentjet")
         },
         {
             color1: "black",
@@ -131,7 +173,7 @@
 
         //console.log(SongsInfo);
 
-        FilterSongs("ch6", "06 OpenTaiko Chapter VI");
+        FilterSongs("ch7", "07 OpenTaiko Chapter VII");
     });
 
     const bg_optk_slide = (id) => {

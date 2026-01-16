@@ -37,6 +37,8 @@
                 return 'ch5';
 			case '06 OpenTaiko Chapter VI':
                 return 'ch6';
+            case '07 OpenTaiko Chapter VII':
+                return 'ch7';
             case "C10 Deceiver's Defiances":
                 return 'deceiver';
             case "C12 Dashy's Secrets":
@@ -45,12 +47,16 @@
                 return 'rainy';
             case "E02 OpenTaiko Headquarters":
                 return 'hq';
+            case "E03 Classical Arrangements":
+                return 'classical';
             case "C01 Project Outfox Serenity":
                 return 'outfox';
             case "C02 Touhou Arrangements":
                 return 'touhou';
             case "C03 OpenTaiko Karting":
                 return 'kart';
+            case "C04 Project Pentjet":
+                return 'pentjet';
         }
     }
 

@@ -154,6 +154,14 @@
         background-size: cover;
         background-position: center;
     }
+    .ch7 {
+        border: 2px solid #1d611b;
+        color: black;
+        background: linear-gradient(to bottom, #47f57b 0%, #47f564 5%, 
+        transparent 30%, transparent 70%, #47f57b 95%), url('/image/genreBar/ch7.png');
+        background-size: cover;
+        background-position: center;
+    }
     .deceiver {
         border: 2px solid #2e0404;
         color: white;
@@ -186,6 +194,14 @@
         background-size: cover;
         background-position: center;
     }
+    .classical {
+        border: 2px solid #44410f;
+        color: black;
+        background: linear-gradient(to bottom, gold 0%, gold 5%, 
+        transparent 30%, transparent 70%, gold 95%), url('/image/genreBar/classical.png');
+        background-size: cover;
+        background-position: center;
+    }
     .outfox {
         border: 2px solid #010444;
         color: white;
@@ -207,6 +223,14 @@
         color: black;
         background: linear-gradient(to bottom, pink 0%, pink 5%, 
         transparent 30%, transparent 70%, pink 95%), url('/image/genreBar/kart.png');
+        background-size: cover;
+        background-position: center;
+    }
+    .pentjet {
+        border: 2px solid #6d1f1f;
+        color: white;
+        background: linear-gradient(to bottom, #994314 0%, #994314 5%, 
+        transparent 30%, transparent 70%, #994314 95%), url('/image/genreBar/pentjet.png');
         background-size: cover;
         background-position: center;
     }
