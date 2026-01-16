@@ -20,10 +20,9 @@
     .difficulty_block {
         width: 60px;
         background-color: black;
-        margin-left: 2px;
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        border: 2px solid black;
+        border: 2px solid rgb(26, 26, 26);
     }
 </style>
