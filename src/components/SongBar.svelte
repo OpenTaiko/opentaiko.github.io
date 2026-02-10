@@ -218,6 +218,14 @@
         background-size: cover;
         background-position: center;
     }
+    .touhou2 {
+        border: 2px solid #180144;
+        color: white;
+        background: linear-gradient(to bottom, #aa2844 0%, #aa2844 5%, 
+        rgb(236, 0, 32) 30%, rgb(236, 0, 32) 70%, #aa2844 95%), url('/image/genreBar/touhou2.png');
+        background-size: cover;
+        background-position: center;
+    }
     .kart {
         border: 2px solid #6d1f1f;
         color: black;

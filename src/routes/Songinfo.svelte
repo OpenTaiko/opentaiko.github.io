@@ -57,6 +57,8 @@
                 return 'kart';
             case "C04 Project Pentjet":
                 return 'pentjet';
+            case "C05 Touhou Arrangements Vol.2":
+                return 'touhou2';
         }
     }
 

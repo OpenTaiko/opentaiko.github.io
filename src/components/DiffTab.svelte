@@ -33,6 +33,10 @@ Charter: {SongCard.Charters[Difficulty]}
     <div>
         Hall of Fame: Unranked
     </div>
+    <ScoresTable
+        SongCard={SongCard}
+        Difficulty={Difficulty}
+    />
 {/if}
 
 <style>

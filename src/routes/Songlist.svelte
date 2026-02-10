@@ -104,6 +104,13 @@
             OnClick: () => FilterSongs("touhou", "C02 Touhou Arrangements")
         },
         {
+            color1: "rgb(236, 0, 32)",
+            color2: "#aa2844",
+            textColor: "white",
+            text: "Touhou Arrangements Vol.2",
+            OnClick: () => FilterSongs("touhou2", "C05 Touhou Arrangements Vol.2")
+        },
+        {
             color1: "pink",
             color2: "pink",
             textColor: "black",

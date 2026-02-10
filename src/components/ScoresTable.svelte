@@ -45,6 +45,7 @@
     let BestScores = [];
 
     const ComputeMaxListPoints = (rank) => {
+        if (rank < 0) return 0;
         let base = 1000;
         let decreaseRatio = 0.95;
         return parseInt(base * Math.pow(decreaseRatio, rank - 1));
@@ -160,7 +161,9 @@
         <th>Ok</th>
         <th>Bad</th>
         <th>Accuracy</th>
-        <th>List Points</th>
+        {#if SongCard.Rank[Difficulty] >= 0}
+            <th>List Points</th>
+        {/if}
         <th>Video</th>
     </tr>
     {#each BestScores as BestScore}
@@ -181,7 +184,9 @@
             <td>{BestScore.Ok}</td>
             <td>{BestScore.Bad}</td>
             <td>{BestScore.Accuracy}</td>
-            <td>{BestScore.LP}</td>
+            {#if SongCard.Rank[Difficulty] >= 0}
+                <td>{BestScore.LP}</td>
+            {/if}
             <td>
                 {#if BestScore.Video !== ""}
                     <a href={BestScore.Video} target="_blank" rel="noopener noreferrer">
