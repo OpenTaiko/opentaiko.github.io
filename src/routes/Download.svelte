@@ -179,7 +179,7 @@
             {:else}
                 <ButtonLink
                     text="Open-World Memories (v{skinver_owm})"
-                    href="https://drive.google.com/file/d/1D1ACI9J1hdA-b9cJtgN8f45EXO4jK2aw/view?usp=drive_link"
+                    href="https://drive.google.com/file/d/1XdTPEvn8wbFY0xt1Zv7shV1gT-LBfBDh/view?usp=drive_link"
                 />
                 <ButtonLink
                     text="SimpleStyle (1080p) (v{skinver_simple1080})"
