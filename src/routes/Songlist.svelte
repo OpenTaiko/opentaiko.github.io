@@ -146,6 +146,10 @@
         let text = (await songs_text.text()).valueOf();
         SongsInfo = JSON.parse(text);
 
+        if (navigator.language === "zh-CN") {
+            SongsInfo = SongsInfo.filter(song => song["uniqueId"] != "losTPEtAlSwANDERRBHLiXoUNdsetSUnaN")
+        }
+
         Fetching = false;
     }
 
