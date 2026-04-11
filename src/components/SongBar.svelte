@@ -237,8 +237,16 @@
     .pentjet {
         border: 2px solid #6d1f1f;
         color: white;
-        background: linear-gradient(to bottom, #994314 0%, #994314 5%, 
+        background: linear-gradient(to bottom, #994314 0%, #994314 5%,
         transparent 30%, transparent 70%, #994314 95%), url('/image/genreBar/pentjet.png');
+        background-size: cover;
+        background-position: center;
+    }
+    .owyrsiloe {
+        border: 2px solid #7a1f50;
+        color: white;
+        background: linear-gradient(to bottom, #c94b85 0%, #c94b85 5%,
+        rgba(255, 180, 210, 0.4) 30%, rgba(255, 180, 210, 0.4) 70%, #c94b85 95%), url('/image/genreBar/owyrsiloe.png');
         background-size: cover;
         background-position: center;
     }

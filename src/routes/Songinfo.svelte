@@ -1,9 +1,11 @@
 <script>
     import { onMount } from "svelte";
+    import { Link } from "svelte-routing";
     import SongBar from "../components/SongBar.svelte";
     import TabArea from "../components/TabArea.svelte";
     import DiffTab from "../components/DiffTab.svelte";
     import initSqlJs from "sql.js";
+    import { genreToCSS } from "../lib/genres.js";
 
     export let UniqueId;
 
@@ -23,44 +25,9 @@
         rows = result[0] ? result[0].values : [];
     };
 
-    const GenreToCSS = (genre) => {
-        switch (genre) {
-            case '01 OpenTaiko Chapter I':
-                return 'ch1';
-            case '02 OpenTaiko Chapter II':
-                return 'ch2';
-            case '03 OpenTaiko Chapter III':
-                return 'ch3';
-            case '04 OpenTaiko Chapter IV':
-                return 'ch4';
-            case '05 OpenTaiko Chapter V':
-                return 'ch5';
-			case '06 OpenTaiko Chapter VI':
-                return 'ch6';
-            case '07 OpenTaiko Chapter VII':
-                return 'ch7';
-            case "C10 Deceiver's Defiances":
-                return 'deceiver';
-            case "C12 Dashy's Secrets":
-                return 'dashy';
-            case "E01 Rainy Memories":
-                return 'rainy';
-            case "E02 OpenTaiko Headquarters":
-                return 'hq';
-            case "E03 Classical Arrangements":
-                return 'classical';
-            case "C01 Project Outfox Serenity":
-                return 'outfox';
-            case "C02 Touhou Arrangements":
-                return 'touhou';
-            case "C03 OpenTaiko Karting":
-                return 'kart';
-            case "C04 Project Pentjet":
-                return 'pentjet';
-            case "C05 Touhou Arrangements Vol.2":
-                return 'touhou2';
-        }
-    }
+    const GenreToCSS = genreToCSS;
+
+    let songArtists = [];
 
     let Fetching = false;
     let SongsInfo = {};
@@ -169,12 +136,44 @@
     }
 
     onMount(async () => {
+        const params = new URLSearchParams(window.location.search);
+        const d = params.get('d');
+        if (d !== null) initialTab = Number(d);
+
         await FetchSongs();
         await loadDatabase();
 
         GetSongInfo();
 
         console.log(rows);
+
+        // Load artist info for this song
+        try {
+            const SQL = await initSqlJs({ locateFile: () => '/sql-wasm.wasm' });
+            const artistsBuf = await fetch('/artists_info.db3').then(r => r.arrayBuffer());
+            const artistsDb = new SQL.Database(new Uint8Array(artistsBuf));
+
+            const sRes = artistsDb.exec(
+                `SELECT artists FROM songs WHERE songUid = '${UniqueId}'`
+            );
+            if (sRes[0]?.values?.[0]?.[0]) {
+                const artistIds = JSON.parse(sRes[0].values[0][0]);
+                if (artistIds.length > 0) {
+                    const ids = artistIds.join(',');
+                    const aRes = artistsDb.exec(
+                        `SELECT entryId, artist FROM artists WHERE entryId IN (${ids})`
+                    );
+                    if (aRes[0]) {
+                        songArtists = aRes[0].values.map(([id, name]) => ({ id, name }));
+                        // Preserve order from the JSON array
+                        songArtists.sort((a, b) => artistIds.indexOf(a.id) - artistIds.indexOf(b.id));
+                    }
+                }
+            }
+            artistsDb.close();
+        } catch (e) {
+            console.error('Failed to load artist info:', e);
+        }
     });
 
     const GetTabs = () => {
@@ -199,6 +198,8 @@
     let tabs = [];
     $: if (SongCard) tabs = GetTabs();
 
+    let initialTab = 1;
+
 </script>
 
 <div class="bg_optk"></div>
@@ -219,7 +220,18 @@
                 Genre={SongCard.Genre}
             />
 
-            <TabArea items={tabs}/>
+            {#if songArtists.length > 0}
+            <div class="artists-section">
+                <h3 class="artists-label">Artists</h3>
+                <div class="artists-row">
+                    {#each songArtists as a}
+                    <Link to="/artistinfo/{a.id}" class="artist-chip">{a.name}</Link>
+                    {/each}
+                </div>
+            </div>
+            {/if}
+
+            <TabArea items={tabs} activeTabValue={initialTab}/>
         {/key}
     {/if}
 </div>
@@ -258,14 +270,43 @@
         max-width: 900px;
     }
 
-    .buttons {
-        display:flex;
-        flex-direction: row;
+
+    .artists-section {
+        margin: 8px 8px 0;
+        padding: 10px 14px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 4px;
+    }
+
+    .artists-label {
+        margin: 0 0 8px;
+        font-size: 0.8em;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255,255,255,0.7);
+    }
+
+    .artists-row {
+        display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        vertical-align: middle;
-        margin: 0px auto;
-        padding: 0px auto;
-    } 
+        gap: 8px;
+    }
+
+    :global(.artist-chip) {
+        display: inline-block;
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.15);
+        color: white;
+        text-decoration: none;
+        font-size: 0.9em;
+        font-weight: 600;
+        border: 1px solid rgba(255,255,255,0.3);
+        transition: background 0.15s;
+    }
+
+    :global(.artist-chip:hover) {
+        background: rgba(255,255,255,0.3);
+    }
 
 </style>

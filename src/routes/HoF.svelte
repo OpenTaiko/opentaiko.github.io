@@ -4,6 +4,7 @@
     import SongBar from "../components/SongBar.svelte";
     import Button from "../components/Button.svelte";
     import initSqlJs from "sql.js";
+    import { genreToCSS } from "../lib/genres.js";
 
     let db;
     let rows = [];
@@ -25,44 +26,7 @@
         rows = result[0] ? result[0].values : [];
     };
 
-    const GenreToCSS = (genre) => {
-        switch (genre) {
-            case '01 OpenTaiko Chapter I':
-                return 'ch1';
-            case '02 OpenTaiko Chapter II':
-                return 'ch2';
-            case '03 OpenTaiko Chapter III':
-                return 'ch3';
-            case '04 OpenTaiko Chapter IV':
-                return 'ch4';
-            case '05 OpenTaiko Chapter V':
-                return 'ch5';
-			case '06 OpenTaiko Chapter VI':
-                return 'ch6';
-            case '07 OpenTaiko Chapter VII':
-                return 'ch7';
-            case "C10 Deceiver's Defiances":
-                return 'deceiver';
-            case "C12 Dashy's Secrets":
-                return 'dashy';
-            case "E01 Rainy Memories":
-                return 'rainy';
-            case "E02 OpenTaiko Headquarters":
-                return 'hq';
-            case "E03 Classical Arrangements":
-                return 'classical';
-            case "C01 Project Outfox Serenity":
-                return 'outfox';
-            case "C02 Touhou Arrangements":
-                return 'touhou';
-            case "C03 OpenTaiko Karting":
-                return 'kart';
-            case "C04 Project Pentjet":
-                return 'pentjet';
-            case "C05 Touhou Arrangements Vol.2":
-                return 'touhou2';
-        }
-    }
+    const GenreToCSS = genreToCSS;
 
     let Fetching = false;
     let SongsInfo = {};

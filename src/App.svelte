@@ -8,6 +8,8 @@
 	import Secret from "./routes/Secret.svelte";
 	import HoF from "./routes/HoF.svelte";
 	import Leaderboards from "./routes/Leaderboards.svelte";
+	import Artistinfo from "./routes/Artistinfo.svelte";
+	import Artists from "./routes/Artists.svelte";
 
 	/* Special/Event Pages */
 	import Karting from "./routes/special/Karting.svelte";
@@ -22,6 +24,7 @@
 		<h3><Link to="/">Home</Link></h3>
 		<h3><Link to="/download">Download</Link></h3>
 		<h3><Link to="/songlist">Songlist</Link></h3>
+		<h3><Link to="/artists">Artists</Link></h3>
 		<h3><Link to="/hof">Hall of Fame</Link></h3>
 		<h3><a href="https://opentaiko.wiki.gg" target="_blank">Wiki</a></h3>
 		<h3><a href="https://opentaiko.blogspot.com/" target="_blank">Blog</a></h3>
@@ -50,6 +53,12 @@
 		</Route>
 		<Route path="/playerinfo/:Player" let:params>
 			<PlayerInfo Player={params.Player}/>
+		</Route>
+		<Route path="/artistinfo/:ArtistId" let:params>
+			<Artistinfo ArtistId={params.ArtistId}/>
+		</Route>
+		<Route path="/artists">
+			<Artists />
 		</Route>
 
 		<!-- Special/Event Pages -->

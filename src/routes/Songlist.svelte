@@ -3,133 +3,20 @@
 
     import Button from "../components/Button.svelte";
     import SongBar from "../components/SongBar.svelte";
+    import { SONGLIST_GENRES } from "../lib/genres.js";
 
     const AvailableGenres = [
+        ...SONGLIST_GENRES.map(g => ({
+            color1:    g.btnPrimary,
+            color2:    g.bg,
+            textColor: g.text,
+            text:      g.btnLabel ?? g.label,
+            OnClick:   () => FilterSongs(g.css, g.folder),
+        })),
         {
-            color1: "#ff8f53",
-            color2: "#f76b20",
-            textColor: "black",
-            text: "OpenTaiko Chapter I",
-            OnClick: () => FilterSongs("ch1", "01 OpenTaiko Chapter I")
-        },
-        {
-            color1: "#575fff",
-            color2: "#474ed6",
-            textColor: "white",
-            text: "OpenTaiko Chapter II",
-            OnClick: () => FilterSongs("ch2", "02 OpenTaiko Chapter II")
-        },
-        {
-            color1: "#6effe7",
-            color2: "#48f7da",
-            textColor: "black",
-            text: "OpenTaiko Chapter III",
-            OnClick: () => FilterSongs("ch3", "03 OpenTaiko Chapter III")
-        },
-        {
-            color1: "#f3ff87",
-            color2: "#e5f748",
-            textColor: "black",
-            text: "OpenTaiko Chapter IV",
-            OnClick: () => FilterSongs("ch4", "04 OpenTaiko Chapter IV")
-        },
-        {
-            color1: "#ff87ab",
-            color2: "#f74848",
-            textColor: "black",
-            text: "OpenTaiko Chapter V",
-            OnClick: () => FilterSongs("ch5", "05 OpenTaiko Chapter V")
-        },
-		{
-            color1: "#a6daff",
-            color2: "#8aceff",
-            textColor: "black",
-            text: "OpenTaiko Chapter VI",
-            OnClick: () => FilterSongs("ch6", "06 OpenTaiko Chapter VI")
-        },
-        {
-            color1: "#a6ffb9",
-            color2: "#78f098",
-            textColor: "black",
-            text: "OpenTaiko Chapter VII",
-            OnClick: () => FilterSongs("ch7", "07 OpenTaiko Chapter VII")
-        },
-        {
-            color1: "#700b0b",
-            color2: "#520808",
-            textColor: "white",
-            text: "Deceiver's Defiances",
-            OnClick: () => FilterSongs("deceiver", "C10 Deceiver's Defiances")
-        },
-        {
-            color1: "#ffffff",
-            color2: "#bebebe",
-            textColor: "black",
-            text: "Dashy's Secrets",
-            OnClick: () => FilterSongs("dashy", "C12 Dashy's Secrets")
-        },
-        {
-            color1: "#0c3803",
-            color2: "#092d02",
-            textColor: "white",
-            text: "Rainy Memories",
-            OnClick: () => FilterSongs("rainy", "E01 Rainy Memories")
-        },
-        {
-            color1: "#cccccc",
-            color2: "#999999",
-            textColor: "black",
-            text: "OpenTaiko Headquarters",
-            OnClick: () => FilterSongs("hq", "E02 OpenTaiko Headquarters")
-        },
-        {
-            color1: "gold",
-            color2: "gold",
-            textColor: "black",
-            text: "Classical Arrangements",
-            OnClick: () => FilterSongs("classical", "E03 Classical Arrangements")
-        },
-        {
-            color1: "#040a85",
-            color2: "#040a85",
-            textColor: "white",
-            text: "Project Outfox Serenity",
-            OnClick: () => FilterSongs("outfox", "C01 Project Outfox Serenity")
-        },
-        {
-            color1: "#6028aa",
-            color2: "#6028aa",
-            textColor: "white",
-            text: "Touhou Arrangements Vol.1",
-            OnClick: () => FilterSongs("touhou", "C02 Touhou Arrangements")
-        },
-        {
-            color1: "rgb(236, 0, 32)",
-            color2: "#aa2844",
-            textColor: "white",
-            text: "Touhou Arrangements Vol.2",
-            OnClick: () => FilterSongs("touhou2", "C05 Touhou Arrangements Vol.2")
-        },
-        {
-            color1: "pink",
-            color2: "pink",
-            textColor: "black",
-            text: "OpenTaiko Karting",
-            OnClick: () => FilterSongs("kart", "C03 OpenTaiko Karting")
-        },
-        {
-            color1: "#994314",
-            color2: "#994314",
-            textColor: "white",
-            text: "Project Pentjet",
-            OnClick: () => FilterSongs("pentjet", "C04 Project Pentjet")
-        },
-        {
-            color1: "black",
-            color2: "black",
-            textColor: "white",
+            color1: "black", color2: "black", textColor: "white",
             text: "???",
-            OnClick: () => window.location.replace('secret')
+            OnClick: () => window.location.replace('secret'),
         },
     ];
 
