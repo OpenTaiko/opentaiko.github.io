@@ -3,18 +3,20 @@
  *
  * To add a new genre:
  *   1. Add an entry here.
- *   2. Add the matching CSS class in SongBar.svelte.
- *   3. That's it — Songlist buttons, Artistinfo chips, and
+ *   2. Add a matching bar image at /image/genreBar/<css>.png.
+ *   3. That's it — Songlist buttons, SongBar styling, Artistinfo chips, and
  *      genre→CSS lookups all derive from this file.
  *
  * Fields:
  *   folder      – exact tjaGenreFolder string from soundtrack_info.json
- *   css         – CSS class name used by SongBar.svelte
+ *   css         – CSS class / identifier used throughout the UI
  *   label       – short display label (chips, artist page song list)
  *   btnLabel    – label on the Songlist filter button (falls back to label)
  *   bg          – chip background colour
  *   text        – chip/button text colour
  *   btnPrimary  – lighter top colour for the Songlist gradient button
+ *   accent      – SongBar accent colour (left border stripe, card border, --gc)
+ *   overlay     – SongBar background overlay colour (rgba, 0.75 opacity / 80 % sat.)
  *   inSonglist  – whether a filter button is shown in the Songlist
  */
 export const GENRES = [
@@ -26,6 +28,8 @@ export const GENRES = [
         bg:          '#f76b20',
         text:        'black',
         btnPrimary:  '#ff8f53',
+        accent:      '#f76b20',
+        overlay:     'rgba(223,111,51,0.75)',
         inSonglist:  true,
     },
     {
@@ -36,6 +40,8 @@ export const GENRES = [
         bg:          '#474ed6',
         text:        'white',
         btnPrimary:  '#575fff',
+        accent:      '#575fff',
+        overlay:     'rgba(99,105,233,0.75)',
         inSonglist:  true,
     },
     {
@@ -46,6 +52,8 @@ export const GENRES = [
         bg:          '#48f7da',
         text:        'black',
         btnPrimary:  '#6effe7',
+        accent:      '#48f7da',
+        overlay:     'rgba(93,233,210,0.75)',
         inSonglist:  true,
     },
     {
@@ -56,6 +64,8 @@ export const GENRES = [
         bg:          '#ccd93a',
         text:        'black',
         btnPrimary:  '#f3ff87',
+        accent:      '#ccd93a',
+        overlay:     'rgba(195,206,78,0.75)',
         inSonglist:  true,
     },
     {
@@ -66,6 +76,8 @@ export const GENRES = [
         bg:          '#f74848',
         text:        'black',
         btnPrimary:  '#ff87ab',
+        accent:      '#f74848',
+        overlay:     'rgba(224,84,84,0.75)',
         inSonglist:  true,
     },
     {
@@ -76,6 +88,8 @@ export const GENRES = [
         bg:          '#47c1f5',
         text:        'black',
         btnPrimary:  '#a6daff',
+        accent:      '#47c1f5',
+        overlay:     'rgba(91,188,230,0.75)',
         inSonglist:  true,
     },
     {
@@ -86,6 +100,8 @@ export const GENRES = [
         bg:          '#47f57b',
         text:        'black',
         btnPrimary:  '#a6ffb9',
+        accent:      '#47f57b',
+        overlay:     'rgba(86,225,128,0.75)',
         inSonglist:  true,
     },
     {
@@ -95,6 +111,8 @@ export const GENRES = [
         bg:          '#700b0b',
         text:        'white',
         btnPrimary:  '#700b0b',
+        accent:      '#c01212',
+        overlay:     'rgba(169,30,30,0.75)',
         inSonglist:  true,
     },
     {
@@ -106,6 +124,8 @@ export const GENRES = [
         bg:          '#aaaaaa',
         text:        'black',
         btnPrimary:  '#ffffff',
+        accent:      '#cccccc',
+        overlay:     'rgba(204,204,204,0.75)',
         inSonglist:  true,
     },
     {
@@ -115,6 +135,8 @@ export const GENRES = [
         bg:          '#092d02',
         text:        'white',
         btnPrimary:  '#0c3803',
+        accent:      '#1a5c0a',
+        overlay:     'rgba(29,82,17,0.75)',
         inSonglist:  true,
     },
     {
@@ -123,8 +145,10 @@ export const GENRES = [
         label:       'OPTK-HQ',
         btnLabel:    'OpenTaiko Headquarters',
         bg:          '#777777',
-        text:        'white',
+        text:        'black',
         btnPrimary:  '#cccccc',
+        accent:      '#aaaaaa',
+        overlay:     'rgba(170,170,170,0.75)',
         inSonglist:  true,
     },
     {
@@ -133,8 +157,10 @@ export const GENRES = [
         label:       'Classical',
         btnLabel:    'Classical Arrangements',
         bg:          '#b8970a',
-        text:        'white',
+        text:        'black',
         btnPrimary:  'gold',
+        accent:      'gold',
+        overlay:     'rgba(235,203,31,0.75)',
         inSonglist:  true,
     },
     {
@@ -145,6 +171,8 @@ export const GENRES = [
         bg:          '#040a85',
         text:        'white',
         btnPrimary:  '#040a85',
+        accent:      '#1a2cc4',
+        overlay:     'rgba(39,53,175,0.75)',
         inSonglist:  true,
     },
     {
@@ -155,6 +183,8 @@ export const GENRES = [
         bg:          '#6028aa',
         text:        'white',
         btnPrimary:  '#6028aa',
+        accent:      '#7e3dcc',
+        overlay:     'rgba(127,75,189,0.75)',
         inSonglist:  true,
     },
     {
@@ -165,6 +195,8 @@ export const GENRES = [
         bg:          'pink',
         text:        'black',
         btnPrimary:  'pink',
+        accent:      'hotpink',
+        overlay:     'rgba(240,120,180,0.75)',
         inSonglist:  true,
     },
     {
@@ -174,6 +206,8 @@ export const GENRES = [
         bg:          '#7a3510',
         text:        'white',
         btnPrimary:  '#994314',
+        accent:      '#c45519',
+        overlay:     'rgba(177,88,40,0.75)',
         inSonglist:  true,
     },
     {
@@ -184,6 +218,8 @@ export const GENRES = [
         bg:          '#aa2844',
         text:        'white',
         btnPrimary:  'rgb(236, 0, 32)',
+        accent:      '#ec0020',
+        overlay:     'rgba(207,18,43,0.75)',
         inSonglist:  true,
     },
     {
@@ -194,6 +230,8 @@ export const GENRES = [
         bg:          '#c94b85',
         text:        'white',
         btnPrimary:  '#c94b85',
+        accent:      '#e060a0',
+        overlay:     'rgba(211,109,160,0.75)',
         inSonglist:  true,
     },
     // Special categories — appear in Artistinfo chips but not in Songlist filters

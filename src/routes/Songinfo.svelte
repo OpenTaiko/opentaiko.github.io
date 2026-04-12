@@ -138,7 +138,7 @@
     onMount(async () => {
         const params = new URLSearchParams(window.location.search);
         const d = params.get('d');
-        if (d !== null) initialTab = Number(d);
+        if (d !== null) initialTab = Number(d) + 1;
 
         await FetchSongs();
         await loadDatabase();

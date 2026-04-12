@@ -3,6 +3,7 @@
 
     import DifficultyBlock from "../components/DifficultyBlock.svelte";
     import AudioPlayer from "../components/AudioPlayer.svelte";
+    import { GENRES } from "../lib/genres.js";
 
     export let Rank;
     export let Title;
@@ -13,29 +14,33 @@
     export let MaxListPoints;
     export let UniqueId;
 
-    let boxEl = null;
-    
     $: AudioLink = `https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/${AudioFilePath}`;
     $: SongDetailsUrl = `/songinfo/${UniqueId}`;
 
+    $: genreData = GENRES.find(g => g.css === Genre);
+    $: barStyle = genreData
+        ? `--gc:${genreData.accent}; color:${genreData.text}; --overlay:${genreData.overlay}; --bar-image:url('/image/genreBar/${Genre}.png')`
+        : `--gc:#888; color:white; --overlay:rgba(128,128,128,0.75); --bar-image:url('/image/genreBar/hq.png')`;
+
     const MoveToSongInfo = (e) => {
         if (UniqueId === undefined) return;
-        if (!e.target.closest('.song_bar_main_info'))
-            window.open(SongDetailsUrl, '_blank');
+        const isControl = e.target.closest('button')
+                       || e.target.closest('.slider')
+                       || e.target.closest('.volume-slider');
+        if (!isControl) window.open(SongDetailsUrl, '_blank');
     }
-    
+
 </script>
 
-<div class="{Genre} song_bar {(UniqueId !== undefined) ? "song_bar_clickable" : ""}" on:click={MoveToSongInfo}>
+<div class="song_bar {Rank !== undefined ? 'hof' : ''} {UniqueId !== undefined ? 'song_bar_clickable' : ''}" style={barStyle} on:click={MoveToSongInfo}>
     {#if Rank !== undefined}
-    <div class="song_bar_rank">
-        <span class="song_bar_rank_nb">#{Rank}</span>
-        <span>Max List Points:</span>
-        <span>{MaxListPoints}</span>
+    <div class="song_bar_rank {Rank === 1 ? 'rank-gold' : Rank === 2 ? 'rank-silver' : Rank === 3 ? 'rank-bronze' : ''}">
+        <span class="rank-nb">#{Rank}</span>
+        <span class="rank-pts">{MaxListPoints} LP</span>
     </div>
     {/if}
-    
-    <div class="song_bar_main_info" bind:this={boxEl}>
+
+    <div class="song_bar_main_info">
         <AudioPlayer
             Title={Title}
             Subtitle={Subtitle}
@@ -43,211 +48,135 @@
         />
     </div>
 
-    <div class="song_bar_push">
-
-    </div>
-
-    {#each Difficulties as diff, i}
-        {#if diff >= 0}
-        <DifficultyBlock
-            Level={diff}
-            Difficulty={i}
-        />
-        {/if}
-    {/each}
+    {#if Rank !== undefined}
+        <!-- HoF: difficulty wrapped in same card style as main_info -->
+        <div class="hof_diff_card">
+            {#each Difficulties as diff, i}
+                {#if diff >= 0}
+                <DifficultyBlock Level={diff} Difficulty={i} roundLeft={true} />
+                {/if}
+            {/each}
+        </div>
+    {:else}
+        <!-- Regular: always 5 blocks (Easy–Edit); first one rounds left -->
+        {#each Array(5) as _, i}
+            <DifficultyBlock
+                Level={Difficulties[i] ?? -1}
+                Difficulty={i}
+                ghost={(Difficulties[i] ?? -1) < 0}
+                roundLeft={i === 0}
+            />
+        {/each}
+    {/if}
 </div>
 
 <style>
     @keyframes flashy-glow {
-        0% {
-            box-shadow: 0 0 2px #0080ff, 0 0 4px #0080ff, 0 0 6px #0080ff;
-        }
-        50% {
-            box-shadow: 0 0 5px #0080ff, 0 0 13px #0080ff, 0 0 20px #0080ff;
-        }
-        100% {
-            box-shadow: 0 0 2px #0080ff, 0 0 4px #0080ff, 0 0 6px #0080ff;
-        }
+        0%  { box-shadow: 0 0 0 3px rgba(0,145,255,0.80), 0 0 14px rgba(0,145,255,0.35); }
+        50% { box-shadow: 0 0 0 3px rgba(0,145,255,1.00), 0 0 28px rgba(0,145,255,0.60); }
+        100%{ box-shadow: 0 0 0 3px rgba(0,145,255,0.80), 0 0 14px rgba(0,145,255,0.35); }
     }
 
-    .song_bar_clickable:hover:not(:has(.song_bar_main_info:hover)) {
-        outline: 2px solid #0080ff;
+    /* show glow + pointer only when hovering outside the audio controls */
+    .song_bar_clickable:hover:not(:has(button:hover)):not(:has(.slider:hover)):not(:has(.volume-slider:hover)) {
         animation: flashy-glow 1.4s ease-in-out infinite;
         cursor: pointer;
     }
 
     .song_bar {
-        margin: 8px;
-        padding: 1px 8px;
-        border-radius: 4px;
+        margin: 6px 0;
+        padding: 0;
+        border-radius: 12px;
+        overflow: hidden;
         display: flex;
         flex-direction: row;
         align-items: stretch;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+        background: var(--gc, #0d0d1a);
     }
-    
+
+    /* HoF bars: left border stripe is black instead of chapter color */
+    .song_bar.hof {
+        border-left-color: #111 !important;
+    }
+
     .song_bar_main_info {
+        flex: 1;
+        min-width: 0;
+        padding: 4px 8px;
+        margin: 5px 4px;
+        border: 2px solid var(--gc, #444);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .song_bar_rank {
+        width: 110px;
+        flex-shrink: 0;
+        border-radius: 0 14px 14px 0;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding: 6px 10px 6px 18px;
+        gap: 4px;
+        background: #15151e;
     }
 
-    .song_bar_rank {
-        width: 150px;
+    .rank-nb {
+        font-size: 2.4em;
+        font-weight: 900;
+        line-height: 1;
+        color: #ffffff;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .rank-pts {
+        font-size: 0.78em;
+        font-weight: 500;
+        color: rgba(255,255,255,0.55);
+        letter-spacing: 0.03em;
+    }
+
+    .rank-bronze .rank-nb {
+        font-size: 2.7em;
+        color: #FFA726;
+        text-shadow: 0 0 12px rgba(255, 167, 38, 0.85), 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .rank-silver .rank-nb {
+        font-size: 3em;
+        color: #E8E8E8;
+        text-shadow: 0 0 12px rgba(230, 230, 230, 0.85), 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .rank-gold .rank-nb {
+        font-size: 3.4em;
+        color: #FFD740;
+        text-shadow: 0 0 16px rgba(255, 215, 0, 0.95), 0 0 32px rgba(255, 200, 0, 0.5), 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    /* ── Genre accent + left border — driven by inline --gc / --overlay / --bar-image ── */
+    .song_bar {
+        border-left: 8px solid var(--gc, #888);
+    }
+
+    /* ── HoF difficulty card — flex wrapper only, no border ── */
+    .hof_diff_card {
         display: flex;
-        flex-direction: column;
+        align-items: stretch;
+        overflow: hidden;
+        flex-shrink: 0;
     }
 
-    .song_bar_rank_nb {
-        font-size: 4em;
-    }
-
-    .song_bar_push {
-        flex: 1;
-    }
-
-    .ch1 {
-        border: 2px solid #994314;
-        color: black;
-        background: linear-gradient(to bottom, #f76b20 0%, #f76b20 5%, 
-        rgba(255, 200, 81, 0.7) 30%, rgba(255, 200, 81,0.7) 70%, #f76b20 95%), url('/image/genreBar/ch1.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .ch2 {
-        border: 2px solid #282c75;
-        color: white;
-        background: linear-gradient(to bottom, #474ed6 0%, #474ed6 5%, 
-        rgba(4, 9, 87, 0.8) 30%, rgba(4, 9, 87, 0.8) 70%, #474ed6 95%), url('/image/genreBar/ch2.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .ch3 {
-        border: 2px solid #2c9684;
-        color: black;
-        background: linear-gradient(to bottom, #48f7da 0%, #48f7da 5%, 
-        rgba(255,255,255, 0.6) 30%, rgba(255,255,255, 0.6) 70%, #48f7da 95%), url('/image/genreBar/ch3.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .ch4 {
-        border: 2px solid #85912a;
-        color: black;
-        background: linear-gradient(to bottom, #e5f748 0%, #e5f748 5%, 
-        transparent 30%, transparent 70%, #e5f748 95%), url('/image/genreBar/ch4.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .ch5 {
-        border: 2px solid #6d1f1f;
-        color: black;
-        background: linear-gradient(to bottom, #f74848 0%, #f74848 5%, 
-        transparent 30%, transparent 70%, #f74848 95%), url('/image/genreBar/ch5.png');
-        background-size: cover;
-        background-position: center;
-    }
-	.ch6 {
-        border: 2px solid #1b5561;
-        color: black;
-        background: linear-gradient(to bottom, #47c1f5 0%, #47c1f5 5%, 
-        transparent 30%, transparent 70%, #47c1f5 95%), url('/image/genreBar/ch6.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .ch7 {
-        border: 2px solid #1d611b;
-        color: black;
-        background: linear-gradient(to bottom, #47f57b 0%, #47f564 5%, 
-        transparent 30%, transparent 70%, #47f57b 95%), url('/image/genreBar/ch7.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .deceiver {
-        border: 2px solid #2e0404;
-        color: white;
-        background: linear-gradient(to bottom, #700b0b 0%, #700b0b 5%, 
-        rgba(128, 0, 0, 0.5) 30%, rgba(128, 0, 0, 0.5) 70%, #700b0b 95%), url('/image/genreBar/deceiver.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .dashy {
-        border: 2px solid #888888;
-        color: black;
-        background: linear-gradient(to bottom, #ffffff 0%, #ffffff 5%, 
-        rgba(255, 255, 255, 0.5) 30%, rgba(255, 255, 255, 0.5) 70%, #ffffff 95%), url('/image/genreBar/dashy.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .rainy {
-        border: 2px solid #030f01;
-        color: white;
-        background: linear-gradient(to bottom, #092d02 0%, #092d02 5%, 
-        rgba(0, 22, 13, 0.5) 30%, rgba(0, 22, 13, 0.5) 70%, #092d02 95%), url('/image/genreBar/rainy.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .hq {
-        border: 2px solid #696969;
-        color: black;
-        background: linear-gradient(to bottom, #999999 0%, #999999 5%, 
-        rgba(229, 255, 244, 0.5) 30%, rgba(229, 255, 244, 0.5) 70%, #999999 95%), url('/image/genreBar/hq.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .classical {
-        border: 2px solid #44410f;
-        color: black;
-        background: linear-gradient(to bottom, gold 0%, gold 5%, 
-        transparent 30%, transparent 70%, gold 95%), url('/image/genreBar/classical.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .outfox {
-        border: 2px solid #010444;
-        color: white;
-        background: linear-gradient(to bottom, #040a85 0%, #040a85 5%, 
-        rgba(4, 9, 87, 0.5) 30%, rgba(4, 9, 87, 0.5) 70%, #040a85 95%), url('/image/genreBar/outfox.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .touhou {
-        border: 2px solid #180144;
-        color: white;
-        background: linear-gradient(to bottom, #6028aa 0%, #6028aa 5%, 
-        rgba(111, 3, 126, 0.5) 30%, rgba(111, 3, 126, 0.5) 70%, #6028aa 95%), url('/image/genreBar/touhou.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .touhou2 {
-        border: 2px solid #180144;
-        color: white;
-        background: linear-gradient(to bottom, #aa2844 0%, #aa2844 5%, 
-        rgb(236, 0, 32) 30%, rgb(236, 0, 32) 70%, #aa2844 95%), url('/image/genreBar/touhou2.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .kart {
-        border: 2px solid #6d1f1f;
-        color: black;
-        background: linear-gradient(to bottom, pink 0%, pink 5%, 
-        transparent 30%, transparent 70%, pink 95%), url('/image/genreBar/kart.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .pentjet {
-        border: 2px solid #6d1f1f;
-        color: white;
-        background: linear-gradient(to bottom, #994314 0%, #994314 5%,
-        transparent 30%, transparent 70%, #994314 95%), url('/image/genreBar/pentjet.png');
-        background-size: cover;
-        background-position: center;
-    }
-    .owyrsiloe {
-        border: 2px solid #7a1f50;
-        color: white;
-        background: linear-gradient(to bottom, #c94b85 0%, #c94b85 5%,
-        rgba(255, 180, 210, 0.4) 30%, rgba(255, 180, 210, 0.4) 70%, #c94b85 95%), url('/image/genreBar/owyrsiloe.png');
-        background-size: cover;
-        background-position: center;
+    /* ── Background overlay — generic, driven by CSS variables ── */
+    .song_bar_main_info {
+        background: linear-gradient(var(--overlay, rgba(128,128,128,0.75)), var(--overlay, rgba(128,128,128,0.75))),
+                    var(--bar-image, none) center/cover;
     }
 </style>
