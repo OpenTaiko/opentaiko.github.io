@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { navigate } from 'svelte-routing';
+    import { _ } from 'svelte-i18n';
     import SongBar from "../components/SongBar.svelte";
     import Button from "../components/Button.svelte";
     import initSqlJs from "sql.js";
@@ -14,12 +15,8 @@
             locateFile: file => `/sql-wasm.wasm`
         });
 
-        console.log(sqlPromise.locateFile());
-
         const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
         const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
-        console.log(buf);
-        console.log(SQL);
         const db = new SQL.Database(new Uint8Array(buf));
         const result = db.exec("SELECT * FROM entries ORDER BY internalDifficultyIndex DESC");
 
@@ -87,20 +84,10 @@
                     Title: `#${idx+1}. Not Found`,
                     Subtitle: "",
                     AudioFilePath: "",
-                    Difficulties: [
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                        -1
-                    ],
+                    Difficulties: [-1, -1, -1, -1, -1, -1, -1],
                     MaxListPoints: ComputeMaxListPoints(rank),
                 };
             }
-
-            console.log(SInfo);
 
             SongCards.push(SInfo);
         });
@@ -108,14 +95,9 @@
 
     onMount(async () => {
         await FetchSongs();
-
         await loadDatabase();
-
         GetSongsByRank();
-
-        console.log(rows);
     });
-
 
     const MoveToLeaderboards = (e) => {
         navigate("/leaderboards");
@@ -134,26 +116,26 @@
 </script>
 
 <div id="bg_optk" onload={bg_optk_slide("bg_optk")}></div>
-<h1 style="color:white;">Hall of Fame</h1>
+<h1 style="color:white;">{$_('hof.title')}</h1>
 
 <div class="buttons">
     <Button
         color1="#f3ff6e"
         color2="#f7e848"
         textColor="black"
-        text="Leaderboards"
+        text={$_('leaderboards.title')}
         OnClick={() => MoveToLeaderboards()}
     />
 </div>
 
 <div id="songs">
     {#if Fetching === true}
-        <h1 style="text-align: center; color:white;">Fetching Songs... Please wait.</h1>
+        <h1 style="text-align: center; color:white;">{$_('common.loading')}</h1>
         <img src="image/loading.gif" alt="Loading" style="display:block; margin-left:auto; margin-right:auto;">
     {:else}
         {#each SongCards as Card}
             {#key Card.AudioFilePath}
-                <SongBar 
+                <SongBar
                     Rank={Card.Rank}
                     Title={Card.Title}
                     Subtitle={Card.Subtitle}
@@ -200,6 +182,6 @@
         vertical-align: middle;
         margin: 0px auto;
         padding: 0px auto;
-    } 
+    }
 
 </style>

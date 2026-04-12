@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { Link } from "svelte-routing";
+    import { _ } from 'svelte-i18n';
     import SongBar from "../components/SongBar.svelte";
     import TabArea from "../components/TabArea.svelte";
     import DiffTab from "../components/DiffTab.svelte";
@@ -33,7 +34,6 @@
     let SongsInfo = {};
     $: SongCard = {};
 
-    const GetSongsByGenre = (genre) => {return SongsInfo.filter(song => song["tjaGenreFolder"] === genre)}
     const GetSongByUniqueId = (uid) => {return SongsInfo.filter(song => song["uniqueId"] === uid)?.[0] ?? null}
 
     const FetchSongs = async () => {
@@ -47,7 +47,7 @@
     }
 
     const ComputeMaxListPoints = (rank) => {
-		if (rank <= 0) return 0;
+        if (rank <= 0) return 0;
         let base = 1000;
         let decreaseRatio = 0.95;
         return parseInt(base * Math.pow(decreaseRatio, rank - 1));
@@ -110,24 +110,8 @@
                 Title: `Not Found`,
                 Subtitle: "",
                 AudioFilePath: "",
-                Difficulties: [
-                    -1,
-                    -1,
-                    -1,
-                    -1,
-                    -1,
-                    -1,
-                    -1
-                ],
-                Charters: [
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
-                ],
+                Difficulties: [-1, -1, -1, -1, -1, -1, -1],
+                Charters: ["", "", "", "", "", "", ""],
             };
         }
 
@@ -162,7 +146,6 @@
                     );
                     if (aRes[0]) {
                         songArtists = aRes[0].values.map(([id, name]) => ({ id, name }));
-                        // Preserve order from the JSON array
                         songArtists.sort((a, b) => artistIds.indexOf(a.id) - artistIds.indexOf(b.id));
                     }
                 }
@@ -175,7 +158,13 @@
 
     const GetTabs = () => {
         let _ret = [];
-        const _diff = ["Easy","Normal","Hard","Extreme","Extra"];
+        const _diff = [
+            $_('difficulty.easy'),
+            $_('difficulty.normal'),
+            $_('difficulty.hard'),
+            $_('difficulty.extreme'),
+            $_('difficulty.extra'),
+        ];
         const _colors = ["#98fafa","#98fabe","#f7fa98","#fa98a1","#d198fa"];
         _diff.forEach((diffName, idx) => {
             if (SongCard.Difficulties !== undefined && SongCard.Difficulties[idx] >= 0) {
@@ -193,7 +182,7 @@
     }
 
     let tabs = [];
-    $: if (SongCard) tabs = GetTabs();
+    $: tabs = SongCard && $_ ? GetTabs() : [];
 
     let initialTab = 1;
 
@@ -201,15 +190,15 @@
 
 <div class="bg_optk"></div>
 
-<h1 style="color:white;">Song Info</h1>
+<h1 style="color:white;">{$_('songinfo.title')}</h1>
 
 <div id="songs">
     {#if Fetching === true}
-        <h1 style="text-align: center; color:white;">Fetching Songs... Please wait.</h1>
+        <h1 style="text-align: center; color:white;">{$_('common.loading')}</h1>
         <img src="image/loading.gif" alt="Loading" style="display:block; margin-left:auto; margin-right:auto;">
     {:else}
         {#key SongCard.AudioFilePath}
-            <SongBar 
+            <SongBar
                 Title={SongCard.Title}
                 Subtitle={SongCard.Subtitle}
                 Difficulties={SongCard.Difficulties}
@@ -219,7 +208,7 @@
 
             {#if songArtists.length > 0}
             <div class="artists-section">
-                <h3 class="artists-label">Artists</h3>
+                <h3 class="artists-label">{$_('songinfo.artists')}</h3>
                 <div class="artists-row">
                     {#each songArtists as a}
                     <Link to="/artistinfo/{a.id}" class="artist-chip">{a.name}</Link>
@@ -235,12 +224,8 @@
 
 <style>
     @keyframes slide {
-        from {
-            background-position-x: 0px;
-        }
-        to {
-            background-position-x: -1920px;
-        }
+        from { background-position-x: 0px; }
+        to   { background-position-x: -1920px; }
     }
 
     .bg_optk {
@@ -266,7 +251,6 @@
         padding-bottom: 64px;
         max-width: 900px;
     }
-
 
     .artists-section {
         margin: 8px 8px 0;
@@ -305,5 +289,4 @@
     :global(.artist-chip:hover) {
         background: rgba(255,255,255,0.3);
     }
-
 </style>

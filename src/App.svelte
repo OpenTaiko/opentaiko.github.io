@@ -1,5 +1,6 @@
 <script>
 	import { Router, Link, Route } from "svelte-routing";
+	import { _ } from "svelte-i18n";
 	import Home from "./routes/Home.svelte";
 	import Download from "./routes/Download.svelte";
 	import Songlist from "./routes/Songlist.svelte";
@@ -15,19 +16,23 @@
 	import Karting from "./routes/special/Karting.svelte";
 
 	import Footer from "./components/Footer.svelte";
+	import LangSelector from "./components/LangSelector.svelte";
+	import ScoreStyles from "./components/ScoreStyles.svelte";
 
 	export let url = "";
 </script>
 
+<ScoreStyles />
 <Router {url}>
 	<header>
-		<h3><Link to="/">Home</Link></h3>
-		<h3><Link to="/download">Download</Link></h3>
-		<h3><Link to="/songlist">Songlist</Link></h3>
-		<h3><Link to="/artists">Artists</Link></h3>
-		<h3><Link to="/hof">Hall of Fame</Link></h3>
-		<h3><a href="https://opentaiko.wiki.gg" target="_blank">Wiki</a></h3>
-		<h3><a href="https://opentaiko.blogspot.com/" target="_blank">Blog</a></h3>
+		<h3><Link to="/">{$_('nav.home')}</Link></h3>
+		<h3><Link to="/download">{$_('nav.download')}</Link></h3>
+		<h3><Link to="/songlist">{$_('nav.songlist')}</Link></h3>
+		<h3><Link to="/artists">{$_('nav.artists')}</Link></h3>
+		<h3><Link to="/hof">{$_('nav.hof')}</Link></h3>
+		<h3><a href="https://opentaiko.wiki.gg" target="_blank">{$_('nav.wiki')}</a></h3>
+		<h3><a href="https://opentaiko.blogspot.com/" target="_blank">{$_('nav.blog')}</a></h3>
+		<LangSelector />
 	</header>
 	<div class="content">
 		<Route path="/">

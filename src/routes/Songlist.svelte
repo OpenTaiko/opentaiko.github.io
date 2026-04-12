@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { _ } from 'svelte-i18n';
 
     import SongBar from "../components/SongBar.svelte";
     import { SONGLIST_GENRES } from "../lib/genres.js";
@@ -87,7 +88,7 @@
 
 <div id="bg_optk" onload={bg_optk_slide("bg_optk")}></div>
 
-<h1>Song List</h1>
+<h1>{$_('songlist.title')}</h1>
 
 <div class="content-row">
     <aside class="genre-panel">
@@ -109,7 +110,7 @@
 
     <div id="songs">
         {#if Fetching === true}
-            <h2 style="text-align:center; color:white;">Fetching Songs… Please wait.</h2>
+            <h2 style="text-align:center; color:white;">{$_('common.loading')}</h2>
             <img src="image/loading.gif" alt="Loading" style="display:block; margin:auto;">
         {:else}
             {#each SongCards as Card}

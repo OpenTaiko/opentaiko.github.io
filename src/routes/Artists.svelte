@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { Link } from "svelte-routing";
+    import { _ } from 'svelte-i18n';
     import initSqlJs from "sql.js";
 
     let loading = true;
@@ -51,23 +52,23 @@
 
 <div class="bg_optk"></div>
 
-<h1 style="color:white;">Artists</h1>
+<h1 style="color:white;">{$_('artists.title')}</h1>
 
 <div id="container">
     {#if loading}
         <div class="card">
-            <p style="text-align:center;">Loading…</p>
+            <p style="text-align:center;">{$_('artists.loading')}</p>
             <img src="/image/loading.gif" alt="Loading"
                  style="display:block;margin:0 auto;">
         </div>
     {:else}
         <div class="card">
             <div class="toolbar">
-                <p class="count-info">{filtered.length} / {artists.length} artists</p>
+                <p class="count-info">{$_('artists.count', { values: { filtered: filtered.length, total: artists.length } })}</p>
                 <input
                     class="search-input"
                     type="search"
-                    placeholder="Search artists…"
+                    placeholder={$_('artists.search')}
                     bind:value={search}
                 />
             </div>
@@ -76,12 +77,12 @@
                 <li>
                     <Link to="/artistinfo/{a.id}" class="artist-row">
                         <span class="artist-name">{a.name}</span>
-                        <span class="song-count">{a.cnt} song{a.cnt !== 1 ? 's' : ''}</span>
+                        <span class="song-count">{$_('artists.songs', { values: { count: a.cnt } })}</span>
                     </Link>
                 </li>
                 {/each}
                 {#if filtered.length === 0}
-                <li class="no-results">No artists match "{search}".</li>
+                <li class="no-results">{$_('artists.no_results', { values: { search } })}</li>
                 {/if}
             </ul>
         </div>

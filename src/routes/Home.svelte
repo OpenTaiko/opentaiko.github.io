@@ -1,10 +1,9 @@
 <script>
-
+    import { _ } from 'svelte-i18n';
 </script>
 
 <img src="../image/placeholder.png" alt="Placeholder"/>
-<h1>Under Construction</h1>
-<h1>工事中</h1>
+<h1>{$_('home.under_construction')}</h1>
 
 <style>
 

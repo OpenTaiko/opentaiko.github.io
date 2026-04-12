@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { _ } from 'svelte-i18n';
     import ButtonLink from "../components/ButtonLink.svelte";
     let Fetching = true;
 
@@ -56,95 +57,50 @@
 </script>
 
 
-<h1>Download</h1>
-<p>OpenTaiko is available for Windows, and is also available for Linux under experimental builds.</p>
+<h1>{$_('download.title')}</h1>
+<p>{$_('download.subtitle')}</p>
 
 <separator/>
 
-<h1>Installer (Recommended)</h1>
+<h1>{$_('download.installer')}</h1>
 <div class="split">
     <div class="content-center">
         <img src="image/optk-kun-box.png" alt="OpenTaiko-kun"/>
     </div>
     <div class="content-center">
         <h2>OpenTaiko Hub</h2>
-        <p>Installer & updater for the base game, songs, skins, characters, and more.</p>
-        <h3>{#if Fetching}Current Version: Fetching...{:else}Current Version: {download_version}{/if}</h3>
+        <p>{$_('download.hub_desc')}</p>
+        <h3>{$_('download.current_version', { values: { version: Fetching ? $_('download.fetching') : download_version } })}</h3>
 
         <div class="buttons">
             {#if Fetching === true}
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    logo="image/windows.png"
-                />
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    logo="image/linux.png"
-                />
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    logo="image/linux.png"
-                />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" logo="image/windows.png" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" logo="image/linux.png" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" logo="image/linux.png" />
             {:else}
-                <ButtonLink
-                    href={download_exe}
-                    text="Download (.exe)"
-                    logo="image/windows.png"
-                />
-                <ButtonLink
-                    href={download_deb}
-                    text="Download (.deb)"
-                    logo="image/linux.png"
-                />
-                <ButtonLink
-                    href={download_app}
-                    text="Download (.AppImage)"
-                    logo="image/linux.png"
-                />
+                <ButtonLink href={download_exe}  text={$_('download.download_exe')}       logo="image/windows.png" />
+                <ButtonLink href={download_deb}  text={$_('download.download_deb')}       logo="image/linux.png" />
+                <ButtonLink href={download_app}  text={$_('download.download_appimage')}  logo="image/linux.png" />
             {/if}
         </div>
     </div>
 </div>
 <separator/>
 
-<h1>Standalone</h1>
+<h1>{$_('download.standalone')}</h1>
 <div class="split">
     <div class="content-center" style="width: 25vw;">
-        <h2>Base Game</h2>
-        <p>If you prefer to not use the installer, you can download OpenTaiko by itself here.</p>
-        <p><i>This download does not come with any skins, songs, or global assets. You must download a skin separately, or else the game will not launch.</i></p>
-        <h3>{#if Fetching}Current Version: Fetching...{:else}Current Version: {game_version}{/if}</h3>
+        <h2>{$_('download.base_game')}</h2>
+        <p>{$_('download.standalone_desc1')}</p>
+        <p><i>{$_('download.standalone_desc2')}</i></p>
+        <h3>{$_('download.current_version', { values: { version: Fetching ? $_('download.fetching') : game_version } })}</h3>
         <div class="buttons">
             {#if Fetching === true}
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    logo="image/windows.png"
-                />
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    logo="image/linux.png"
-                />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" logo="image/windows.png" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" logo="image/linux.png" />
             {:else}
-                <ButtonLink
-                    href={game_win}
-                    text="Download (Windows x64)"
-                    logo="image/windows.png"
-                />
-                <ButtonLink
-                    href={game_linux}
-                    text="Download (Linux x64)"
-                    logo="image/linux.png"
-                />
+                <ButtonLink href={game_win}   text={$_('download.download_win')}   logo="image/windows.png" />
+                <ButtonLink href={game_linux} text={$_('download.download_linux')} logo="image/linux.png" />
             {/if}
         </div>
     </div>
@@ -152,43 +108,19 @@
         <img width="350px" height="288px" src="image/optk-kun.png" alt="OpenTaiko-kun"/>
     </div>
     <div class="content-center" style="width: 25vw;">
-        <h2>Skins</h2>
-        <p>Official skins created by the OpenTaiko Team. Please download at least one of these if you are using standalone builds.</p>
-        <p><i>They are not bundled with the game by default.</i></p>
-        <h3>Available Skins:</h3>
+        <h2>{$_('download.skins')}</h2>
+        <p>{$_('download.skins_desc1')}</p>
+        <p><i>{$_('download.skins_desc2')}</i></p>
+        <h3>{$_('download.available_skins')}</h3>
         <div class="buttons">
             {#if Fetching === true}
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    href="https://drive.google.com/file/d/1IHn3NQHyVonqZtCFrmIf2BEWekIEA-Kv/view?usp=drive_link"
-                />
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link"
-                />
-                <ButtonLink
-                    text="Fetching..."
-                    color1="rgb(80, 80, 80)"
-                    color2="rgb(60, 60, 60)"
-                    href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link"
-                />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://drive.google.com/file/d/1IHn3NQHyVonqZtCFrmIf2BEWekIEA-Kv/view?usp=drive_link" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link" />
             {:else}
-                <ButtonLink
-                    text="Open-World Memories (v{skinver_owm})"
-                    href="https://drive.google.com/file/d/1IHn3NQHyVonqZtCFrmIf2BEWekIEA-Kv/view?usp=drive_link"
-                />
-                <ButtonLink
-                    text="SimpleStyle (1080p) (v{skinver_simple1080})"
-                    href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link"
-                />
-                <ButtonLink
-                    text="SimpleStyle (v{skinver_simple})"
-                    href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link"
-                />
+                <ButtonLink text="Open-World Memories (v{skinver_owm})"       href="https://drive.google.com/file/d/1IHn3NQHyVonqZtCFrmIf2BEWekIEA-Kv/view?usp=drive_link" />
+                <ButtonLink text="SimpleStyle (1080p) (v{skinver_simple1080})" href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link" />
+                <ButtonLink text="SimpleStyle (v{skinver_simple})"             href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link" />
             {/if}
         </div>
     </div>
@@ -198,22 +130,12 @@
 
 <div class="split">
     <div class="content-center" style="width: 50vw;">
-        <h2>Source Code & Assets</h2>
-        <p>Open-source repositories used for OpenTaiko. The main project is licensed under the MIT License, but other assets may have differing licenses. Please refer to each project's README for further details.</p>
-        
+        <h2>{$_('download.source')}</h2>
+        <p>{$_('download.source_desc')}</p>
+
         <div class="buttons">
-            <ButtonLink
-                href="https://github.com/0auBSQ/OpenTaiko"
-                text="Main Repository"
-                color1="rgb(53, 157, 255)"
-                color2="rgb(42, 117, 255)"
-            />
-            <ButtonLink
-                href="https://github.com/OpenTaiko"
-                text="GitHub Organization"
-                color1="rgb(53, 157, 255)"
-                color2="rgb(42, 117, 255)"
-            />
+            <ButtonLink href="https://github.com/0auBSQ/OpenTaiko" text={$_('download.main_repo')}  color1="rgb(53,157,255)" color2="rgb(42,117,255)" />
+            <ButtonLink href="https://github.com/OpenTaiko"        text={$_('download.github_org')} color1="rgb(53,157,255)" color2="rgb(42,117,255)" />
         </div>
     </div>
 </div>

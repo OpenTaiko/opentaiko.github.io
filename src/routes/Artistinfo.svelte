@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { Link } from "svelte-routing";
+    import { _ } from 'svelte-i18n';
     import initSqlJs from "sql.js";
     import { genreInfo } from "../lib/genres.js";
 
@@ -82,12 +83,12 @@
 
 <div class="bg_optk"></div>
 
-<h1 style="color:white;">Artist Info</h1>
+<h1 style="color:white;">{$_('artistinfo.title')}</h1>
 
 <div id="container">
     {#if loading}
         <div class="card">
-            <p style="text-align:center;">Loading…</p>
+            <p style="text-align:center;">{$_('artists.loading')}</p>
             <img src="/image/loading.gif" alt="Loading"
                  style="display:block;margin:0 auto;">
         </div>
@@ -98,7 +99,7 @@
             <!-- Links -->
             {#if LINK_DEFS.some(l => artist[l.key]) || artist.other}
             <div class="links-section">
-                <h3 class="section-title">Links</h3>
+                <h3 class="section-title">{$_('artistinfo.links')}</h3>
                 <div class="links-row">
                     {#each LINK_DEFS as { key, label, color }}
                         {#if artist[key]}
@@ -127,10 +128,10 @@
             <!-- Song list -->
             <div class="songs-section">
                 <h3 class="section-title">
-                    {songs.length} song{songs.length !== 1 ? 's' : ''}
+                    {$_('artistinfo.songs', { values: { count: songs.length } })}
                 </h3>
                 {#if songs.length === 0}
-                    <p style="color:#666;">No songs found.</p>
+                    <p style="color:#666;">{$_('artistinfo.no_songs')}</p>
                 {:else}
                 <div class="song-list">
                     {#each songs as song}
@@ -154,7 +155,7 @@
         </div>
     {:else}
         <div class="card">
-            <p>Artist not found.</p>
+            <p>{$_('artistinfo.not_found')}</p>
         </div>
     {/if}
 </div>
@@ -284,7 +285,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: right;
-        /* Cap at ~chip width so the two side columns stay symmetric */
         max-width: 150px;
         cursor: default;
     }

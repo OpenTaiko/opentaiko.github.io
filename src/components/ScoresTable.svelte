@@ -1,5 +1,7 @@
 <script>
     import { onMount } from "svelte";
+    import { _ } from 'svelte-i18n';
+    import { statusKey } from '../i18n/index.js';
     export let SongCard;
     export let Difficulty;
     import initSqlJs from "sql.js";
@@ -12,18 +14,12 @@
             locateFile: file => `/sql-wasm.wasm`
         });
 
-        console.log(sqlPromise.locateFile());
-
         const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
         const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
-        console.log(buf);
-        console.log(SQL);
         const db = new SQL.Database(new Uint8Array(buf));
-        const result = db.exec(`SELECT * FROM scores WHERE entryId='${SongCard.UniqueId}' AND difficulty=${Difficulty} ORDER BY score DESC`);
+        const result = db.exec(`SELECT * FROM scores WHERE entryId='${SongCard.UniqueId}' AND difficulty=${Difficulty}`);
 
         rows = result[0] ? result[0].values : [];
-
-        console.log(rows);
     };
 
     let previewImg;
@@ -53,33 +49,15 @@
 
     const ScoreToListPointsRatio = (score, badRatio) => {
         let _ratio = 1;
-
         _ratio *= Math.pow(score.Accuracy, 6);
         _ratio *= Math.pow(1 - badRatio, 18);
-
         switch (score.Status) {
-            case "Perfect":
-                {
-                    break;
-                }
-            case "Full Combo":
-                {
-                    _ratio *= 0.9;
-                    break;
-                }
-            case "Clear":
-                {
-                    _ratio *= 0.7;
-                    break;
-                }
+            case "Perfect":    break;
+            case "Full Combo": _ratio *= 0.9; break;
+            case "Clear":      _ratio *= 0.7; break;
             case "Failed":
-            default:
-                {
-                    _ratio = 0;
-                    break;
-                }
+            default:           _ratio = 0; break;
         }
-
         return _ratio;
     }
 
@@ -109,6 +87,8 @@
             BestScores.push(_sample);
         })
 
+        BestScores.sort((a, b) => b.LP !== a.LP ? b.LP - a.LP : b.Score - a.Score);
+
         if (rows.length === 0) {
             _sample = {
                 Player: "Komi is testing stuff",
@@ -129,48 +109,46 @@
 
             BestScores.push(_sample);
         }
-        
     }
 
     onMount(async () => {
         await loadDatabase();
         await FetchBestScores();
-
-        console.log(BestScores);
     });
 
     const OpenSubmitForm = (e) => {
         const _url = `https://docs.google.com/forms/d/e/1FAIpQLSc-35dkvrUNdzBaoVP5JoGwpruiaypqU6IV2LV28ORlP7Bong/viewform?usp=pp_url&entry.618863437=${SongCard.Title}&entry.1494222525=${SongCard.UniqueId}&entry.1320089911=${Difficulty}`;
         window.open(_url, '_blank');
     }
-
 </script>
 
 
 <button on:click={OpenSubmitForm}>
-    Submit a score
+    {$_('scores.submit')}
 </button>
 
 <table id="scores">
     <tr>
-        <th>Player</th>
-        <th>Status</th>
-        <th>Score</th>
-        <th>Grade</th>
-        <th>Good</th>
-        <th>Ok</th>
-        <th>Bad</th>
-        <th>Accuracy</th>
+        <th>#</th>
+        <th>{$_('table.player')}</th>
+        <th>{$_('table.status')}</th>
+        <th>{$_('table.score')}</th>
+        <th>{$_('table.grade')}</th>
+        <th>{$_('table.good')}</th>
+        <th>{$_('table.ok')}</th>
+        <th>{$_('table.bad')}</th>
+        <th>{$_('table.accuracy')}</th>
         {#if SongCard.Rank[Difficulty] >= 0}
-            <th>List Points</th>
+            <th>{$_('table.list_points')}</th>
         {/if}
-        <th>Video</th>
+        <th>{$_('table.video')}</th>
     </tr>
-    {#each BestScores as BestScore}
+    {#each BestScores as BestScore, idx}
         <tr>
+            <td class={idx < 3 ? `top${idx + 1}` : ''}>#{idx + 1}</td>
             <td>{BestScore.Player}</td>
-            <td class="status{BestScore.Status.replace(/\s/g, "")}">{BestScore.Status}</td>
-            {#if BestScores.Image !== ""}
+            <td class="status{BestScore.Status.replace(/\s/g, "")}">{$_(statusKey(BestScore.Status))}</td>
+            {#if BestScore.Image !== ""}
                 <td
                     on:mouseenter={() => showPreview(BestScore.Image)}
                     on:mouseleave={hidePreview}
@@ -202,72 +180,15 @@
     {/each}
 </table>
 
-<img bind:this={previewImg} class="preview-image" />
+<img bind:this={previewImg} class="preview-image" alt="" />
 
 <style>
-    td.gradeΩ {
-        background-color: #c1b7fa;
-    }
-
-    td.gradeS {
-        background-color: #cbf9ff;
-    }
-
-    td.gradeA {
-        background-color: #b5f8e0;
-    }
-
-    td.gradeB {
-        background-color: #f9ffc2;
-    }
-
-    td.gradeC {
-        background-color: #ffe5c3;
-    }
-
-    td.gradeD {
-        background-color: #fcc2c2;
-    }
-
-    td.statusPerfect {
-        background-color: #dbc2fc;
-    }
-
-    td.statusFullCombo {
-        background-color: #fff4b4;
-    }
-
-    td.statusClear {
-        background-color: #fcc2c2;
-    }
-
-    td.statusFailed {
-        background-color: #c2e0fc;
-    }
-
-
-    #scores {
-        border-collapse: collapse;
-        width: 100%;
-        text-align: center;
-    }
-
-    #scores td, #scores th {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-
-    #scores tr:nth-child(even){background-color: #f2f2f2;}
-    #scores tr:nth-child(odd){background-color: rgb(236, 236, 236)}
-
-    #scores tr:hover {background-color: #ddd;}
-
-    #scores th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        background-color: #6455e6;
-        color: white;
-    }
+    #scores { border-collapse: collapse; width: 100%; text-align: center; }
+    #scores td, #scores th { border: 1px solid #ddd; padding: 8px; }
+    #scores tr:nth-child(even) { background-color: #f2f2f2; }
+    #scores tr:nth-child(odd)  { background-color: rgb(236,236,236); }
+    #scores tr:hover { background-color: #ddd; }
+    #scores th { padding-top: 12px; padding-bottom: 12px; background-color: #6455e6; color: white; white-space: nowrap; }
 
     .preview-image {
         position: absolute;
@@ -277,6 +198,6 @@
         max-width: 200px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
 </style>
