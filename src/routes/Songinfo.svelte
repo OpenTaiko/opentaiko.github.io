@@ -53,6 +53,21 @@
         return parseInt(base * Math.pow(decreaseRatio, rank - 1));
     }
 
+    // Derive per-difficulty HoF rank from the loaded hof.db3 rows.
+    // Each row: [..., uniqueId (col 1), difficultyIndex 0-4 (col 2), ...]
+    // The global position (idx + 1) in the ORDER BY internalDifficultyIndex DESC
+    // list is the rank shown in the HoF.
+    const GetHoFRanks = (uid) => {
+        const ranks = [-1, -1, -1, -1, -1, -1, -1];
+        rows.forEach((row, idx) => {
+            if (row[1] === uid) {
+                const diff = row[2]; // 0=Easy … 4=Edit
+                if (diff >= 0 && diff <= 4) ranks[diff] = idx + 1;
+            }
+        });
+        return ranks;
+    };
+
     const GetSongInfo = async () => {
         SongCard = {};
 
@@ -61,15 +76,7 @@
 
         if (song !== null) {
             SInfo = {
-                Rank: [
-                    song["chartHoFRanks"]?.["Easy"] ?? -1,
-                    song["chartHoFRanks"]?.["Normal"] ?? -1,
-                    song["chartHoFRanks"]?.["Hard"] ?? -1,
-                    song["chartHoFRanks"]?.["Oni"] ?? -1,
-                    song["chartHoFRanks"]?.["Edit"] ?? -1,
-                    -1,
-                    -1
-                ],
+                Rank: GetHoFRanks(UniqueId),
                 UniqueId: UniqueId,
                 Genre: GenreToCSS(song['tjaGenreFolder']),
                 Title: song["chartTitle"],
@@ -97,15 +104,7 @@
         }
         else {
             SInfo = {
-                Rank: [
-                    -1,
-                    -1,
-                    -1,
-                    -1,
-                    -1,
-                    -1,
-                    -1
-                ],
+                Rank: GetHoFRanks(UniqueId),
                 UniqueId: UniqueId,
                 Genre: 'hq',
                 Title: `Not Found`,
@@ -144,8 +143,6 @@
         await loadDatabase();
 
         GetSongInfo();
-
-        console.log(rows);
 
         // Load artist info for this song
         try {

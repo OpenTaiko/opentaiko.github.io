@@ -117,27 +117,6 @@
     });
 
 
-    const DownloadAsJson = () => {
-        let _ret = {};
-
-        SongCards.forEach((card) => {
-            let _cardObj = _ret?.[card.UniqueId] ?? {};
-
-            if (card.Difficulties[3] >= 0) _cardObj["Oni"] = card.Rank;
-            if (card.Difficulties[4] >= 0) _cardObj["Edit"] = card.Rank;
-
-            _ret[card.UniqueId] = _cardObj;
-        });
-
-        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(_ret));
-        let downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "hof.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    }
-
     const MoveToLeaderboards = (e) => {
         navigate("/leaderboards");
     }
@@ -158,13 +137,6 @@
 <h1 style="color:white;">Hall of Fame</h1>
 
 <div class="buttons">
-    <Button
-        color1="#6effe7"
-        color2="#48f7da"
-        textColor="black"
-        text="Download as json"
-        OnClick={() => DownloadAsJson()}
-    />
     <Button
         color1="#f3ff6e"
         color2="#f7e848"
