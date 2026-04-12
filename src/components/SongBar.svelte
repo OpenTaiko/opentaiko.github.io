@@ -13,6 +13,16 @@
     export let Genre;
     export let MaxListPoints;
     export let UniqueId;
+    export let BestStatus = null;
+
+    $: statusStripeStyle = (() => {
+        switch (BestStatus) {
+            case 'Perfect':    return 'background:linear-gradient(180deg,hsl(0,100%,50%),hsl(60,100%,50%),hsl(120,100%,50%),hsl(180,100%,50%),hsl(240,100%,50%),hsl(300,100%,50%),hsl(0,100%,50%));background-size:100% 300%;animation:rainbow-stripe 3s linear infinite;';
+            case 'Full Combo': return 'animation:gold-stripe 2s linear infinite;';
+            case 'Clear':      return 'background-color:#fcc2c2;';
+            default:           return 'background-color:#888;';
+        }
+    })();
 
     $: AudioLink = `https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/${AudioFilePath}`;
     $: SongDetailsUrl = `/songinfo/${UniqueId}`;
@@ -34,6 +44,7 @@
 
 <div class="song_bar {Rank !== undefined ? 'hof' : ''} {UniqueId !== undefined ? 'song_bar_clickable' : ''}" style={barStyle} on:click={MoveToSongInfo}>
     {#if Rank !== undefined}
+    <div class="status-stripe" style={statusStripeStyle}></div>
     <div class="song_bar_rank {Rank === 1 ? 'rank-gold' : Rank === 2 ? 'rank-silver' : Rank === 3 ? 'rank-bronze' : ''}">
         <span class="rank-nb">#{Rank}</span>
         <span class="rank-pts">{MaxListPoints} LP</span>
@@ -95,9 +106,15 @@
         background: var(--gc, #0d0d1a);
     }
 
-    /* HoF bars: left border stripe is black instead of chapter color */
+    /* HoF bars: no left border — the status-stripe div replaces it */
     .song_bar.hof {
-        border-left-color: #111 !important;
+        border-left: none;
+    }
+
+    .status-stripe {
+        width: 10px;
+        flex-shrink: 0;
+        align-self: stretch;
     }
 
     .song_bar_main_info {
@@ -123,7 +140,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 6px 10px 6px 18px;
+        padding: 6px 10px 6px 10px;
         gap: 4px;
         background: #15151e;
     }

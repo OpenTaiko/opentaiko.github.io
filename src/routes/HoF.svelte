@@ -9,6 +9,7 @@
 
     let db;
     let rows = [];
+    let scores = [];
 
     const loadDatabase = async () => {
         const sqlPromise = await initSqlJs({
@@ -19,9 +20,13 @@
         const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
         const db = new SQL.Database(new Uint8Array(buf));
         const result = db.exec("SELECT * FROM entries ORDER BY internalDifficultyIndex DESC");
-
         rows = result[0] ? result[0].values : [];
+
+        const scoreResult = db.exec("SELECT entryId, difficulty, status FROM scores");
+        scores = scoreResult[0] ? scoreResult[0].values : [];
     };
+
+    const STATUS_RANK = { 'Perfect': 3, 'Full Combo': 2, 'Clear': 1, 'Failed': 0 };
 
     const GenreToCSS = genreToCSS;
 
@@ -50,11 +55,21 @@
 
     const GetSongsByRank = async () => {
         SongCards = [];
+
+        // Build best-status map keyed by "uid:diff"
+        const bestStatusMap = {};
+        scores.forEach(([entryId, difficulty, status]) => {
+            const key = `${entryId}:${difficulty}`;
+            const newRank = STATUS_RANK[status] ?? -1;
+            const oldRank = STATUS_RANK[bestStatusMap[key]] ?? -1;
+            if (newRank > oldRank) bestStatusMap[key] = status;
+        });
+
         rows.forEach((row, idx) => {
             const song = GetSongByUniqueId(row[1]);
-            let SInfo = {};
-
             const rank = idx + 1;
+            const bestStatus = bestStatusMap[`${row[1]}:${row[2]}`] ?? null;
+            let SInfo = {};
 
             if (song !== null) {
                 SInfo = {
@@ -74,6 +89,7 @@
                         -1
                     ],
                     MaxListPoints: ComputeMaxListPoints(rank),
+                    BestStatus: bestStatus,
                 };
             }
             else {
@@ -86,6 +102,7 @@
                     AudioFilePath: "",
                     Difficulties: [-1, -1, -1, -1, -1, -1, -1],
                     MaxListPoints: ComputeMaxListPoints(rank),
+                    BestStatus: bestStatus,
                 };
             }
 
@@ -144,6 +161,7 @@
                     Genre={Card.Genre}
                     MaxListPoints={Card.MaxListPoints}
                     UniqueId={Card.UniqueId}
+                    BestStatus={Card.BestStatus}
                 />
             {/key}
         {/each}

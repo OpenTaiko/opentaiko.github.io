@@ -24,6 +24,15 @@
         0%   { background-position:   0% center; }
         100% { background-position: 200% center; }
     }
+    @keyframes -global-rainbow-stripe {
+        0%   { background-position: center 0%; }
+        100% { background-position: center 300%; }
+    }
+    @keyframes -global-gold-stripe {
+        0%   { background-color: #b8860b; }
+        50%  { background-color: #ffd700; }
+        100% { background-color: #b8860b; }
+    }
 
     /* ── Leaderboard rank 1 / 2 / 3 ───────────────────────────────────────── */
     :global(td.top1) { background: linear-gradient(90deg, #ffd700, #ffe066, #ffd700); background-size: 200% auto; animation: shimmer-gold   2s linear infinite; font-weight: bold; }
