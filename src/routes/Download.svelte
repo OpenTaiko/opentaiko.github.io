@@ -114,13 +114,13 @@
         <h3>{$_('download.available_skins')}</h3>
         <div class="buttons">
             {#if Fetching === true}
-                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://drive.google.com/file/d/1IHn3NQHyVonqZtCFrmIf2BEWekIEA-Kv/view?usp=drive_link" />
-                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link" />
-                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://github.com/OpenTaiko/OpenTaiko-Skins/releases/download/system-assets/Open-World.Memories.zip" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://github.com/OpenTaiko/OpenTaiko-Skins/releases/download/system-assets/SimpleStyle.1080p.zip" />
+                <ButtonLink text={$_('download.fetching')} color1="rgb(80,80,80)" color2="rgb(60,60,60)" href="https://github.com/OpenTaiko/OpenTaiko-Skins/releases/download/system-assets/SimpleStyle.zip" />
             {:else}
-                <ButtonLink text="Open-World Memories (v{skinver_owm})"       href="https://drive.google.com/file/d/1IHn3NQHyVonqZtCFrmIf2BEWekIEA-Kv/view?usp=drive_link" />
-                <ButtonLink text="SimpleStyle (1080p) (v{skinver_simple1080})" href="https://drive.google.com/file/d/1v7zjYrjJGOvfs-XLyJxZbcIHzsGhZ_BG/view?usp=drive_link" />
-                <ButtonLink text="SimpleStyle (v{skinver_simple})"             href="https://drive.google.com/file/d/1-B2Ia1lIc7qhGT9GCCApSJtVdLlsUr_r/view?usp=drive_link" />
+                <ButtonLink text="Open-World Memories (v{skinver_owm})"        href="https://github.com/OpenTaiko/OpenTaiko-Skins/releases/download/system-assets/Open-World.Memories.zip" />
+                <ButtonLink text="SimpleStyle (1080p) (v{skinver_simple1080})" href="https://github.com/OpenTaiko/OpenTaiko-Skins/releases/download/system-assets/SimpleStyle.1080p.zip" />
+                <ButtonLink text="SimpleStyle (v{skinver_simple})"             href="https://github.com/OpenTaiko/OpenTaiko-Skins/releases/download/system-assets/SimpleStyle.zip" />
             {/if}
         </div>
     </div>
