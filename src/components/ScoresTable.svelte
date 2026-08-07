@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { _ } from 'svelte-i18n';
     import { statusKey } from '../i18n/index.js';
+    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
     export let SongCard;
     export let Difficulty;
     import initSqlJs from "sql.js";
@@ -39,13 +40,6 @@
     }
 
     let BestScores = [];
-
-    const ComputeMaxListPoints = (rank) => {
-        if (rank < 0) return 0;
-        let base = 1000;
-        let decreaseRatio = 0.95;
-        return parseInt(base * Math.pow(decreaseRatio, rank - 1));
-    }
 
     const ScoreToListPointsRatio = (score, badRatio) => {
         let _ratio = 1;

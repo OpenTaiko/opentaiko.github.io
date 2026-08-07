@@ -1,17 +1,10 @@
 <script>
     import { _ } from 'svelte-i18n';
     import ScoresTable from "../components/ScoresTable.svelte";
+    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
 
     export let SongCard;
     export let Difficulty;
-
-    const ComputeMaxListPoints = (rank) => {
-        if (SongCard.Rank[Difficulty] < 0) return 0;
-
-        let base = 1000;
-        let decreaseRatio = 0.95;
-        return parseInt(base * Math.pow(decreaseRatio, rank - 1));
-    }
 </script>
 
 <div>

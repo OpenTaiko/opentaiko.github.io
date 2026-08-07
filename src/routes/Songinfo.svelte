@@ -7,6 +7,7 @@
     import DiffTab from "../components/DiffTab.svelte";
     import initSqlJs from "sql.js";
     import { genreToCSS } from "../lib/genres.js";
+    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
 
     export let UniqueId;
 
@@ -44,13 +45,6 @@
         SongsInfo = JSON.parse(text);
 
         Fetching = false;
-    }
-
-    const ComputeMaxListPoints = (rank) => {
-        if (rank <= 0) return 0;
-        let base = 1000;
-        let decreaseRatio = 0.95;
-        return parseInt(base * Math.pow(decreaseRatio, rank - 1));
     }
 
     // Derive per-difficulty HoF rank from the loaded hof.db3 rows.

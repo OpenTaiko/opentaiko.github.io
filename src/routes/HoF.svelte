@@ -6,6 +6,7 @@
     import Button from "../components/Button.svelte";
     import initSqlJs from "sql.js";
     import { genreToCSS } from "../lib/genres.js";
+    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
 
     let db;
     let rows = [];
@@ -45,12 +46,6 @@
         SongsInfo = JSON.parse(text);
 
         Fetching = false;
-    }
-
-    const ComputeMaxListPoints = (rank) => {
-        let base = 1000;
-        let decreaseRatio = 0.95;
-        return parseInt(base * Math.pow(decreaseRatio, rank - 1));
     }
 
     const GetSongsByRank = async () => {

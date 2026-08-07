@@ -4,6 +4,7 @@
     import { _ } from 'svelte-i18n';
     import { statusKey } from '../i18n/index.js';
     import initSqlJs from "sql.js";
+    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
 
     let entries = [];
     let scores = [];
@@ -35,13 +36,6 @@
         let text = (await songs_text.text()).valueOf();
         SongsInfo = JSON.parse(text);
         Fetching = false;
-    }
-
-    const ComputeMaxListPoints = (rank) => {
-        if (rank <= 0) return 0;
-        let base = 1000;
-        let decreaseRatio = 0.95;
-        return parseInt(base * Math.pow(decreaseRatio, rank - 1));
     }
 
     const ScoreToListPointsRatio = (score, badRatio) => {
