@@ -3,6 +3,7 @@ export default {
     home: 'Home',
     download: 'Download',
     songlist: 'Song List',
+    towers: 'Towers',
     artists: 'Composers',
     hof: 'Hall of Fame',
     wiki: 'Wiki',
@@ -84,6 +85,17 @@ export default {
   songlist: {
     title: 'Song List',
   },
+  towers: {
+    title: 'Taiko Towers',
+    sweet: 'Sweet',
+    spicy: 'Spicy',
+    challenge: 'Challenge',
+    sweet_desc: 'Easy tower charts for players of all skill ranges!',
+    spicy_desc: 'Difficult tower charts for true champions!',
+    challenge_desc: 'Challenges targeting very specific skills!',
+    floor_short: 'Tower',
+    empty: 'No towers in this category yet.',
+  },
   songinfo: {
     title: 'Song Info',
     artists: 'Composers',
@@ -98,9 +110,12 @@ export default {
     hard: 'HD',
     extreme: 'EX',
     extra: 'EXEX',
+    tower: 'Tower',
+    dan: 'Dan',
   },
   scores: {
     submit: 'Submit a score',
+    empty: 'No scores submitted yet — be the first!',
   },
   status: {
     perfect: 'Perfect',

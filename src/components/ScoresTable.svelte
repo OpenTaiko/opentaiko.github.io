@@ -82,27 +82,6 @@
         })
 
         BestScores.sort((a, b) => b.LP !== a.LP ? b.LP - a.LP : b.Score - a.Score);
-
-        if (rows.length === 0) {
-            _sample = {
-                Player: "Komi is testing stuff",
-                Status: "Clear",
-                Score: 923000,
-                Grade: "A",
-                Good: 910,
-                Ok: 102,
-                Bad: 12,
-                Video: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                Image: "https://i.imgur.com/a5BmHTT.png",
-            }
-
-            _sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
-            const _br = _sample.Bad / (_sample.Good + _sample.Ok + _sample.Bad);
-            _sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(SongCard.Rank[Difficulty]));
-            _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
-
-            BestScores.push(_sample);
-        }
     }
 
     onMount(async () => {
@@ -111,7 +90,7 @@
     });
 
     const OpenSubmitForm = (e) => {
-        const _url = `https://docs.google.com/forms/d/e/1FAIpQLSc-35dkvrUNdzBaoVP5JoGwpruiaypqU6IV2LV28ORlP7Bong/viewform?usp=pp_url&entry.618863437=${SongCard.Title}&entry.1494222525=${SongCard.UniqueId}&entry.1320089911=${Difficulty}`;
+        const _url = `https://docs.google.com/forms/d/e/1FAIpQLSc-35dkvrUNdzBaoVP5JoGwpruiaypqU6IV2LV28ORlP7Bong/viewform?usp=pp_url&entry.618863437=${encodeURIComponent(SongCard.Title)}&entry.1494222525=${encodeURIComponent(SongCard.UniqueId)}&entry.1320089911=${encodeURIComponent(Difficulty)}`;
         window.open(_url, '_blank');
     }
 </script>
@@ -137,6 +116,11 @@
         {/if}
         <th>{$_('table.video')}</th>
     </tr>
+    {#if BestScores.length === 0}
+        <tr>
+            <td colspan="11" class="empty-row">{$_('scores.empty')}</td>
+        </tr>
+    {/if}
     {#each BestScores as BestScore, idx}
         <tr>
             <td class={idx < 3 ? `top${idx + 1}` : ''}>#{idx + 1}</td>
@@ -193,5 +177,11 @@
         border: 1px solid #ccc;
         border-radius: 6px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .empty-row {
+        text-align: center;
+        color: rgba(0,0,0,0.55);
+        font-style: italic;
+        padding: 14px 8px;
     }
 </style>

@@ -158,8 +158,10 @@
             $_('difficulty.hard'),
             $_('difficulty.extreme'),
             $_('difficulty.extra'),
+            $_('difficulty.tower'),
+            $_('difficulty.dan'),
         ];
-        const _colors = ["#98fafa","#98fabe","#f7fa98","#fa98a1","#d198fa"];
+        const _colors = ["#98fafa","#98fabe","#f7fa98","#fa98a1","#d198fa","#fac898","#98b0fa"];
         _diff.forEach((diffName, idx) => {
             if (SongCard.Difficulties !== undefined && SongCard.Difficulties[idx] >= 0) {
                 const _tab = {
@@ -179,6 +181,12 @@
     $: tabs = SongCard && $_ ? GetTabs() : [];
 
     let initialTab = 1;
+
+    // Snap to the first available tab when the default (or an invalid ?d=)
+    // doesn't exist — e.g. Tower-only charts whose single tab has value 6.
+    $: if (tabs.length > 0 && !tabs.some(t => t.value === initialTab)) {
+        initialTab = tabs[0].value;
+    }
 
 </script>
 

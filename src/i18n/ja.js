@@ -3,6 +3,7 @@ export default {
     home: 'ホーム',
     download: 'ダウンロード',
     songlist: '曲リスト',
+    towers: '太鼓タワー',
     artists: '作曲家',
     hof: 'Hall of Fame',
     wiki: 'ウィキ',
@@ -84,6 +85,17 @@ export default {
   songlist: {
     title: '曲リスト',
   },
+  towers: {
+    title: '太鼓タワー',
+    sweet: '甘口',
+    spicy: '辛口',
+    challenge: 'チャレンジ',
+    sweet_desc: 'かんたんだよ！楽しんでね！',
+    spicy_desc: 'むずかしいよ！楽しんでね！',
+    challenge_desc: '特技に集中するチャレンジ、頑張ってね！',
+    floor_short: 'タワー',
+    empty: 'このカテゴリのタワーはまだありません。',
+  },
   songinfo: {
     title: '曲情報',
     artists: '作曲家',
@@ -98,9 +110,12 @@ export default {
     hard: 'HD',
     extreme: 'EX',
     extra: 'EXEX',
+    tower: 'タワー',
+    dan: '段位',
   },
   scores: {
     submit: 'スコアを提出する',
+    empty: 'まだスコアがありません。最初の一人になろう！',
   },
   status: {
     perfect: '全良',

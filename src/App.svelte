@@ -4,6 +4,7 @@
 	import Home from "./routes/Home.svelte";
 	import Download from "./routes/Download.svelte";
 	import Songlist from "./routes/Songlist.svelte";
+	import Towers from "./routes/Towers.svelte";
 	import Songinfo from "./routes/Songinfo.svelte";
 	import PlayerInfo from "./routes/PlayerInfo.svelte";
 	import Secret from "./routes/Secret.svelte";
@@ -28,6 +29,7 @@
 		<h3><Link to="/">{$_('nav.home')}</Link></h3>
 		<h3><Link to="/download">{$_('nav.download')}</Link></h3>
 		<h3><Link to="/songlist">{$_('nav.songlist')}</Link></h3>
+		<h3><Link to="/towers">{$_('nav.towers')}</Link></h3>
 		<h3><Link to="/artists">{$_('nav.artists')}</Link></h3>
 		<h3><Link to="/hof">{$_('nav.hof')}</Link></h3>
 		<h3><a href="https://opentaiko.wiki.gg" target="_blank">{$_('nav.wiki')}</a></h3>
@@ -43,6 +45,9 @@
 		</Route>
 		<Route path="/songlist">
 			<Songlist />
+		</Route>
+		<Route path="/towers">
+			<Towers />
 		</Route>
 		<Route path="/secret">
 			<Secret />

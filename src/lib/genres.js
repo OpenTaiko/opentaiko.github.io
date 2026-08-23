@@ -258,6 +258,41 @@ export const GENRES = [
         inSonglist:  true,
     },
     // Special categories — appear in Artistinfo chips but not in Songlist filters
+    // Tower categories (subfolders of "S2 Taiko Towers"; shown on /towers).
+    // Colors from each category's box.def #BOXCOLOR.
+    {
+        folder:      '01 - Sweet',
+        css:         'tower-sweet',
+        label:       'Tower (Sweet)',
+        bg:          '#f6ff00',
+        text:        'black',
+        btnPrimary:  '#fbff87',
+        accent:      '#f6ff00',
+        overlay:     'rgba(214,220,40,0.75)',
+        inSonglist:  false,
+    },
+    {
+        folder:      '02 - Spicy',
+        css:         'tower-spicy',
+        label:       'Tower (Spicy)',
+        bg:          '#ff5e00',
+        text:        'black',
+        btnPrimary:  '#ff8b4d',
+        accent:      '#ff5e00',
+        overlay:     'rgba(226,98,20,0.75)',
+        inSonglist:  false,
+    },
+    {
+        folder:      '03 - Challenges',
+        css:         'tower-challenge',
+        label:       'Tower (Challenges)',
+        bg:          '#c9c9c9',
+        text:        'black',
+        btnPrimary:  '#e6e6e6',
+        accent:      '#c9c9c9',
+        overlay:     'rgba(180,180,180,0.75)',
+        inSonglist:  false,
+    },
     {
         folder:      'S1 Dan-i Dojo',
         css:         'hq',

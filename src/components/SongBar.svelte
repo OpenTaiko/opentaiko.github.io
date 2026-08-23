@@ -27,6 +27,10 @@
     $: AudioLink = `https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/${AudioFilePath}`;
     $: SongDetailsUrl = `/songinfo/${UniqueId}`;
 
+    // Tower (5) / Dan (6) charts carry no regular difficulty — render their own
+    // blocks instead of five Easy–Edit ghosts.
+    $: specialDiffs = [5, 6].filter(i => (Difficulties[i] ?? -1) >= 0);
+
     $: genreData = GENRES.find(g => g.css === Genre);
     $: barStyle = genreData
         ? `--gc:${genreData.accent}; color:${genreData.text}; --overlay:${genreData.overlay}; --bar-image:url('/image/genreBar/${Genre}.png')`
@@ -68,6 +72,15 @@
                 {/if}
             {/each}
         </div>
+    {:else if specialDiffs.length > 0}
+        <!-- Tower / Dan chart: only its own block(s) -->
+        {#each specialDiffs as d, i}
+            <DifficultyBlock
+                Level={Difficulties[d]}
+                Difficulty={d}
+                roundLeft={i === 0}
+            />
+        {/each}
     {:else}
         <!-- Regular: always 5 blocks (Easy–Edit); first one rounds left -->
         {#each Array(5) as _, i}

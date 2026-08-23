@@ -3,6 +3,7 @@ export default {
     home: '主页',
     download: '下载',
     songlist: '曲目列表',
+    towers: '太鼓塔',
     artists: '作曲家',
     hof: 'Hall of Fame',
     wiki: '维基',
@@ -84,6 +85,17 @@ export default {
   songlist: {
     title: '曲目列表',
   },
+  towers: {
+    title: '太鼓塔',
+    sweet: '甜',
+    spicy: '辣',
+    challenge: '挑战',
+    sweet_desc: '简单太鼓塔谱面！无论处在何等水平，都请尽情享受吧！',
+    spicy_desc: '困难太鼓塔谱面！争做真冠军！',
+    challenge_desc: '目标为特定技能的挑战，加油！',
+    floor_short: '塔',
+    empty: '此分类暂无太鼓塔。',
+  },
   songinfo: {
     title: '曲目信息',
     artists: '作曲家',
@@ -98,9 +110,12 @@ export default {
     hard: 'HD',
     extreme: 'EX',
     extra: 'EXEX',
+    tower: '塔',
+    dan: '段位',
   },
   scores: {
     submit: '提交成绩',
+    empty: '暂无成绩，快来成为第一人吧！',
   },
   status: {
     perfect: '全良',
