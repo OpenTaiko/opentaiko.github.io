@@ -4,3 +4,4 @@
 .DS_Store
 
 public/*.bak
+scripts/plays.tsv
