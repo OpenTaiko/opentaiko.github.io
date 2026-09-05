@@ -257,6 +257,17 @@ export const GENRES = [
         overlay:     'rgba(211,109,160,0.75)',
         inSonglist:  true,
     },
+    {
+        folder:      'C07 Extraordinary Fates',
+        css:         'exfa',
+        label:       'Extraordinary Fates',
+        bg:          '#000000',
+        text:        'white',
+        btnPrimary:  '#1a1a1a',
+        accent:      '#2e2e2e',
+        overlay:     'rgba(18,18,18,0.75)',
+        inSonglist:  true,
+    },
     // Special categories — appear in Artistinfo chips but not in Songlist filters
     // Tower categories (subfolders of "S2 Taiko Towers"; shown on /towers).
     // Colors from each category's box.def #BOXCOLOR.
