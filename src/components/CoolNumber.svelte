@@ -2,8 +2,10 @@
     export let number = 10.5;
     export let color = 'red';
   
-    let intPart = Math.floor(number);
-    let showPlus = number >= 10 && (number - intPart) >= 0.5;
+    // A "+" is shown for any level whose decimal part is .5 or more,
+    // at every level (7.5 -> 7+, not just 10+).
+    $: intPart = Math.floor(number);
+    $: showPlus = (number - intPart) >= 0.5;
   </script>
   
   <style>
@@ -31,12 +33,37 @@
       top: 0;
       right: -0.2rem;
       color: white;
-      text-shadow: rgb(0, 0, 0) 2px 0px 0px, rgb(0, 0, 0) 1.75517px 0.958851px 0px, rgb(0, 0, 0) 1.0806px 1.68294px 0px, rgb(0, 0, 0) 0.141474px 1.99499px 0px, rgb(0, 0, 0) -0.832294px 1.81859px 0px, rgb(0, 0, 0) -1.60229px 1.19694px 0px, rgb(0, 0, 0) -1.97998px 0.28224px 0px, rgb(0, 0, 0) -1.87291px -0.701566px 0px, rgb(0, 0, 0) -1.30729px -1.5136px 0px, rgb(0, 0, 0) -0.421592px -1.95506px 0px, rgb(0, 0, 0) 0.567324px -1.91785px 0px, rgb(0, 0, 0) 1.41734px -1.41108px 0px, rgb(0, 0, 0) 1.92034px -0.558831px 0px;
+      /* keeps the outline layer's negative z-index inside this element */
+      isolation: isolate;
+    }
+
+    /* Outline for the "+". A text-shadow stack can't be a gradient, so the
+       glyph is drawn a second time behind: a transparent text-stroke plus
+       background-clip:text makes the gradient paint only in the stroke band,
+       and the white glyph on top hides the fill. */
+    .plus::before {
+      content: '+';
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      -webkit-text-stroke: 3px transparent;
+      /* 45deg starts the gradient at the bottom-left, so the tinted end sits
+         there and fades to black toward the top-right. The tint holds a wide
+         solid band so it covers more of the outline than the black does. */
+      background: #000;   /* fallback where color-mix is unsupported */
+      background: linear-gradient(45deg,
+                  color-mix(in srgb, var(--color) 55%, #000) 0%,
+                  color-mix(in srgb, var(--color) 55%, #000) 55%,
+                  #000 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
   
-  <div class="number-container">
-    <span class="number" style="--color: {color}">{intPart}</span>
+  <div class="number-container" style="--color: {color}">
+    <span class="number">{intPart}</span>
     {#if showPlus}
       <span class="plus">+</span>
     {/if}
