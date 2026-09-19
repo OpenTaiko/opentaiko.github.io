@@ -1,9 +1,10 @@
 <script>
     import { onMount } from "svelte";
-    import { _ } from 'svelte-i18n';
+    import { _, locale } from 'svelte-i18n';
 
     import SongBar from "../components/SongBar.svelte";
     import { SONGLIST_GENRES } from "../lib/genres.js";
+    import { localizedTitle, localizedSubtitle } from "../lib/localize.js";
 
     let activeGenre = 'ch7';
 
@@ -50,6 +51,7 @@
         GetSongsByGenre(fil).forEach(song => {
             const SInfo = {
                 Genre: genre,
+                Song: song,   // raw song: title/subtitle are localized at render
                 Title: song["chartTitle"],
                 Subtitle: song["chartSubtitle"],
                 AudioFilePath: song['chartAudioFilePath'],
@@ -116,8 +118,8 @@
             {#each SongCards as Card}
                 {#key Card.AudioFilePath}
                     <SongBar
-                        Title={Card.Title}
-                        Subtitle={Card.Subtitle}
+                        Title={localizedTitle(Card.Song, $locale)}
+                        Subtitle={localizedSubtitle(Card.Song, $locale)}
                         Difficulties={Card.Difficulties}
                         AudioFilePath={Card.AudioFilePath}
                         Genre={Card.Genre}

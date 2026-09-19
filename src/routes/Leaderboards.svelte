@@ -1,7 +1,8 @@
 <script>
     import { navigate } from 'svelte-routing';
     import { onMount } from "svelte";
-    import { _ } from 'svelte-i18n';
+    import { _, locale } from 'svelte-i18n';
+    import { pickTitle } from "../lib/localize.js";
     import { statusKey } from '../i18n/index.js';
     import initSqlJs from "sql.js";
     import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
@@ -64,6 +65,7 @@
                 const _arr = ["Easy","Normal","Hard","Oni","Edit","",""];
                 SInfo = {
                     Rank: rank, UniqueId: row[1],
+                    Song: song,   // raw song: title is localized at render
                     Title: song["chartTitle"], Subtitle: song["chartSubtitle"],
                     Level: song["chartDifficulties"]?.[_arr[difficulty]] ?? -1,
                     MaxListPoints: ComputeMaxListPoints(rank),
@@ -82,6 +84,7 @@
             const _songInfo = SongDict?.[score[1]]?.[score[2]] ?? {};
             let _sample = {
                 Rank: _songInfo?.Rank ?? -1,
+                Song: _songInfo?.Song ?? null,
                 SongTitle: _songInfo?.Title ?? "[Not Found]",
                 SongUid: _songInfo?.UniqueId ?? "[Not Found]",
                 SongLevel: _songInfo?.Level ?? -1,
@@ -170,7 +173,7 @@
             </tr>
             {#each BestScores as BestScore}
                 <tr>
-                    <td class="pointer" on:click={(e) => MoveToSongInfo(e, BestScore.SongUid)} title={SongDetailsUrl(BestScore.SongUid)}>{BestScore.SongTitle}</td>
+                    <td class="pointer" on:click={(e) => MoveToSongInfo(e, BestScore.SongUid)} title={SongDetailsUrl(BestScore.SongUid)}>{pickTitle(BestScore.Song, BestScore.SongTitle, $locale)}</td>
                     <td class="difficulty{BestScore.SongDifficulty}">{BestScore.SongDifficulty}</td>
                     <td>★{Math.floor(BestScore.SongLevel)}{BestScore.SongLevel % 1 >= 0.5 ? '+' : ''}</td>
                     <td>{BestScore.Player}</td>

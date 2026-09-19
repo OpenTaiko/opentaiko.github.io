@@ -1,7 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import { Link } from "svelte-routing";
-    import { _ } from 'svelte-i18n';
+    import { _, locale } from 'svelte-i18n';
+    import { pickTitle, pickSubtitle } from "../lib/localize.js";
     import SongBar from "../components/SongBar.svelte";
     import TabArea from "../components/TabArea.svelte";
     import DiffTab from "../components/DiffTab.svelte";
@@ -73,6 +74,7 @@
                 Rank: GetHoFRanks(UniqueId),
                 UniqueId: UniqueId,
                 Genre: GenreToCSS(song['tjaGenreFolder']),
+                Song: song,   // raw song: title/subtitle are localized at render
                 Title: song["chartTitle"],
                 Subtitle: song["chartSubtitle"],
                 AudioFilePath: song['chartAudioFilePath'],
@@ -201,8 +203,8 @@
     {:else}
         {#key SongCard.AudioFilePath}
             <SongBar
-                Title={SongCard.Title}
-                Subtitle={SongCard.Subtitle}
+                Title={pickTitle(SongCard.Song, SongCard.Title, $locale)}
+                Subtitle={pickSubtitle(SongCard.Song, SongCard.Subtitle, $locale)}
                 Difficulties={SongCard.Difficulties}
                 AudioFilePath={SongCard.AudioFilePath}
                 Genre={SongCard.Genre}

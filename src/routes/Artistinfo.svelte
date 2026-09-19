@@ -1,9 +1,10 @@
 <script>
     import { onMount } from "svelte";
     import { Link } from "svelte-routing";
-    import { _ } from 'svelte-i18n';
+    import { _, locale } from 'svelte-i18n';
     import initSqlJs from "sql.js";
     import { genreInfo } from "../lib/genres.js";
+    import { localizedTitle, localizedSubtitle } from "../lib/localize.js";
 
     export let ArtistId;
 
@@ -72,8 +73,7 @@
             .filter(s => uidSet.has(s.uniqueId))
             .map(s => ({
                 uniqueId:  s.uniqueId,
-                title:     s.chartTitle,
-                subtitle:  s.chartSubtitle,
+                song:      s,   // raw song: title/subtitle are localized at render
                 folder:    s.tjaGenreFolder,
             }));
 
@@ -142,10 +142,11 @@
                               style="background:{gi.bg};color:{gi.text}">
                             {gi.label}
                         </span>
-                        <span class="song-title">{song.title}</span>
+                        <span class="song-title">{localizedTitle(song.song, $locale)}</span>
+                        {@const sub = localizedSubtitle(song.song, $locale)}
                         <span class="song-sub"
-                              title={song.subtitle && song.subtitle !== artist.artist ? song.subtitle : ''}>
-                            {song.subtitle && song.subtitle !== artist.artist ? song.subtitle : ''}
+                              title={sub && sub !== artist.artist ? sub : ''}>
+                            {sub && sub !== artist.artist ? sub : ''}
                         </span>
                     </Link>
                     {/each}

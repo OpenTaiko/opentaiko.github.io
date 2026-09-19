@@ -1,7 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import { navigate } from 'svelte-routing';
-    import { _ } from 'svelte-i18n';
+    import { _, locale } from 'svelte-i18n';
+    import { pickTitle, pickSubtitle } from "../lib/localize.js";
     import SongBar from "../components/SongBar.svelte";
     import Button from "../components/Button.svelte";
     import initSqlJs from "sql.js";
@@ -71,6 +72,7 @@
                     Rank: rank,
                     UniqueId: row[1],
                     Genre: GenreToCSS(song['tjaGenreFolder']),
+                    Song: song,   // raw song: title/subtitle are localized at render
                     Title: song["chartTitle"],
                     Subtitle: song["chartSubtitle"],
                     AudioFilePath: song['chartAudioFilePath'],
@@ -149,8 +151,8 @@
             {#key Card.AudioFilePath}
                 <SongBar
                     Rank={Card.Rank}
-                    Title={Card.Title}
-                    Subtitle={Card.Subtitle}
+                    Title={pickTitle(Card.Song, Card.Title, $locale)}
+                    Subtitle={pickSubtitle(Card.Song, Card.Subtitle, $locale)}
                     Difficulties={Card.Difficulties}
                     AudioFilePath={Card.AudioFilePath}
                     Genre={Card.Genre}

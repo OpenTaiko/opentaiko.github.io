@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
-    import { _ } from 'svelte-i18n';
+    import { _, locale } from 'svelte-i18n';
+    import { pickTitle } from "../lib/localize.js";
     import { statusKey } from '../i18n/index.js';
     import initSqlJs from "sql.js";
     import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
@@ -61,7 +62,7 @@
             let SInfo = {};
             if (song !== null) {
                 const _arr = ["Easy","Normal","Hard","Oni","Edit","",""];
-                SInfo = { Rank: rank, UniqueId: row[1], Title: song["chartTitle"], Subtitle: song["chartSubtitle"], Level: song["chartDifficulties"]?.[_arr[difficulty]] ?? -1, MaxListPoints: ComputeMaxListPoints(rank) };
+                SInfo = { Rank: rank, UniqueId: row[1], Song: song, Title: song["chartTitle"], Subtitle: song["chartSubtitle"], Level: song["chartDifficulties"]?.[_arr[difficulty]] ?? -1, MaxListPoints: ComputeMaxListPoints(rank) };
             } else {
                 SInfo = { Rank: rank, UniqueId: row[1], Title: `#${idx+1}. Not Found`, Subtitle: "", Level: -1, MaxListPoints: ComputeMaxListPoints(rank) };
             }
@@ -76,6 +77,7 @@
             const _songInfo = SongDict?.[score[1]]?.[score[2]] ?? {};
             let _sample = {
                 Rank: _songInfo?.Rank ?? -1,
+                Song: _songInfo?.Song ?? null,
                 SongTitle: _songInfo?.Title ?? "[Not Found]",
                 SongUid: _songInfo?.UniqueId ?? "[Not Found]",
                 SongLevel: _songInfo?.Level ?? -1,
@@ -126,7 +128,7 @@
 
 {#each ["Clear", "Full Combo", "Perfect"] as st}
   {#if TopPlayerInfo[`Best${st}`] !== undefined}
-    <h3 style="color:white;">{$_('leaderboards.best_status', { values: { status: $_(statusKey(st)) } })}: {TopPlayerInfo[`Best${st}`].SongTitle} {TopPlayerInfo[`Best${st}`].SongDifficulty} (#{TopPlayerInfo[`Best${st}`].Rank})</h3>
+    <h3 style="color:white;">{$_('leaderboards.best_status', { values: { status: $_(statusKey(st)) } })}: {pickTitle(TopPlayerInfo[`Best${st}`].Song, TopPlayerInfo[`Best${st}`].SongTitle, $locale)} {TopPlayerInfo[`Best${st}`].SongDifficulty} (#{TopPlayerInfo[`Best${st}`].Rank})</h3>
   {/if}
 {/each}
 
@@ -152,7 +154,7 @@
             </tr>
             {#each BestScores as BestScore}
                 <tr>
-                    <td class="pointer" on:click={(e) => MoveToSongInfo(e, BestScore.SongUid)} title={SongDetailsUrl(BestScore.SongUid)}>{BestScore.SongTitle}</td>
+                    <td class="pointer" on:click={(e) => MoveToSongInfo(e, BestScore.SongUid)} title={SongDetailsUrl(BestScore.SongUid)}>{pickTitle(BestScore.Song, BestScore.SongTitle, $locale)}</td>
                     <td class="difficulty{BestScore.SongDifficulty}">{BestScore.SongDifficulty}</td>
                     <td>★{Math.floor(BestScore.SongLevel)}{BestScore.SongLevel % 1 >= 0.5 ? '+' : ''}</td>
                     <td>{BestScore.Player}</td>

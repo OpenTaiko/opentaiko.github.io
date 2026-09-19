@@ -1,8 +1,9 @@
 <script>
     import { onMount, tick } from "svelte";
-    import { _ } from 'svelte-i18n';
+    import { _, locale } from 'svelte-i18n';
     import SongBar from "../components/SongBar.svelte";
     import { genreInfo } from "../lib/genres.js";
+    import { localizedTitle, localizedSubtitle } from "../lib/localize.js";
 
     /**
      * Taiko Towers.
@@ -52,8 +53,7 @@
         .filter(s => s.tjaGenreFolder === active.folder)
         .map(s => ({
             floor:    floorOf(s),
-            title:    s.chartTitle,
-            subtitle: s.chartSubtitle,
+            song:     s,   // raw song: title/subtitle are localized at render
             audio:    s.chartAudioFilePath,
             uniqueId: s.uniqueId,
             difficulties: [
@@ -134,8 +134,8 @@
                             </div>
                             <div class="bar-holder">
                                 <SongBar
-                                    Title={f.title}
-                                    Subtitle={f.subtitle}
+                                    Title={localizedTitle(f.song, $locale)}
+                                    Subtitle={localizedSubtitle(f.song, $locale)}
                                     Difficulties={f.difficulties}
                                     AudioFilePath={f.audio}
                                     Genre={gi.css}
