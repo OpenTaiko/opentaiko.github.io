@@ -57,10 +57,10 @@
 </script>
 
 
-<h1>{$_('download.title')}</h1>
-<p>{$_('download.subtitle')}</p>
+<h1 class="sky-title">{$_('download.title')}</h1>
+<p class="sky-sub">{$_('download.subtitle')}</p>
 
-<separator/>
+<div class="page-wrap"><div class="panel download">
 
 <h1>{$_('download.installer')}</h1>
 <div class="split">
@@ -139,8 +139,16 @@
         </div>
     </div>
 </div>
+</div></div>
 
 <style>
+    .download {
+        text-align: center;
+        padding: 10px 20px 30px;
+    }
+    .download :global(separator) {
+        background-color: var(--line);
+    }
     .buttons, .split {
         display:flex;
         flex-direction: row;

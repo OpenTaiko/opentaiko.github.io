@@ -1,222 +1,248 @@
 <script>
-    import { navigate } from 'svelte-routing';
     import { onMount } from "svelte";
-    import { _, locale } from 'svelte-i18n';
-    import { pickTitle } from "../lib/localize.js";
-    import { statusKey } from '../i18n/index.js';
-    import initSqlJs from "sql.js";
-    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
+    import { Link } from "svelte-routing";
+    import { _ } from 'svelte-i18n';
+    import ScoreRow from "../components/ScoreRow.svelte";
+    import { fetchSoundtrack } from "../lib/soundtrack.js";
+    import { loadHof, rankedScores, topPlayers, songsByIdOf } from "../lib/hof.js";
+    import { CROWN, STATUSES, rankArt } from "../lib/skin.js";
+    import { statusKey } from "../i18n/index.js";
 
-    let entries = [];
+    let Fetching = true;
     let scores = [];
-
-    const loadDatabase = async () => {
-        const sqlPromise = await initSqlJs({ locateFile: file => `/sql-wasm.wasm` });
-        const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
-        const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
-        const db = new SQL.Database(new Uint8Array(buf));
-
-        const result_e = db.exec("SELECT * FROM entries ORDER BY internalDifficultyIndex DESC");
-        entries = result_e[0] ? result_e[0].values : [];
-
-        const result_s = db.exec(`SELECT * FROM scores`);
-        scores = result_s[0] ? result_s[0].values : [];
-    };
-
-    let Fetching = false;
-    let SongsInfo = {};
-    $: SongDict = {};
-    $: BestScores = [];
-    $: TopPlayers = [];
-
-    const GetSongByUniqueId = (uid) => {return SongsInfo.filter(song => song["uniqueId"] === uid)?.[0] ?? null}
-
-    const FetchSongs = async () => {
-        Fetching = true;
-        let songs_text = (await fetch("https://raw.githubusercontent.com/OpenTaiko/OpenTaiko-Soundtrack/refs/heads/main/soundtrack_info.json"));
-        let text = (await songs_text.text()).valueOf();
-        SongsInfo = JSON.parse(text);
-        Fetching = false;
-    }
-
-    const ScoreToListPointsRatio = (score, badRatio) => {
-        let _ratio = 1;
-        _ratio *= Math.pow(score.Accuracy, 6);
-        _ratio *= Math.pow(1 - badRatio, 18);
-        switch (score.Status) {
-            case "Perfect":    break;
-            case "Full Combo": _ratio *= 0.9; break;
-            case "Clear":      _ratio *= 0.7; break;
-            case "Failed":
-            default:           _ratio = 0; break;
-        }
-        return _ratio;
-    }
-
-    const GetSongInfo = () => {
-        SongDict = {};
-        entries.forEach((row, idx) => {
-            const uid = row[1];
-            const difficulty = row[2];
-            const rank = idx + 1;
-            const song = GetSongByUniqueId(uid);
-            let SInfo = {};
-            if (song !== null) {
-                const _arr = ["Easy","Normal","Hard","Oni","Edit","",""];
-                SInfo = {
-                    Rank: rank, UniqueId: row[1],
-                    Song: song,   // raw song: title is localized at render
-                    Title: song["chartTitle"], Subtitle: song["chartSubtitle"],
-                    Level: song["chartDifficulties"]?.[_arr[difficulty]] ?? -1,
-                    MaxListPoints: ComputeMaxListPoints(rank),
-                };
-            } else {
-                SInfo = { Rank: rank, UniqueId: row[1], Title: `#${idx+1}. Not Found`, Subtitle: "", Level: -1, MaxListPoints: ComputeMaxListPoints(rank) };
-            }
-            if (SongDict[uid] === undefined) SongDict[uid] = {};
-            SongDict[uid][difficulty] = SInfo;
-        });
-    }
-
-    const ProcessBestScores = () => {
-        BestScores = [];
-        scores.forEach((score) => {
-            const _songInfo = SongDict?.[score[1]]?.[score[2]] ?? {};
-            let _sample = {
-                Rank: _songInfo?.Rank ?? -1,
-                Song: _songInfo?.Song ?? null,
-                SongTitle: _songInfo?.Title ?? "[Not Found]",
-                SongUid: _songInfo?.UniqueId ?? "[Not Found]",
-                SongLevel: _songInfo?.Level ?? -1,
-                SongDifficulty: ["EZ","NM","HD","EX","EXEX"]?.[score[2]] ?? "EX",
-                Player: score[3], Status: score[4], Score: score[5], Grade: score[6],
-                Good: score[7], Ok: score[8], Bad: score[9], Video: score[10], Image: score[11],
-            }
-            _sample.Accuracy = (_sample.Good + _sample.Ok * 0.5) / (_sample.Good + _sample.Ok + _sample.Bad);
-            const _br = _sample.Bad / (_sample.Good + _sample.Ok + _sample.Bad);
-            _sample.LP = parseInt(ScoreToListPointsRatio(_sample, _br) * ComputeMaxListPoints(_sample.Rank));
-            _sample.Accuracy = (100 * _sample.Accuracy).toFixed(2);
-            if (_sample.SongLevel >= 0) BestScores.push(_sample);
-        });
-        BestScores.sort((a, b) => b.LP - a.LP);
-    }
-
-    const ProcessTopPlayers = () => {
-        TopPlayers = [];
-        let _tmpDict = {};
-        BestScores.forEach((score) => {
-            if (_tmpDict[score.Player] === undefined) {
-                _tmpDict[score.Player] = { Player: score.Player, LP: score.LP };
-            } else {
-                _tmpDict[score.Player].LP += score.LP;
-            }
-        })
-        TopPlayers = Object.values(_tmpDict).sort((a, b) => b.LP - a.LP);
-    }
+    let players = [];
 
     onMount(async () => {
-        await FetchSongs();
-        await loadDatabase();
-        GetSongInfo();
-        ProcessBestScores();
-        ProcessTopPlayers();
+        const [songs, hof] = await Promise.all([fetchSoundtrack(), loadHof()]);
+        scores = rankedScores(hof, songsByIdOf(songs));
+        players = topPlayers(scores);
+        Fetching = false;
     });
 
-    $: SongDetailsUrl = (UniqueId) => `/songinfo/${UniqueId}`;
-    $: PlayerInfoUrl = (Player) => `/playerinfo/${Player}`;
-
-    const MoveToSongInfo = (e, uid) => { if (uid) window.open(SongDetailsUrl(uid), '_blank'); }
-    const MoveToPlayerInfo = (e, player) => { if (player) window.open(PlayerInfoUrl(player), '_blank'); }
+    const playerUrl = (p) => `/playerinfo/${encodeURIComponent(p)}`;
 </script>
 
-<div class="bg_optk"></div>
+<h1 class="sky-title">{$_('leaderboards.title')}</h1>
+{#if !Fetching}
+    <p class="sky-sub">{$_('leaderboards.subtitle', { values: { players: players.length, scores: scores.length } })}</p>
+{/if}
 
-<h1 style="color:white;">{$_('leaderboards.title')}</h1>
-<h2 style="color:white;">{$_('leaderboards.top_players')}</h2>
-
-<div id="top_players">
-    <table id="scores">
-        <tr>
-            <th>{$_('table.rank')}</th>
-            <th>{$_('table.player')}</th>
-            <th>{$_('table.list_points')}</th>
-        </tr>
-        {#each TopPlayers as TopPlayer, idx}
-            <tr>
-                <td style="font-weight:bold" class="top{idx+1}">#{idx+1}</td>
-                <td class="pointer" on:click={(e) => MoveToPlayerInfo(e, TopPlayer.Player)}>{TopPlayer.Player}</td>
-                <td>{TopPlayer.LP}</td>
-            </tr>
-        {/each}
-    </table>
-</div>
-
-<h2 style="color:white;">{$_('leaderboards.best_scores')}</h2>
-
-<div id="songs">
-    {#if Fetching === true}
-        <h1 style="text-align: center; color:white;">{$_('common.loading')}</h1>
-        <img src="image/loading.gif" alt="Loading" style="display:block; margin-left:auto; margin-right:auto;">
+<div class="page-wrap">
+    {#if Fetching}
+        <p class="loading-note">{$_('common.loading')}</p>
     {:else}
-        <table id="scores">
-            <tr>
-                <th>{$_('table.song')}</th>
-                <th>{$_('table.difficulty')}</th>
-                <th>{$_('table.level')}</th>
-                <th>{$_('table.player')}</th>
-                <th>{$_('table.status')}</th>
-                <th>{$_('table.score')}</th>
-                <th>{$_('table.grade')}</th>
-                <th>{$_('table.accuracy')}</th>
-                <th>{$_('table.list_points')}</th>
-                <th>{$_('table.video')}</th>
-            </tr>
-            {#each BestScores as BestScore}
-                <tr>
-                    <td class="pointer" on:click={(e) => MoveToSongInfo(e, BestScore.SongUid)} title={SongDetailsUrl(BestScore.SongUid)}>{pickTitle(BestScore.Song, BestScore.SongTitle, $locale)}</td>
-                    <td class="difficulty{BestScore.SongDifficulty}">{BestScore.SongDifficulty}</td>
-                    <td>★{Math.floor(BestScore.SongLevel)}{BestScore.SongLevel % 1 >= 0.5 ? '+' : ''}</td>
-                    <td>{BestScore.Player}</td>
-                    <td class="status{BestScore.Status.replace(/\s/g, "")}">{$_(statusKey(BestScore.Status))}</td>
-                    <td title="{BestScore.Good}/{BestScore.Ok}/{BestScore.Bad}" class="pointer">{BestScore.Score}</td>
-                    <td class="grade{BestScore.Grade}">{BestScore.Grade}</td>
-                    <td>{BestScore.Accuracy}</td>
-                    <td>{BestScore.LP}</td>
-                    <td>
-                        {#if BestScore.Video !== ""}
-                            <a href={BestScore.Video} target="_blank" rel="noopener noreferrer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="black">
-                                    <path d="M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z"/>
-                                </svg>
-                            </a>
-                        {:else}
-                        X
-                        {/if}
-                    </td>
-                </tr>
+        <!-- the top three: the replay list's 1 / 2 / 3, their points, their clear badges -->
+        <div class="podium">
+            {#each players.slice(0, 3) as p, i}
+                <Link to={playerUrl(p.player)} class="top-card top-{i + 1}">
+                    <img class="top-rank" class:first={i === 0} src={rankArt(i + 1)} alt="#{i + 1}" />
+                    <div class="top-body">
+                        <div class="top-name ell" title={p.player}>{p.player}</div>
+                        <div class="top-lp"><b>{p.lp.toLocaleString('en-US')}</b> <span>{$_('leaderboards.lp_scores', { values: { count: p.count } })}</span></div>
+                        <div class="marks">
+                            {#each STATUSES as st}
+                                <span class="mark"><img src={CROWN[st]} alt={$_(statusKey(st))} title={$_(statusKey(st))} />{p.statuses[st]}</span>
+                            {/each}
+                        </div>
+                    </div>
+                </Link>
             {/each}
-        </table>
+        </div>
+
+        <div class="columns">
+            <!-- everyone else, each with their clear badges -->
+            <div class="panel players">
+                <h2>{$_('leaderboards.top_players')}</h2>
+                {#each players.slice(3) as p, i}
+                    <Link to={playerUrl(p.player)} class="player-row">
+                        <span class="pr-rank">#{i + 4}</span>
+                        <div class="pr-main">
+                            <div class="pr-name ell" title={p.player}>{p.player}</div>
+                            <div class="pr-marks">
+                                {#each STATUSES as st}
+                                    <span><img src={CROWN[st]} alt={$_(statusKey(st))} title={$_(statusKey(st))} />{p.statuses[st]}</span>
+                                {/each}
+                            </div>
+                        </div>
+                        <div class="pr-lp">
+                            <b>{p.lp.toLocaleString('en-US')}</b>
+                            <small>{$_('leaderboards.scores', { values: { count: p.count } })}</small>
+                        </div>
+                    </Link>
+                {/each}
+            </div>
+
+            <!-- every score, best first -->
+            <div class="panel best">
+                <h2>{$_('leaderboards.best_scores')}</h2>
+                {#each scores as s (s.scoreId)}
+                    <ScoreRow {s} />
+                {/each}
+            </div>
+        </div>
     {/if}
 </div>
 
 <style>
-    @keyframes slide {
-        from { background-position-x: 0px; }
-        to   { background-position-x: -1920px; }
+    .podium {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 20px;
+        text-align: left;
     }
-    .bg_optk {
-        float: right; position: fixed; height: 100vh; width: 100vw; top: -64px; z-index: -1;
-        background-color: rgb(150,150,150); background-image: url("/image/bg_songs.png");
-        background-blend-mode: multiply; background-size: cover;
-        background-repeat: repeat-x; background-attachment: fixed;
-        animation: slide 90s linear infinite;
+    .podium :global(.top-card) {
+        flex: 1 1 260px;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        border-radius: 22px;
+        border: 2px solid var(--ink);
+        color: var(--ink);
+        text-decoration: none;
+        box-shadow: 0 5px 0 var(--ink);
     }
-    #songs, #top_players { text-align: left; margin: auto; padding: 0px 100px; padding-bottom: 64px; max-width: 900px; }
-    td.pointer { cursor: pointer; }
-    #scores { border-collapse: collapse; width: 100%; text-align: center; }
-    #scores td, #scores th { border: 1px solid #ddd; padding: 8px; }
-    #scores tr:nth-child(even) { background-color: #f2f2f2; }
-    #scores tr:nth-child(odd)  { background-color: rgb(236,236,236); }
-    #scores tr:hover { background-color: #ddd; }
-    #scores th { padding-top: 12px; padding-bottom: 12px; background-color: #6455e6; color: white; white-space: nowrap; }
+    .podium :global(.top-card:hover) {
+        color: var(--ink);
+        transform: translateY(-1px);
+    }
+    .podium :global(.top-1) { flex-grow: 1.25; background: #fff4d1; }
+    .podium :global(.top-2) { background: #eef2f6; }
+    .podium :global(.top-3) { background: #fbe6d4; }
+    .top-rank {
+        height: 64px;
+        flex: none;
+        filter: drop-shadow(0 2px 0 rgba(13, 36, 64, 0.35));
+    }
+    .top-rank.first { height: 78px; }
+    .top-body {
+        min-width: 0;
+        flex: 1;
+    }
+    .top-name {
+        font-size: 19px;
+        font-weight: 500;
+    }
+    .top-lp b {
+        font-size: 28px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+    }
+    .top-lp span {
+        font-size: 13px;
+        color: var(--ink-soft);
+    }
+    .marks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        margin-top: 2px;
+    }
+    .mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+    .mark img {
+        width: 44px;
+        height: 43px;
+    }
+
+    .columns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    .panel h2 {
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0 0 10px;
+    }
+    .players {
+        flex: 1 1 320px;
+        max-width: 420px;
+        min-width: 0;
+        box-sizing: border-box;
+        padding: 14px 12px 10px 14px;
+        position: sticky;
+        top: calc(var(--header-h) + 14px);
+        max-height: calc(100vh - var(--header-h) - var(--footer-h) - 28px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+    .players :global(.player-row) {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 8px;
+        border-radius: 12px;
+        color: var(--ink);
+        text-decoration: none;
+    }
+    .players :global(.player-row:nth-child(even)) {
+        background: var(--paper-soft);
+    }
+    .players :global(.player-row:hover) {
+        background: #e3f1fc;
+        color: var(--ink);
+    }
+    .pr-rank {
+        width: 32px;
+        flex: none;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--ink-soft);
+    }
+    .pr-main {
+        flex: 1;
+        min-width: 0;
+    }
+    .pr-name {
+        font-size: 15px;
+        font-weight: 500;
+    }
+    .pr-marks {
+        display: flex;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    .pr-marks span {
+        display: inline-flex;
+        align-items: center;
+        gap: 1px;
+    }
+    .pr-marks img {
+        width: 26px;
+        height: 26px;
+    }
+    .pr-lp {
+        text-align: right;
+        line-height: 1.15;
+    }
+    .pr-lp b {
+        display: block;
+        font-size: 15px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+    }
+    .pr-lp small {
+        font-size: 11px;
+        color: var(--ink-soft);
+        white-space: nowrap;
+    }
+    .best {
+        flex: 999 1 560px;
+        min-width: 0;
+        padding: 14px 12px 6px;
+    }
+
+    @media (max-width: 900px) {
+        .players { position: static; max-height: none; max-width: none; }
+    }
 </style>

@@ -1,202 +1,99 @@
 <script>
     import { onMount } from "svelte";
-    import { navigate } from 'svelte-routing';
+    import { Link } from "svelte-routing";
     import { _, locale } from 'svelte-i18n';
     import { pickTitle, pickSubtitle } from "../lib/localize.js";
     import SongBar from "../components/SongBar.svelte";
-    import Button from "../components/Button.svelte";
-    import initSqlJs from "sql.js";
     import { genreToCSS } from "../lib/genres.js";
-    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
+    import { fetchSoundtrack } from "../lib/soundtrack.js";
+    import { loadHof, hofRows, songsByIdOf } from "../lib/hof.js";
+    import { STATUS_STRIPE } from "../lib/skin.js";
 
-    let db;
+    let Fetching = true;
     let rows = [];
-    let scores = [];
+    let playCount = 0;
 
-    const loadDatabase = async () => {
-        const sqlPromise = await initSqlJs({
-            locateFile: file => `/sql-wasm.wasm`
-        });
-
-        const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
-        const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
-        const db = new SQL.Database(new Uint8Array(buf));
-        const result = db.exec("SELECT * FROM entries ORDER BY internalDifficultyIndex DESC");
-        rows = result[0] ? result[0].values : [];
-
-        const scoreResult = db.exec("SELECT entryId, difficulty, status FROM scores");
-        scores = scoreResult[0] ? scoreResult[0].values : [];
-    };
-
-    const STATUS_RANK = { 'Perfect': 3, 'Full Combo': 2, 'Clear': 1, 'Failed': 0 };
-
-    const GenreToCSS = genreToCSS;
-
-    let Fetching = false;
-    let SongsInfo = {};
-    $: SongCards = [];
-
-    const GetSongsByGenre = (genre) => {return SongsInfo.filter(song => song["tjaGenreFolder"] === genre)}
-    const GetSongByUniqueId = (uid) => {return SongsInfo.filter(song => song["uniqueId"] === uid)?.[0] ?? null}
-
-    const FetchSongs = async () => {
-        Fetching = true;
-
-        let songs_text = (await fetch("https://raw.githubusercontent.com/OpenTaiko/OpenTaiko-Soundtrack/refs/heads/main/soundtrack_info.json"));
-        let text = (await songs_text.text()).valueOf();
-        SongsInfo = JSON.parse(text);
-
-        Fetching = false;
-    }
-
-    const GetSongsByRank = async () => {
-        SongCards = [];
-
-        // Build best-status map keyed by "uid:diff"
-        const bestStatusMap = {};
-        scores.forEach(([entryId, difficulty, status]) => {
-            const key = `${entryId}:${difficulty}`;
-            const newRank = STATUS_RANK[status] ?? -1;
-            const oldRank = STATUS_RANK[bestStatusMap[key]] ?? -1;
-            if (newRank > oldRank) bestStatusMap[key] = status;
-        });
-
-        rows.forEach((row, idx) => {
-            const song = GetSongByUniqueId(row[1]);
-            const rank = idx + 1;
-            const bestStatus = bestStatusMap[`${row[1]}:${row[2]}`] ?? null;
-            let SInfo = {};
-
-            if (song !== null) {
-                SInfo = {
-                    Rank: rank,
-                    UniqueId: row[1],
-                    Genre: GenreToCSS(song['tjaGenreFolder']),
-                    Song: song,   // raw song: title/subtitle are localized at render
-                    Title: song["chartTitle"],
-                    Subtitle: song["chartSubtitle"],
-                    AudioFilePath: song['chartAudioFilePath'],
-                    Difficulties: [
-                        (row[2] === 0) ? song["chartDifficulties"]["Easy"] : -1,
-                        (row[2] === 1) ? song["chartDifficulties"]["Normal"] : -1,
-                        (row[2] === 2) ? song["chartDifficulties"]["Hard"] : -1,
-                        (row[2] === 3) ? song["chartDifficulties"]["Oni"] : -1,
-                        (row[2] === 4) ? song["chartDifficulties"]["Edit"] : -1,
-                        -1,
-                        -1
-                    ],
-                    MaxListPoints: ComputeMaxListPoints(rank),
-                    BestStatus: bestStatus,
-                };
-            }
-            else {
-                SInfo = {
-                    Rank: rank,
-                    UniqueId: row[1],
-                    Genre: 'hq',
-                    Title: `#${idx+1}. Not Found`,
-                    Subtitle: "",
-                    AudioFilePath: "",
-                    Difficulties: [-1, -1, -1, -1, -1, -1, -1],
-                    MaxListPoints: ComputeMaxListPoints(rank),
-                    BestStatus: bestStatus,
-                };
-            }
-
-            SongCards.push(SInfo);
-        });
-    }
+    const legend = ['Clear', 'Full Combo', 'Perfect'];
 
     onMount(async () => {
-        await FetchSongs();
-        await loadDatabase();
-        GetSongsByRank();
+        const [songs, hof] = await Promise.all([fetchSoundtrack(), loadHof()]);
+        rows = hofRows(hof, songsByIdOf(songs));
+        playCount = hof.scores.length;
+        Fetching = false;
     });
 
-    const MoveToLeaderboards = (e) => {
-        navigate("/leaderboards");
-    }
-
-    const bg_optk_slide = (id) => {
-        requestAnimationFrame(slide)
-        function slide() {
-            const pos = (performance.now() / 90000) * window.screen.width
-            const bg = document.getElementById(id)
-            if (bg != null)
-                bg.style.backgroundPositionX = -pos + "px"
-            requestAnimationFrame(slide)
-        }
-    }
+    // the bar shows only the ranked course
+    const coursesOf = (r) => [0, 1, 2, 3, 4, 5, 6].map(i => (i === r.course && r.level >= 0) ? r.level : -1);
 </script>
 
-<div id="bg_optk" onload={bg_optk_slide("bg_optk")}></div>
-<h1 style="color:white;">{$_('hof.title')}</h1>
+<h1 class="sky-title">{$_('hof.title')}</h1>
+{#if !Fetching}
+    <p class="sky-sub">{$_('hof.subtitle', { values: { charts: rows.length, plays: playCount } })}</p>
+{/if}
 
-<div class="buttons">
-    <Button
-        color1="#f3ff6e"
-        color2="#f7e848"
-        textColor="black"
-        text={$_('leaderboards.title')}
-        OnClick={() => MoveToLeaderboards()}
-    />
-</div>
+<div class="page-wrap hof">
+    <div class="top">
+        <!-- the stripe on each bar: the best status anyone has on that chart -->
+        <div class="legend">
+            {#each legend as st}
+                <span class="key"><span class="key-stripe" style="background:{STATUS_STRIPE[st]}"></span>{$_(`status.${st.toLowerCase().replace(/ /g, '_')}`)}</span>
+            {/each}
+        </div>
+        <Link to="/leaderboards" class="sun-button">{$_('leaderboards.title')}</Link>
+    </div>
 
-<div id="songs">
-    {#if Fetching === true}
-        <h1 style="text-align: center; color:white;">{$_('common.loading')}</h1>
-        <img src="image/loading.gif" alt="Loading" style="display:block; margin-left:auto; margin-right:auto;">
+    {#if Fetching}
+        <p class="loading-note">{$_('common.loading')}</p>
     {:else}
-        {#each SongCards as Card}
-            {#key Card.AudioFilePath}
-                <SongBar
-                    Rank={Card.Rank}
-                    Title={pickTitle(Card.Song, Card.Title, $locale)}
-                    Subtitle={pickSubtitle(Card.Song, Card.Subtitle, $locale)}
-                    Difficulties={Card.Difficulties}
-                    AudioFilePath={Card.AudioFilePath}
-                    Genre={Card.Genre}
-                    MaxListPoints={Card.MaxListPoints}
-                    UniqueId={Card.UniqueId}
-                    BestStatus={Card.BestStatus}
-                />
-            {/key}
+        {#each rows as r (r.uid + ':' + r.course)}
+            <SongBar
+                Rank={r.rank}
+                Title={r.song ? pickTitle(r.song, '', $locale) : $_('common.not_found')}
+                Subtitle={r.song ? pickSubtitle(r.song, '', $locale) : ''}
+                Difficulties={coursesOf(r)}
+                AudioFilePath={r.song?.chartAudioFilePath ?? ''}
+                Genre={r.song ? genreToCSS(r.song.tjaGenreFolder) : 'hq'}
+                MaxListPoints={r.maxLp}
+                UniqueId={r.uid}
+                BestStatus={r.best}
+                Plays={r.plays}
+            />
         {/each}
     {/if}
 </div>
 
 <style>
-    #bg_optk {
-        float: right;
-        position: fixed;
-        height: 100vh;
-        width: 100vw;
-        top: -64px;
-        z-index: -1;
-        background-color: rgb(150, 150, 150);
-        background-image: url("/image/bg_songs.png");
-        background-blend-mode: multiply;
-        background-size: cover;
-        background-repeat: repeat-x;
-        background-attachment: fixed;
+    .hof {
+        max-width: 980px;
     }
-
-    #songs {
-        text-align: left;
-        margin: auto;
-        padding: 0px 100px;
-        padding-bottom: 64px;
-        max-width: 900px;
-    }
-
-    .buttons {
-        display:flex;
-        flex-direction: row;
+    .top {
+        display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        vertical-align: middle;
-        margin: 0px auto;
-        padding: 0px auto;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 4px 0 14px;
     }
-
+    .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .key {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 4px 12px 4px 5px;
+        border-radius: 999px;
+        background: #ffffff;
+        border: 2px solid var(--ink);
+        font-size: 12px;
+        font-weight: 500;
+    }
+    .key-stripe {
+        width: 8px;
+        height: 18px;
+        border-radius: 4px;
+        border: 1.5px solid var(--ink);
+    }
 </style>

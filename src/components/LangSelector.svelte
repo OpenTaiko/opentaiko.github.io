@@ -24,27 +24,26 @@
 
 <style>
     .lang-selector {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
+        flex: none;
+        margin-left: auto;
     }
 
     select {
+        margin: 0;
         background: rgba(255, 255, 255, 0.18);
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 5px;
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
         color: white;
-        font-size: 0.78em;
-        font-weight: 600;
-        padding: 4px 8px;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 4px 12px;
         cursor: pointer;
         outline: none;
     }
 
     select option {
-        background: #333;
-        color: white;
+        background: #ffffff;
+        color: #0d2440;
     }
 
     select:hover {

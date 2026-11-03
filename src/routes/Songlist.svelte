@@ -5,233 +5,170 @@
     import SongBar from "../components/SongBar.svelte";
     import { SONGLIST_GENRES } from "../lib/genres.js";
     import { localizedTitle, localizedSubtitle } from "../lib/localize.js";
+    import { fetchSoundtrack, hideForLocale } from "../lib/soundtrack.js";
 
-    let activeGenre = 'ch7';
+    let activeCss = 'ch7';
+    let Fetching = true;
+    let SongsInfo = [];
 
-    const AvailableGenres = [
-        ...SONGLIST_GENRES.map(g => ({
-            color1:    g.btnPrimary,
-            color2:    g.bg,
-            textColor: g.text,
-            text:      g.btnLabel ?? g.label,
-            css:       g.css,
-            OnClick:   () => FilterSongs(g.css, g.folder),
-        })),
-        {
-            color1: '#333', color2: '#111', textColor: 'white',
-            text: '???',
-            css:  '???',
-            OnClick: () => window.location.replace('secret'),
-        },
-    ];
-
-    let Fetching = false;
-    let SongsInfo = {};
-    $: SongCards = [];
-
-    const GetSongsByGenre = (genre) => {return SongsInfo.filter(song => song["tjaGenreFolder"] === genre)}
-
-    const FetchSongs = async () => {
-        Fetching = true;
-
-        let songs_text = (await fetch("https://raw.githubusercontent.com/OpenTaiko/OpenTaiko-Soundtrack/refs/heads/main/soundtrack_info.json"));
-        let text = (await songs_text.text()).valueOf();
-        SongsInfo = JSON.parse(text);
-
-        if (navigator.language === "zh-CN") {
-            SongsInfo = SongsInfo.filter(song => song["uniqueId"] != "losTPEtAlSwANDERRBHLiXoUNdsetSUnaN")
-        }
-
-        Fetching = false;
-    }
-
-    const FilterSongs = async (genre, fil) => {
-        activeGenre = genre;
-        SongCards = [];
-        GetSongsByGenre(fil).forEach(song => {
-            const SInfo = {
-                Genre: genre,
-                Song: song,   // raw song: title/subtitle are localized at render
-                Title: song["chartTitle"],
-                Subtitle: song["chartSubtitle"],
-                AudioFilePath: song['chartAudioFilePath'],
-                Difficulties: [
-                    song["chartDifficulties"]["Easy"] ?? -1,
-                    song["chartDifficulties"]["Normal"] ?? -1,
-                    song["chartDifficulties"]["Hard"] ?? -1,
-                    song["chartDifficulties"]["Oni"] ?? -1,
-                    song["chartDifficulties"]["Edit"] ?? -1,
-                    song["chartDifficulties"]["Tower"] ?? -1,
-                    song["chartDifficulties"]["Dan"] ?? -1
-                ],
-                UniqueId: song["uniqueId"],
-            };
-
-            SongCards.push(SInfo);
-        });
-    }
+    $: active = SONGLIST_GENRES.find(g => g.css === activeCss) ?? SONGLIST_GENRES[0];
+    $: cards = SongsInfo
+        .filter(song => song.tjaGenreFolder === active.folder)
+        .map(song => ({
+            song,
+            audio: song.chartAudioFilePath,
+            uid: song.uniqueId,
+            difficulties: ['Easy', 'Normal', 'Hard', 'Oni', 'Edit', 'Tower', 'Dan']
+                .map(k => song.chartDifficulties?.[k] ?? -1),
+        }));
 
     onMount(async () => {
-        await FetchSongs();
-        FilterSongs("ch7", "07 OpenTaiko Chapter VII");
+        SongsInfo = hideForLocale(await fetchSoundtrack());
+        Fetching = false;
     });
-
-    const bg_optk_slide = (id) => {
-        requestAnimationFrame(slide)
-        function slide() {
-            const pos = (performance.now() / 90000) * window.screen.width
-            const bg = document.getElementById(id)
-            if (bg != null)
-                bg.style.backgroundPositionX = -pos + "px"
-            requestAnimationFrame(slide)
-        }
-    }
 </script>
 
-<div id="bg_optk" onload={bg_optk_slide("bg_optk")}></div>
+<h1 class="sky-title">{$_('songlist.title')}</h1>
 
-<h1>{$_('songlist.title')}</h1>
-
-<div class="content-row">
-    <aside class="genre-panel">
-        {#each AvailableGenres as GBox}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div
-                class="genre-item"
-                class:active={activeGenre === GBox.css}
-                style="--swatch:{GBox.color2}; --active-bg:{GBox.color2}; --active-text:{GBox.textColor}"
-                on:click={GBox.OnClick}
-                role="button"
-                tabindex="0"
-            >
-                <span class="genre-swatch"></span>
-                <span class="genre-label">{GBox.text}</span>
-            </div>
-        {/each}
-    </aside>
-
-    <div id="songs">
-        {#if Fetching === true}
-            <h2 style="text-align:center; color:white;">{$_('common.loading')}</h2>
-            <img src="image/loading.gif" alt="Loading" style="display:block; margin:auto;">
-        {:else}
-            {#each SongCards as Card}
-                {#key Card.AudioFilePath}
-                    <SongBar
-                        Title={localizedTitle(Card.Song, $locale)}
-                        Subtitle={localizedSubtitle(Card.Song, $locale)}
-                        Difficulties={Card.Difficulties}
-                        AudioFilePath={Card.AudioFilePath}
-                        Genre={Card.Genre}
-                        UniqueId={Card.UniqueId}
-                    />
-                {/key}
+<div class="page-wrap">
+    <div class="panel songlist">
+        <aside class="genres">
+            {#each SONGLIST_GENRES as g}
+                <button
+                    type="button"
+                    class="genre"
+                    class:on={activeCss === g.css}
+                    style="--swatch:{g.bg}"
+                    on:click={() => activeCss = g.css}
+                >
+                    <span class="swatch"></span>
+                    <span class="ell" title={g.btnLabel ?? g.label}>{g.btnLabel ?? g.label}</span>
+                </button>
             {/each}
-        {/if}
+            <button type="button" class="genre" style="--swatch:#111111" on:click={() => window.location.replace('secret')}>
+                <span class="swatch"></span><span>???</span>
+            </button>
+        </aside>
+
+        <div class="songs">
+            <div class="songs-head">
+                <span class="songs-title">{active.btnLabel ?? active.label}</span>
+                {#if !Fetching}<span class="songs-count">{$_('songlist.count', { values: { count: cards.length } })}</span>{/if}
+            </div>
+            {#if Fetching}
+                <p class="waiting">{$_('common.loading')}</p>
+            {:else}
+                {#each cards as c (c.uid)}
+                    <SongBar
+                        Title={localizedTitle(c.song, $locale)}
+                        Subtitle={localizedSubtitle(c.song, $locale)}
+                        Difficulties={c.difficulties}
+                        AudioFilePath={c.audio}
+                        Genre={active.css}
+                        UniqueId={c.uid}
+                    />
+                {/each}
+            {/if}
+        </div>
     </div>
 </div>
 
 <style>
-    #bg_optk {
-        float: right;
-        position: fixed;
-        height: 100vh;
-        width: 100vw;
-        top: -64px;
-        z-index: -1;
-        background-color: rgb(150, 150, 150);
-        background-image: url("/image/bg_songs.png");
-        background-blend-mode: multiply;
-        background-size: cover;
-        background-repeat: repeat-x;
-        background-attachment: fixed;
-    }
-
-    h1 {
-        text-align: center;
-        color: white;
-        margin: 8px 0 12px;
-    }
-
-    /* ── Shared container — sidebar + songs in one box ── */
-    .content-row {
+    .songlist {
         display: flex;
-        gap: 0;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0;
+        flex-wrap: wrap;
         align-items: flex-start;
-        background: rgba(10, 10, 22, 0.78);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        /* clip-path instead of overflow:hidden — lets sticky work inside */
-        clip-path: inset(0 round 14px);
+        /* clip-path, not overflow: hidden, so the genre list can stay sticky */
+        clip-path: inset(0 round 20px);
+        /* the genre column's tint runs the full height even while the list itself sticks */
+        background: linear-gradient(90deg, #eef7fe 0 236px, var(--line) 236px 238px, #ffffff 238px);
     }
 
-    /* ── Genre sidebar ─────────────────────────────── */
-    .genre-panel {
-        width: 250px;
-        flex-shrink: 0;
-        position: sticky;
-        top: 68pt;
-        /* subtract fixed header (68pt) + footer clearance (76px) */
-        height: calc(100vh - 68pt - 76px);
+    .genres {
+        width: 236px;
+        flex: none;
         box-sizing: border-box;
+        position: sticky;
+        top: calc(var(--header-h) + 14px);
+        max-height: calc(100vh - var(--header-h) - var(--footer-h) - 28px);
         overflow-y: auto;
         scrollbar-width: thin;
-        scrollbar-color: rgba(255,255,255,0.2) transparent;
-        background: rgba(0, 0, 0, 0.28);
-        border-right: 1px solid rgba(255,255,255,0.1);
-        padding: 16px 8px;
+        padding: 13px 10px;
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 5px;
     }
-
-    .genre-item {
+    .genre {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 9px;
+        margin: 0;
         padding: 8px 12px;
-        border-radius: 10px;
-        background: transparent;
-        color: rgba(255,255,255,0.82);
-        font-size: 0.85em;
-        font-weight: 600;
+        border-radius: 999px;
+        border: 2px solid var(--line);
+        background: #ffffff;
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 500;
+        text-align: left;
         cursor: pointer;
-        transition: background 0.14s, transform 0.1s, color 0.14s;
-        user-select: none;
-    }
-
-    .genre-item:hover {
-        background: rgba(255,255,255,0.11);
-        color: white;
-    }
-
-    .genre-item.active {
-        background: var(--active-bg);
-        color: var(--active-text);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.45);
-        transform: translateX(3px);
-    }
-
-    .genre-swatch {
-        width: 11px;
-        height: 11px;
-        border-radius: 3px;
-        background: var(--swatch);
-        flex-shrink: 0;
-        border: 1px solid rgba(255,255,255,0.35);
-    }
-
-    .genre-label {
-        white-space: nowrap;
-    }
-
-    /* ── Song list ─────────────────────────────────── */
-    #songs {
-        flex: 1;
         min-width: 0;
-        padding: 6px 16px 64px 8px;
+    }
+    .genre:hover {
+        border-color: var(--ink-soft);
+    }
+    /* the selected genre is yellow; its own colour stays in the swatch, so dark genres stay readable */
+    .genre.on {
+        background: var(--sun);
+        border-color: var(--ink);
+        box-shadow: 0 2px 0 var(--ink);
+    }
+    .swatch {
+        width: 12px;
+        height: 12px;
+        flex: none;
+        border-radius: 4px;
+        background: var(--swatch);
+        border: 1.5px solid rgba(13, 36, 64, 0.45);
+    }
+
+    .songs {
+        flex: 999 1 560px;
+        min-width: 0;
+        padding: 13px 15px 6px;
+    }
+    .songs-head {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        padding: 0 4px 10px;
+    }
+    .songs-title {
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .songs-count {
+        font-size: 13px;
+        color: var(--ink-soft);
+    }
+    .waiting {
+        text-align: center;
+        color: var(--ink-soft);
+        padding: 30px 0;
+    }
+
+    /* phones: the genres become a wrapping row of pills above the songs */
+    @media (max-width: 820px) {
+        .songlist { background: #ffffff; }
+        .genres {
+            width: 100%;
+            position: static;
+            max-height: none;
+            flex-direction: row;
+            flex-wrap: wrap;
+            background: #eef7fe;
+            border-bottom: 2px solid var(--line);
+        }
+        .genre { flex: 0 1 auto; }
     }
 </style>

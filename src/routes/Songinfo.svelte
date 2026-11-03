@@ -2,206 +2,109 @@
     import { onMount } from "svelte";
     import { Link } from "svelte-routing";
     import { _, locale } from 'svelte-i18n';
+    import initSqlJs from "sql.js";
     import { pickTitle, pickSubtitle } from "../lib/localize.js";
     import SongBar from "../components/SongBar.svelte";
     import TabArea from "../components/TabArea.svelte";
     import DiffTab from "../components/DiffTab.svelte";
-    import initSqlJs from "sql.js";
     import { genreToCSS } from "../lib/genres.js";
-    import { computeMaxListPoints as ComputeMaxListPoints } from "../lib/listPoints.js";
+    import { fetchSoundtrack } from "../lib/soundtrack.js";
+    import { loadHof } from "../lib/hof.js";
 
     export let UniqueId;
 
-    let db;
-    let rows = [];
+    const KEYS = ['Easy', 'Normal', 'Hard', 'Oni', 'Edit', 'Tower', 'Dan'];
+    // the course colours of the skin (Easy … Edit), then Tower and Dan
+    const TAB_COLORS = ['#88d2fd', '#58de85', '#ffc224', '#d80b2c', '#9065e2', '#e9943b', '#3b55a5'];
+    const TAB_INK = ['#0d2440', '#0d2440', '#0d2440', '#ffffff', '#ffffff', '#0d2440', '#ffffff'];
 
-    const loadDatabase = async () => {
-        const sqlPromise = await initSqlJs({
-            locateFile: file => `/sql-wasm.wasm`
-        });
-
-        const dataPromise = fetch("/hof.db3").then(res => res.arrayBuffer());
-        const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
-        const db = new SQL.Database(new Uint8Array(buf));
-        const result = db.exec("SELECT * FROM entries ORDER BY internalDifficultyIndex DESC");
-
-        rows = result[0] ? result[0].values : [];
-    };
-
-    const GenreToCSS = genreToCSS;
-
+    let Fetching = true;
+    let SongCard = {};
     let songArtists = [];
-
-    let Fetching = false;
-    let SongsInfo = {};
-    $: SongCard = {};
-
-    const GetSongByUniqueId = (uid) => {return SongsInfo.filter(song => song["uniqueId"] === uid)?.[0] ?? null}
-
-    const FetchSongs = async () => {
-        Fetching = true;
-
-        let songs_text = (await fetch("https://raw.githubusercontent.com/OpenTaiko/OpenTaiko-Soundtrack/refs/heads/main/soundtrack_info.json"));
-        let text = (await songs_text.text()).valueOf();
-        SongsInfo = JSON.parse(text);
-
-        Fetching = false;
-    }
-
-    // Derive per-difficulty HoF rank from the loaded hof.db3 rows.
-    // Each row: [..., uniqueId (col 1), difficultyIndex 0-4 (col 2), ...]
-    // The global position (idx + 1) in the ORDER BY internalDifficultyIndex DESC
-    // list is the rank shown in the HoF.
-    const GetHoFRanks = (uid) => {
-        const ranks = [-1, -1, -1, -1, -1, -1, -1];
-        rows.forEach((row, idx) => {
-            if (row[1] === uid) {
-                const diff = row[2]; // 0=Easy … 4=Edit
-                if (diff >= 0 && diff <= 4) ranks[diff] = idx + 1;
-            }
-        });
-        return ranks;
-    };
-
-    const GetSongInfo = async () => {
-        SongCard = {};
-
-        const song = GetSongByUniqueId(UniqueId);
-        let SInfo = {};
-
-        if (song !== null) {
-            SInfo = {
-                Rank: GetHoFRanks(UniqueId),
-                UniqueId: UniqueId,
-                Genre: GenreToCSS(song['tjaGenreFolder']),
-                Song: song,   // raw song: title/subtitle are localized at render
-                Title: song["chartTitle"],
-                Subtitle: song["chartSubtitle"],
-                AudioFilePath: song['chartAudioFilePath'],
-                Difficulties: [
-                    song["chartDifficulties"]["Easy"] ?? -1,
-                    song["chartDifficulties"]["Normal"] ?? -1,
-                    song["chartDifficulties"]["Hard"] ?? -1,
-                    song["chartDifficulties"]["Oni"] ?? -1,
-                    song["chartDifficulties"]["Edit"] ?? -1,
-                    song["chartDifficulties"]["Tower"] ?? -1,
-                    song["chartDifficulties"]["Dan"] ?? -1
-                ],
-                Charters: [
-                    song["chartMakers"]["Easy"] ?? "",
-                    song["chartMakers"]["Normal"] ?? "",
-                    song["chartMakers"]["Hard"] ?? "",
-                    song["chartMakers"]["Oni"] ?? "",
-                    song["chartMakers"]["Edit"] ?? "",
-                    song["chartMakers"]["Tower"] ?? "",
-                    song["chartMakers"]["Dan"] ?? ""
-                ],
-            };
-        }
-        else {
-            SInfo = {
-                Rank: GetHoFRanks(UniqueId),
-                UniqueId: UniqueId,
-                Genre: 'hq',
-                Title: `Not Found`,
-                Subtitle: "",
-                AudioFilePath: "",
-                Difficulties: [-1, -1, -1, -1, -1, -1, -1],
-                Charters: ["", "", "", "", "", "", ""],
-            };
-        }
-
-        SongCard = SInfo;
-    }
+    let initialTab = 1;
 
     onMount(async () => {
         const params = new URLSearchParams(window.location.search);
         const d = params.get('d');
         if (d !== null) initialTab = Number(d) + 1;
 
-        await FetchSongs();
-        await loadDatabase();
+        const [songs, hof] = await Promise.all([fetchSoundtrack(), loadHof()]);
+        const song = songs.find(s => s.uniqueId === UniqueId) ?? null;
 
-        GetSongInfo();
+        // per-course Hall of Fame rank: the chart's position in the hardest-first list
+        const ranks = [-1, -1, -1, -1, -1, -1, -1];
+        hof.entries.forEach((row, idx) => {
+            if (row[1] === UniqueId && row[2] >= 0 && row[2] <= 4) ranks[row[2]] = idx + 1;
+        });
 
-        // Load artist info for this song
+        SongCard = song !== null
+            ? {
+                Rank: ranks, UniqueId, Song: song,
+                Genre: genreToCSS(song.tjaGenreFolder),
+                Title: song.chartTitle, Subtitle: song.chartSubtitle,
+                AudioFilePath: song.chartAudioFilePath,
+                Difficulties: KEYS.map(k => song.chartDifficulties?.[k] ?? -1),
+                Charters: KEYS.map(k => song.chartMakers?.[k] ?? ''),
+            }
+            : {
+                Rank: ranks, UniqueId, Song: null, Genre: 'hq',
+                Title: $_('common.not_found'), Subtitle: '', AudioFilePath: '',
+                Difficulties: [-1, -1, -1, -1, -1, -1, -1], Charters: ['', '', '', '', '', '', ''],
+            };
+        Fetching = false;
+
+        // the song's composers
         try {
             const SQL = await initSqlJs({ locateFile: () => '/sql-wasm.wasm' });
-            const artistsBuf = await fetch('/artists_info.db3').then(r => r.arrayBuffer());
-            const artistsDb = new SQL.Database(new Uint8Array(artistsBuf));
-
-            const sRes = artistsDb.exec(
-                `SELECT artists FROM songs WHERE songUid = '${UniqueId}'`
-            );
+            const buf = await fetch('/artists_info.db3').then(r => r.arrayBuffer());
+            const db = new SQL.Database(new Uint8Array(buf));
+            const sRes = db.exec('SELECT artists FROM songs WHERE songUid = $uid', { $uid: UniqueId });
             if (sRes[0]?.values?.[0]?.[0]) {
-                const artistIds = JSON.parse(sRes[0].values[0][0]);
-                if (artistIds.length > 0) {
-                    const ids = artistIds.join(',');
-                    const aRes = artistsDb.exec(
-                        `SELECT entryId, artist FROM artists WHERE entryId IN (${ids})`
-                    );
+                const ids = JSON.parse(sRes[0].values[0][0]).map(Number).filter(Number.isInteger);
+                if (ids.length > 0) {
+                    const aRes = db.exec(`SELECT entryId, artist FROM artists WHERE entryId IN (${ids.join(',')})`);
                     if (aRes[0]) {
-                        songArtists = aRes[0].values.map(([id, name]) => ({ id, name }));
-                        songArtists.sort((a, b) => artistIds.indexOf(a.id) - artistIds.indexOf(b.id));
+                        songArtists = aRes[0].values
+                            .map(([id, name]) => ({ id, name }))
+                            .sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
                     }
                 }
             }
-            artistsDb.close();
+            db.close();
         } catch (e) {
             console.error('Failed to load artist info:', e);
         }
     });
 
-    const GetTabs = () => {
-        let _ret = [];
-        const _diff = [
-            $_('difficulty.easy'),
-            $_('difficulty.normal'),
-            $_('difficulty.hard'),
-            $_('difficulty.extreme'),
-            $_('difficulty.extra'),
-            $_('difficulty.tower'),
-            $_('difficulty.dan'),
-        ];
-        const _colors = ["#98fafa","#98fabe","#f7fa98","#fa98a1","#d198fa","#fac898","#98b0fa"];
-        _diff.forEach((diffName, idx) => {
-            if (SongCard.Difficulties !== undefined && SongCard.Difficulties[idx] >= 0) {
-                const _tab = {
-                    label: diffName,
-                    value: idx + 1,
-                    component: DiffTab,
-                    color: _colors[idx],
-                    props: {SongCard: SongCard, Difficulty:idx},
-                };
-                _ret.push(_tab);
-            }
-        });
-        return _ret;
-    }
-
     let tabs = [];
-    $: tabs = SongCard && $_ ? GetTabs() : [];
+    $: tabs = SongCard.Difficulties && $_
+        ? ['easy', 'normal', 'hard', 'extreme', 'extra', 'tower', 'dan']
+            .map((k, idx) => ({ k, idx }))
+            .filter(({ idx }) => SongCard.Difficulties[idx] >= 0)
+            .map(({ k, idx }) => ({
+                label: $_(`difficulty.${k}`),
+                value: idx + 1,
+                component: DiffTab,
+                color: TAB_COLORS[idx],
+                ink: TAB_INK[idx],
+                props: { SongCard, Difficulty: idx },
+            }))
+        : [];
 
-    let initialTab = 1;
-
-    // Snap to the first available tab when the default (or an invalid ?d=)
-    // doesn't exist — e.g. Tower-only charts whose single tab has value 6.
+    // snap to the first available tab when the default (or an invalid ?d=) doesn't exist,
+    // e.g. Tower-only charts whose single tab has value 6
     $: if (tabs.length > 0 && !tabs.some(t => t.value === initialTab)) {
         initialTab = tabs[0].value;
     }
-
 </script>
 
-<div class="bg_optk"></div>
+<h1 class="sky-title">{$_('songinfo.title')}</h1>
 
-<h1 style="color:white;">{$_('songinfo.title')}</h1>
-
-<div id="songs">
-    {#if Fetching === true}
-        <h1 style="text-align: center; color:white;">{$_('common.loading')}</h1>
-        <img src="image/loading.gif" alt="Loading" style="display:block; margin-left:auto; margin-right:auto;">
+<div class="page-wrap songinfo">
+    {#if Fetching}
+        <p class="loading-note">{$_('common.loading')}</p>
     {:else}
-        {#key SongCard.AudioFilePath}
+        {#key SongCard.UniqueId}
             <SongBar
                 Title={pickTitle(SongCard.Song, SongCard.Title, $locale)}
                 Subtitle={pickSubtitle(SongCard.Song, SongCard.Subtitle, $locale)}
@@ -211,14 +114,12 @@
             />
 
             {#if songArtists.length > 0}
-            <div class="artists-section">
-                <h3 class="artists-label">{$_('songinfo.artists')}</h3>
-                <div class="artists-row">
+                <div class="artists">
+                    <span class="artists-label">{$_('songinfo.artists')}</span>
                     {#each songArtists as a}
-                    <Link to="/artistinfo/{a.id}" class="artist-chip">{a.name}</Link>
+                        <Link to="/artistinfo/{a.id}" class="artist-chip">{a.name}</Link>
                     {/each}
                 </div>
-            </div>
             {/if}
 
             <TabArea items={tabs} activeTabValue={initialTab}/>
@@ -227,70 +128,38 @@
 </div>
 
 <style>
-    @keyframes slide {
-        from { background-position-x: 0px; }
-        to   { background-position-x: -1920px; }
-    }
-
-    .bg_optk {
-        float: right;
-        position: fixed;
-        height: 100vh;
-        width: 100vw;
-        top: -64px;
-        z-index: -1;
-        background-color: rgb(150, 150, 150);
-        background-image: url("/image/bg_songs.png");
-        background-blend-mode: multiply;
-        background-size: cover;
-        background-repeat: repeat-x;
-        background-attachment: fixed;
-        animation: slide 90s linear infinite;
-    }
-
-    #songs {
+    .songinfo {
+        max-width: 980px;
         text-align: left;
-        margin: auto;
-        padding: 0px 100px;
-        padding-bottom: 64px;
-        max-width: 900px;
     }
-
-    .artists-section {
-        margin: 8px 8px 0;
-        padding: 10px 14px;
-        background: rgba(255,255,255,0.12);
-        border-radius: 4px;
-    }
-
-    .artists-label {
-        margin: 0 0 8px;
-        font-size: 0.8em;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: rgba(255,255,255,0.7);
-    }
-
-    .artists-row {
+    .artists {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         gap: 8px;
+        margin: 6px 0 0;
     }
-
-    :global(.artist-chip) {
+    .artists-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #ffffff;
+        text-shadow: 0 1px 0 rgba(13, 36, 64, 0.28);
+        margin-right: 2px;
+    }
+    .artists :global(.artist-chip) {
         display: inline-block;
-        padding: 5px 14px;
-        border-radius: 20px;
-        background: rgba(255,255,255,0.15);
-        color: white;
+        padding: 4px 14px;
+        border-radius: 999px;
+        border: 2px solid var(--ink);
+        background: #ffffff;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 500;
         text-decoration: none;
-        font-size: 0.9em;
-        font-weight: 600;
-        border: 1px solid rgba(255,255,255,0.3);
-        transition: background 0.15s;
+        box-shadow: 0 2px 0 var(--ink);
     }
-
-    :global(.artist-chip:hover) {
-        background: rgba(255,255,255,0.3);
+    .artists :global(.artist-chip:hover) {
+        background: #fff4d1;
+        color: var(--ink);
     }
 </style>

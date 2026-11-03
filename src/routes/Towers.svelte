@@ -1,349 +1,476 @@
 <script>
     import { onMount, tick } from "svelte";
+    import { Link } from "svelte-routing";
     import { _, locale } from 'svelte-i18n';
-    import SongBar from "../components/SongBar.svelte";
-    import { genreInfo } from "../lib/genres.js";
+    import PlayButton from "../components/PlayButton.svelte";
+    import { claimPreview } from "../components/AudioPlayer.svelte";
+    import TowerDigits from "../components/TowerDigits.svelte";
     import { localizedTitle, localizedSubtitle } from "../lib/localize.js";
+    import { fetchSoundtrack, audioUrl } from "../lib/soundtrack.js";
+    import { IMG, TOWER_CATEGORIES, TOWER_TINT, towerTag } from "../lib/skin.js";
 
     /**
-     * Taiko Towers.
+     * Taiko Towers, drawn as the game's tower select draws them: each chart is its own tower
+     * (three floors of its look and the roof) standing on a plaza along the road, its name tag
+     * over it, the chosen one's box at the top.
      *
-     * Each category is one tower drawn as a building: spire and battlements at
-     * the summit, brick walls on the sides, a door at the base. Floors are the
-     * same SongBar cards as the Song List, stacked so floor 1 sits at the
-     * bottom — the viewport starts scrolled at the base and you climb up.
-     *
-     * Two different numbers are in play and must not be confused:
-     *   floor  – the NN in the folder name (TSW01, TSP07, TCH01). This is the
-     *            tower position and the only reliable ordering key.
-     *   level  – chartDifficulties.Tower, the star rating. It repeats (Sweet
-     *            has four 5s) and is decimal + out of order in Spicy
-     *            (TSP11 is 8, sat between 11.0 and 11.4), so it can NOT be
-     *            used to order the tower.
-     *
-     * Category colours/css live in genres.js ('01 - Sweet' etc.), so tower
-     * bars, Songinfo bars and Artistinfo chips all share one theme.
+     * Only what soundtrack_info.json carries is shown: the folder number (TSW01 -> Tower 1),
+     * title, subtitle, Tower level and charter. Lives and floor counts live in the charts
+     * themselves, so they are not shown.
      */
-    const CATEGORIES = [
-        { key: 'sweet',     folder: '01 - Sweet' },
-        { key: 'spicy',     folder: '02 - Spicy' },
-        { key: 'challenge', folder: '03 - Challenges' },
-    ];
+    const EDGE = 140;     // px from the field's ends to the first and last plaza
+    const STEP = 262;     // px between plazas (a tag is 231 px wide, 254 when chosen)
 
     let activeKey = 'sweet';
-    let Fetching = false;
     let SongsInfo = [];
+    let Fetching = true;
+    let chosen = {};      // category -> tower number
 
-    $: active = CATEGORIES.find(c => c.key === activeKey);
-    $: gi = genreInfo(active.folder);
-
-    /** Trailing folder name, e.g. "S2 Taiko Towers\01 - Sweet\TSW01 - ..." -> "TSW01 - ...". */
-    const folderName = (song) =>
-        (song.tjaFolderPath ?? '').replace(/\\/g, '/').replace(/\/+$/, '').split('/').pop() ?? '';
-
-    /** Floor number from the TSW01 / TSP07 / TCH01 prefix; 0 if absent. */
+    /** Tower number from the TSW01 / TSP07 / TCH01 prefix of the chart's folder. */
     const floorOf = (song) => {
-        const m = folderName(song).match(/^[A-Z]+(\d+)/);
+        const name = (song.tjaFolderPath ?? '').replace(/\\/g, '/').replace(/\/+$/, '').split('/').pop() ?? '';
+        const m = name.match(/^[A-Z]+(\d+)/);
         return m ? parseInt(m[1], 10) : 0;
     };
 
-    // Floors of the active tower, summit first (DOM order is top-to-bottom,
-    // so descending floor number renders the tower standing upright).
-    $: floors = SongsInfo
-        .filter(s => s.tjaGenreFolder === active.folder)
+    $: cat = TOWER_CATEGORIES.find(c => c.key === activeKey);
+    $: towers = SongsInfo
+        .filter(s => s.tjaGenreFolder === cat.folder)
         .map(s => ({
-            floor:    floorOf(s),
-            song:     s,   // raw song: title/subtitle are localized at render
-            audio:    s.chartAudioFilePath,
-            uniqueId: s.uniqueId,
-            difficulties: [
-                -1, -1, -1, -1, -1,
-                (s.chartDifficulties ?? {}).Tower ?? -1,
-                (s.chartDifficulties ?? {}).Dan ?? -1,
-            ],
+            n: floorOf(s), song: s, uid: s.uniqueId,
+            level: s.chartDifficulties?.Tower ?? 0,
+            charter: s.chartMakers?.Tower ?? '',
+            audio: s.chartAudioFilePath,
         }))
-        .sort((a, b) => b.floor - a.floor);
+        .sort((a, b) => a.n - b.n);
+    $: current = towers.find(t => t.n === chosen[activeKey]) ?? towers[0];
+    $: sceneW = EDGE * 2 + Math.max(0, towers.length - 1) * STEP;
 
-    // Start at the base of the tower (scrolled to the bottom) on mount and
-    // whenever the floors change (category switches). Implemented as an action
-    // so the scrollTop write stays off Svelte's reactive graph — assigning a
-    // property of a `bind:this` variable inside a `$:` block would invalidate
-    // it and loop forever.
-    const startAtBase = (el) => {
-        const toBase = () => { el.scrollTop = el.scrollHeight; };
-        // Re-apply once after layout settles (fonts/images can grow the content
-        // a few px after the first tick).
-        const go = () => tick().then(() => { toBase(); setTimeout(toBase, 150); });
-        go();
-        return { update: go };
+    // the preview of the chosen tower's song. Its play / pause state follows the element's own
+    // events (a bound `paused` stays stuck at "playing" when the source changes under it), and
+    // choosing another tower or category stops it first.
+    let audio;
+    let playing = false;
+    $: currentAudio = current ? audioUrl(current.audio) : '';
+    const sync = () => { playing = !!audio && !audio.paused; };
+    const stopPreview = () => { if (audio && !audio.paused) audio.pause(); playing = false; };
+    const togglePreview = () => {
+        if (!audio) return;
+        if (audio.paused) { claimPreview(audio); audio.play().catch(sync); }
+        else audio.pause();
     };
 
-    const FetchSongs = async () => {
-        Fetching = true;
-        const res = await fetch("https://raw.githubusercontent.com/OpenTaiko/OpenTaiko-Soundtrack/refs/heads/main/soundtrack_info.json");
-        SongsInfo = JSON.parse((await res.text()).valueOf());
+    const choose = (t) => {
+        if (current && t.n === current.n) return;
+        stopPreview();
+        chosen = { ...chosen, [activeKey]: t.n };
+    };
+    const switchCategory = (key) => {
+        if (key === activeKey) return;
+        stopPreview();
+        activeKey = key;
+    };
+
+    // where a tag's name starts: after its level digits (28 px tall, each but the last overlapping by half)
+    const nameLeft = (level) => {
+        const w = 28 * 68 / 81, len = String(Math.floor(level)).length;
+        return 10 + w * (0.5 * (len - 1) + 1) + ((level % 1) >= 0.5 ? w * 0.3 : 0) + 6;
+    };
+
+
+    // keep the chosen tower in view; an action, so the scroll stays out of the reactive graph
+    const followChosen = (el, n) => {
+        const go = (smooth) => tick().then(() => {
+            const stop = el.querySelector('.stop.on');
+            if (!stop) return;
+            const x = stop.offsetLeft - el.clientWidth / 2;
+            el.scrollTo({ left: Math.max(0, x), behavior: smooth ? 'smooth' : 'auto' });
+        });
+        go(false);
+        return { update: () => go(true) };
+    };
+
+    onMount(async () => {
+        SongsInfo = await fetchSoundtrack();
         Fetching = false;
-    };
-
-    onMount(FetchSongs);
+    });
 </script>
 
-<div id="bg_optk"></div>
+<h1 class="sky-title">{$_('towers.title')}</h1>
 
-<h1>{$_('towers.title')}</h1>
-
-<div class="content-row">
-    <aside class="genre-panel">
-        {#each CATEGORIES as cat}
-            {@const cgi = genreInfo(cat.folder)}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div
-                class="genre-item"
-                class:active={activeKey === cat.key}
-                style="--swatch:{cgi.bg}; --active-bg:{cgi.bg}; --active-text:{cgi.text}"
-                on:click={() => activeKey = cat.key}
-                role="button"
-                tabindex="0"
-            >
-                <span class="genre-swatch"></span>
-                <span class="genre-label">{$_(`towers.${cat.key}`)}</span>
-            </div>
+<div class="page-wrap">
+    <!-- categories: the tower select's own 甘口 / 辛口 pills -->
+    <div class="cats">
+        {#each TOWER_CATEGORIES as c}
+            {#if c.pill}
+                <button type="button" class="cat-pill" class:on={activeKey === c.key} aria-pressed={activeKey === c.key} on:click={() => switchCategory(c.key)}>
+                    <img src={c.pill} alt={$_(`towers.${c.key}`)} />
+                </button>
+            {:else}
+                <button type="button" class="cat-chip" class:on={activeKey === c.key} aria-pressed={activeKey === c.key} on:click={() => switchCategory(c.key)}>{$_(`towers.${c.key}`)}</button>
+            {/if}
         {/each}
-    </aside>
+    </div>
+    <p class="sky-sub">{$_(`towers.${activeKey}_desc`)}{#if !Fetching} · {$_('towers.count', { values: { count: towers.length } })}{/if}</p>
 
-    <div class="tower-pane" style="--tc:{gi.accent}">
-        <div class="pane-header">
-            <strong>{$_(`towers.${activeKey}`)}</strong>
-            <span>{$_(`towers.${activeKey}_desc`)}</span>
+    {#if Fetching}
+        <p class="loading-note">{$_('common.loading')}</p>
+    {:else if towers.length === 0}
+        <p class="loading-note">{$_('towers.empty')}</p>
+    {:else}
+        <!-- the chosen tower's box, at the top as the tower select puts it -->
+        <audio bind:this={audio} src={currentAudio} preload="none"
+               on:play={sync} on:pause={sync} on:ended={sync} on:emptied={sync}></audio>
+        <div class="info-wrap">
+            <div class="info" style="--tint:{TOWER_TINT[activeKey]}">
+                <div class="info-head"></div>
+                <Link to="/songinfo/{current.uid}" class="info-title ell" title={localizedTitle(current.song, $locale)}>{localizedTitle(current.song, $locale)}</Link>
+                <div class="info-strip"></div>
+                <div class="info-artist ell" title={localizedSubtitle(current.song, $locale)}>{localizedSubtitle(current.song, $locale)}</div>
+                <div class="info-charter ell" title={current.charter}>{current.charter}</div>
+                <div class="info-rule" style="left:33%"></div>
+                <div class="info-rule" style="left:66.5%"></div>
+                {#if cat.pill}
+                    <img class="info-pill" src={cat.pill} alt={$_(`towers.${activeKey}`)} />
+                {:else}
+                    <span class="info-chip">{$_(`towers.${activeKey}`)}</span>
+                {/if}
+                <span class="info-level"><TowerDigits value={current.level} cat={activeKey} height={36} /></span>
+                <span class="info-play"><PlayButton playing={playing} label={localizedTitle(current.song, $locale)} size={40} on:click={togglePreview} /></span>
+                <span class="info-play-label">{$_('towers.preview')}</span>
+                <span class="info-n-label">{$_('towers.floor_short')}</span>
+                <span class="info-n"><b>{current.n}</b> <small>{$_('towers.of', { values: { total: towers.length } })}</small></span>
+            </div>
         </div>
 
-        {#if Fetching}
-            <h2 class="loading">{$_('common.loading')}</h2>
-            <img src="image/loading.gif" alt="Loading" class="loading-img">
-        {:else}
-            <div class="tower-viewport" use:startAtBase={floors}>
-                <div class="tower">
-                    {#if floors.length === 0}
-                        <p class="empty">{$_('towers.empty')}</p>
-                    {/if}
-                    {#each floors as f (f.uniqueId)}
-                        <div class="floor-row">
-                            <div class="plate">
-                                <span class="plate-f">{$_('towers.floor_short')}</span>
-                                <span class="plate-n">{f.floor}</span>
-                            </div>
-                            <div class="bar-holder">
-                                <SongBar
-                                    Title={localizedTitle(f.song, $locale)}
-                                    Subtitle={localizedSubtitle(f.song, $locale)}
-                                    Difficulties={f.difficulties}
-                                    AudioFilePath={f.audio}
-                                    Genre={gi.css}
-                                    UniqueId={f.uniqueId}
-                                />
-                            </div>
-                        </div>
+        <!-- the field: one tower per chart along the road, Tower 1 on the left -->
+        <div class="field-frame">
+            <div class="field-scroll" use:followChosen={current.n}>
+                <div class="field" style="width:{sceneW}px; background-image:url({IMG}/tower/grass.jpg)">
+                    <div class="horizon"></div>
+                    <div class="road"></div>
+                    {#each towers as t, i (t.uid)}
+                        <button
+                            type="button"
+                            class="stop"
+                            class:on={t.n === current.n}
+                            style="left:{EDGE + i * STEP}px"
+                            aria-label="{$_('towers.floor_short')} {t.n}: {localizedTitle(t.song, $locale)}"
+                            aria-pressed={t.n === current.n}
+                            on:click={() => choose(t)}
+                        >
+                            <span class="plaza" style="background-image:url({IMG}/tower/rim.jpg)"><span style="background-image:url({IMG}/tower/pave.jpg)"></span></span>
+                            <img class="tower" src="{IMG}/tower/tower_day.png" alt="" decoding="async" loading="lazy" />
+                            <span class="tag" style="background-image:url({towerTag(activeKey)})">
+                                <span class="tag-level"><TowerDigits value={t.level} cat={activeKey} height={28} /></span>
+                                <span class="tag-name ell" style="left:{nameLeft(t.level)}px" title={localizedTitle(t.song, $locale)}>{localizedTitle(t.song, $locale)}</span>
+                            </span>
+                            <span class="plate">{$_('towers.floor_short')} {t.n}</span>
+                        </button>
                     {/each}
                 </div>
             </div>
-        {/if}
-    </div>
+        </div>
+    {/if}
 </div>
 
 <style>
-    /* Static background, same as the Song List page. Do NOT animate it: the
-       content-row's backdrop-filter would repaint the blur every frame. */
-    #bg_optk {
-        float: right;
-        position: fixed;
-        height: 100vh;
-        width: 100vw;
-        top: -64px;
-        z-index: -1;
-        background-color: rgb(150, 150, 150);
-        background-image: url("/image/bg_songs.png");
-        background-blend-mode: multiply;
-        background-size: cover;
-        background-repeat: repeat-x;
-        background-attachment: fixed;
-    }
-
-    h1 {
-        text-align: center;
-        color: white;
-        margin: 8px 0 4px;
-    }
-
-    /* ── Shared container — sidebar + tower in one box (same as Songlist) ── */
-    .content-row {
+    .cats {
         display: flex;
-        gap: 0;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0;
-        align-items: stretch;
-        background: rgba(10, 10, 22, 0.78);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        clip-path: inset(0 round 14px);
-    }
-
-    /* ── Category sidebar (same look as the Songlist genre panel) ── */
-    .genre-panel {
-        width: 250px;
-        flex-shrink: 0;
-        box-sizing: border-box;
-        background: rgba(0, 0, 0, 0.28);
-        border-right: 1px solid rgba(255,255,255,0.1);
-        padding: 16px 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-
-    .genre-item {
-        display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 10px;
-        padding: 8px 12px;
-        border-radius: 10px;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin: 10px 0 4px;
+    }
+    .cat-pill {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        border: 0;
         background: transparent;
-        color: rgba(255,255,255,0.82);
-        font-size: 0.85em;
-        font-weight: 600;
         cursor: pointer;
-        transition: background 0.14s, transform 0.1s, color 0.14s;
-        user-select: none;
+    }
+    .cat-pill img {
+        height: 46px;
+        display: block;
+        opacity: 0.55;
+    }
+    .cat-pill.on img {
+        opacity: 1;
+        filter: drop-shadow(0 4px 0 rgba(13, 36, 64, 0.3));
+    }
+    .cat-pill.on::after, .cat-chip.on::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -9px;
+        transform: translateX(-50%);
+        width: 34px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--sun);
+    }
+    .cat-chip {
+        position: relative;
+        height: 40px;
+        margin: 0;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 2px solid var(--ink);
+        background: #e4e4e4;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        opacity: 0.7;
+    }
+    .cat-chip.on {
+        opacity: 1;
+        box-shadow: 0 3px 0 var(--ink);
+    }
+    .sky-sub {
+        margin-top: 16px;
     }
 
-    .genre-item:hover {
-        background: rgba(255,255,255,0.11);
-        color: white;
+    /* ── the chosen tower's box (tower_select's info box: light fill, ink edge, header in the category colour) ── */
+    .info-wrap {
+        max-width: 680px;
+        margin: 0 auto 16px;
     }
-
-    .genre-item.active {
-        background: var(--active-bg);
-        color: var(--active-text);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.45);
-        transform: translateX(3px);
+    .info {
+        container-type: inline-size;
+        position: relative;
+        width: 100%;
+        aspect-ratio: 880 / 250;
+        box-sizing: border-box;
+        border: 2.5px solid var(--ink);
+        border-radius: 3.6cqw;
+        background: #ebebeb;
+        overflow: hidden;
+        color: #343434;
+        text-align: left;
+        box-shadow: 0 10px 22px rgba(13, 36, 64, 0.22);
     }
-
-    .genre-swatch {
-        width: 11px;
-        height: 11px;
-        border-radius: 3px;
-        background: var(--swatch);
-        flex-shrink: 0;
-        border: 1px solid rgba(255,255,255,0.35);
+    .info > * {
+        position: absolute;
     }
-
-    .genre-label {
+    .info-head {
+        left: 0; right: 0; top: 0;
+        height: 46%;
+        background: var(--tint);
+    }
+    .info :global(.info-title) {
+        position: absolute;
+        left: 50%;
+        top: 19%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        text-align: center;
+        font-size: 4.545cqw;
+        font-weight: 500;
+        color: #343434;
+        text-decoration: none;
+    }
+    .info :global(.info-title:hover) {
+        text-decoration: underline;
+    }
+    .info-strip {
+        left: 4%; right: 4%; top: 31%;
+        height: 10.5%;
+        border-radius: 999px;
+        background: #ebebeb;
+    }
+    .info-artist {
+        left: 43.18%; top: 36.2%;
+        transform: translate(-50%, -50%);
+        width: 58%;
+        text-align: center;
+        font-size: 2.159cqw;
+    }
+    .info-charter {
+        right: 6.36%; top: 36.2%;
+        transform: translateY(-50%);
+        max-width: 24%;
+        text-align: right;
+        font-size: 1.705cqw;
+        color: #828282;
+    }
+    .info-rule {
+        top: 54%; bottom: 9%;
+        border-left: 2px dotted #343434;
+    }
+    .info-pill {
+        left: 6.59%; top: 73.6%;
+        height: 4.43cqw;
+        transform: translateY(-50%);
+    }
+    .info-chip {
+        left: 5%; top: 73.6%;
+        transform: translateY(-50%);
+        padding: 0.4cqw 1.6cqw;
+        border-radius: 999px;
+        border: 2px solid var(--ink);
+        background: #e4e4e4;
+        font-size: 1.9cqw;
+        font-weight: 500;
+    }
+    .info-level {
+        left: 19.55%; top: 73.6%;
+        transform: translateY(-50%);
+    }
+    .info-play {
+        left: 37.5%; top: 73.6%;
+        transform: translateY(-50%);
+        display: flex;
+    }
+    .info-play-label {
+        left: 46%; top: 73.6%;
+        transform: translateY(-50%);
+        font-size: 2.27cqw;
+    }
+    .info-n-label {
+        left: 71%; top: 66%;
+        transform: translateY(-50%);
+        font-size: 1.818cqw;
+        color: #828282;
+    }
+    .info-n {
+        left: 71%; top: 81%;
+        transform: translateY(-50%);
         white-space: nowrap;
     }
-
-    /* ── Tower pane ─────────────────────────────────── */
-    .tower-pane {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        padding: 10px 16px 16px 8px;
+    .info-n b {
+        font-size: 4.318cqw;
+        font-weight: 500;
+    }
+    .info-n small {
+        font-size: 2.05cqw;
+        color: #828282;
     }
 
-    .pane-header {
-        display: flex;
-        align-items: baseline;
-        gap: 10px;
-        color: white;
-        padding: 4px 8px 10px;
-        flex-wrap: wrap;
+    /* ── the field ── */
+    .field-frame {
+        border: 2px solid var(--ink);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 14px 34px rgba(13, 36, 64, 0.22);
     }
-
-    .pane-header strong {
-        color: var(--tc);
-        font-size: 1.05em;
-    }
-
-    .pane-header span {
-        color: rgba(255,255,255,0.6);
-        font-size: 0.82em;
-    }
-
-    /* The climb: scrolls internally, starts at the base.
-       Subtracts: fixed header (68pt), footer clearance (76px), and the page
-       h1 + pane header/padding above the viewport (~165px). */
-    .tower-viewport {
-        height: calc(100vh - 68pt - 76px - 165px);
-        min-height: 420px;
-        overflow-y: auto;
+    .field-scroll {
+        overflow-x: auto;
+        overflow-y: hidden;
         scrollbar-width: thin;
-        scrollbar-color: rgba(255,255,255,0.2) transparent;
-        display: flex;
-        flex-direction: column;
-        padding-right: 8px;
     }
-
-    /* Short towers rest at the bottom rather than hanging from the top. */
+    .field {
+        position: relative;
+        height: 470px;
+        background-color: #6aa64d;
+        background-size: 160px 160px;
+        background-repeat: repeat;
+    }
+    .horizon {
+        position: absolute;
+        left: 0; right: 0; top: 0;
+        height: 250px;
+        background: linear-gradient(180deg, #51c0fd 0%, #a8f0ff 48%, rgba(168, 240, 255, 0) 100%);
+    }
+    .road {
+        position: absolute;
+        left: 0; right: 0; top: 357px;
+        height: 40px;
+        background: #c4b58c;
+        border-top: 3px solid #464e5a;
+        border-bottom: 3px solid #464e5a;
+    }
+    .stop {
+        position: absolute;
+        top: 380px;
+        width: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        font-family: inherit;
+    }
+    .plaza {
+        position: absolute;
+        left: -88px; top: -28px;
+        width: 176px; height: 56px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 2px solid #464e5a;
+        background-color: #7f7f83;
+        background-size: 90px 90px;
+    }
+    .plaza span {
+        position: absolute;
+        inset: 5px;
+        border-radius: 50%;
+        border: 1.5px solid #464e5a;
+        background-color: #ababb2;
+        background-size: 70px 70px;
+    }
     .tower {
-        margin-top: auto;
+        position: absolute;
+        left: -75px;
+        bottom: 4px;
+        width: 150px;
+        height: 191px;
     }
-
-    .floor-row {
+    .tag {
+        position: absolute;
+        left: -115.5px;
+        bottom: 206px;
+        width: 231px;
+        height: 45px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        transform-origin: 50% 100%;
+        transition: transform 0.15s;
+    }
+    .tag-level {
+        position: absolute;
+        left: 10px;
+        top: 11px;
         display: flex;
-        align-items: stretch;
     }
-
-    /* Floor number — the tower position from the folder (TSW01 → F1).
-       Styled like the SongBar cards it sits beside. */
-    .plate {
-        flex-shrink: 0;
-        width: 56px;
-        margin: 6px 4px 6px 0;
-        border-radius: 12px 0 0 12px;
-        background: rgba(0, 0, 0, 0.35);
-        border-left: 4px solid var(--tc);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-    }
-
-    .plate-f {
-        font-size: 0.62em;
-        font-weight: 700;
-        color: rgba(255,255,255,0.55);
-    }
-
-    .plate-n {
-        font-size: 1.45em;
-        font-weight: 900;
-        color: white;
-    }
-
-    .bar-holder {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .empty {
+    .tag-name {
+        position: absolute;
+        right: 10px;
+        top: 23.8px;
+        transform: translateY(-50%);
         text-align: center;
-        color: rgba(255,255,255,0.6);
-        padding: 20px;
+        font-size: 15px;
+        font-weight: 500;
+        color: #343434;
     }
-
-    .loading { text-align: center; color: white; }
-    .loading-img { display: block; margin: auto; }
-
-    @media (max-width: 700px) {
-        .content-row { flex-direction: column; }
-        .genre-panel {
-            width: 100%;
-            flex-direction: row;
-            border-right: none;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 8px;
-        }
-        .tower-pane { padding: 8px; }
+    .plate {
+        position: absolute;
+        left: 0;
+        top: 33px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        padding: 2px 11px;
+        border-radius: 999px;
+        border: 2px solid var(--ink);
+        background: #ffffff;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--ink);
+    }
+    .stop:hover .tag {
+        transform: translateY(-3px);
+    }
+    .stop.on .tag {
+        transform: scale(1.1);
+    }
+    .stop.on .plate {
+        background: var(--sun);
+    }
+    .stop:focus-visible .plate {
+        outline: 3px solid var(--sky-1);
+        outline-offset: 2px;
     }
 </style>

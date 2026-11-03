@@ -42,9 +42,15 @@ export default {
     github_org: 'GitHub組織',
   },
   hof: {
+    subtitle: '{charts}譜面・難しい順 · {plays}プレイ',
+    plays: '{count}プレイ',
     title: 'Hall of Fame',
   },
   leaderboards: {
+    subtitle: '{players}人のプレイヤー · {scores}スコア',
+    lp_scores: 'LP · {count}スコア',
+    scores: '{count}スコア',
+    hof_rank: 'Hall of Fame #{rank}',
     title: 'リーダーボード',
     top_players: 'トッププレイヤー',
     best_scores: 'ベストスコア',
@@ -68,6 +74,7 @@ export default {
     video: '動画',
   },
   artists: {
+    pick: '作曲家を選ぶと曲が表示されます。',
     title: '作曲家',
     count: '{filtered} / {total} 作曲家',
     search: '作曲家を検索…',
@@ -82,10 +89,22 @@ export default {
     no_songs: '曲が見つかりません。',
     not_found: '作曲家が見つかりません。',
   },
+  playerinfo: {
+    rank_of: '{total}人中 #{rank}',
+    list_points: 'LP',
+    scores: 'スコア',
+    hardest: 'ステータス別の最難関',
+    all_scores: 'スコア',
+    no_scores: 'まだスコアがありません。',
+  },
   songlist: {
+    count: '{count}曲',
     title: '曲リスト',
   },
   towers: {
+    count: '{count}タワー',
+    of: '/ {total}',
+    preview: '試聴',
     title: '太鼓タワー',
     sweet: '甘口',
     spicy: '辛口',

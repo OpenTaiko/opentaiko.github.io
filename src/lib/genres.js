@@ -3,7 +3,9 @@
  *
  * To add a new genre:
  *   1. Add an entry here.
- *   2. Add a matching bar image at /image/genreBar/<css>.png.
+ *   2. If the skin has a song select overlay for it, save its middle band as
+ *      /image/skin/overlay/<css>.jpg and list the css in lib/skin.js OVERLAYS;
+ *      without one its song bars use `accent`.
  *   3. That's it — Songlist buttons, SongBar styling, Artistinfo chips, and
  *      genre→CSS lookups all derive from this file.
  *

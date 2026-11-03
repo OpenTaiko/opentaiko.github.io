@@ -42,9 +42,15 @@ export default {
     github_org: 'GitHub 組織',
   },
   hof: {
+    subtitle: '{charts} 張譜面，依難度排序 · {plays} 次遊玩',
+    plays: '{count} 次遊玩',
     title: 'Hall of Fame',
   },
   leaderboards: {
+    subtitle: '{players} 名玩家 · {scores} 筆成績',
+    lp_scores: '排名積分 · {count} 筆成績',
+    scores: '{count} 筆成績',
+    hof_rank: 'Hall of Fame #{rank}',
     title: '排行榜',
     top_players: '玩家排行',
     best_scores: '成績排行',
@@ -68,6 +74,7 @@ export default {
     video: '錄影',
   },
   artists: {
+    pick: '選擇一位作曲家以查看其歌曲。',
     title: '作曲家',
     count: '{filtered} / {total} 位作曲家',
     search: '搜尋作曲家……',
@@ -82,10 +89,22 @@ export default {
     no_songs: '找不到歌曲。',
     not_found: '找不到該作曲家。',
   },
+  playerinfo: {
+    rank_of: '#{rank} / {total} 名玩家',
+    list_points: '排名積分',
+    scores: '成績',
+    hardest: '各狀態最難譜面',
+    all_scores: '成績',
+    no_scores: '尚無成績。',
+  },
   songlist: {
+    count: '{count} 首歌曲',
     title: '歌曲清單',
   },
   towers: {
+    count: '{count} 座塔',
+    of: '/ {total}',
+    preview: '試聽',
     title: '太鼓塔',
     sweet: '甘口',
     spicy: '辛口',

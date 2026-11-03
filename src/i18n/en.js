@@ -42,9 +42,15 @@ export default {
     github_org: 'GitHub Organization',
   },
   hof: {
+    subtitle: '{charts} charts, hardest first · {plays} plays',
+    plays: '{count, plural, one {# play} other {# plays}}',
     title: 'Hall of Fame',
   },
   leaderboards: {
+    subtitle: '{players} players · {scores} scores',
+    lp_scores: 'LP · {count, plural, one {# score} other {# scores}}',
+    scores: '{count, plural, one {# score} other {# scores}}',
+    hof_rank: 'Hall of Fame #{rank}',
     title: 'Leaderboards',
     top_players: 'Top Players',
     best_scores: 'Best Scores',
@@ -68,6 +74,7 @@ export default {
     video: 'Video',
   },
   artists: {
+    pick: 'Pick a composer to see their songs.',
     title: 'Composers',
     count: '{filtered} / {total} composers',
     search: 'Search composers…',
@@ -82,10 +89,22 @@ export default {
     no_songs: 'No songs found.',
     not_found: 'Composer not found.',
   },
+  playerinfo: {
+    rank_of: '#{rank} of {total} players',
+    list_points: 'List Points',
+    scores: 'Scores',
+    hardest: 'Hardest by status',
+    all_scores: 'Scores',
+    no_scores: 'No scores yet.',
+  },
   songlist: {
+    count: '{count, plural, one {# song} other {# songs}}',
     title: 'Song List',
   },
   towers: {
+    count: '{count, plural, one {# tower} other {# towers}}',
+    of: 'of {total}',
+    preview: 'Preview',
     title: 'Taiko Towers',
     sweet: 'Sweet',
     spicy: 'Spicy',

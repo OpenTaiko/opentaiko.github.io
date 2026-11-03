@@ -1,212 +1,191 @@
 <script>
-    import { navigate } from 'svelte-routing';
+    // A song as a bar: the genre's song select overlay art underneath, a white title card laid
+    // over it, and the level emblems beside the card on the art (never under it).
+    // In the Hall of Fame it also carries the chart's rank, its List Points, a stripe for the best
+    // status anyone has on it, and its play count.
+    import { _ } from 'svelte-i18n';
+    import AudioPlayer from "./AudioPlayer.svelte";
+    import Medallion from "./Medallion.svelte";
+    import { barArt, rankArt, RANK_TINT, STATUS_STRIPE, towerCategoryByCss } from "../lib/skin.js";
+    import { audioUrl } from "../lib/soundtrack.js";
 
-    import DifficultyBlock from "../components/DifficultyBlock.svelte";
-    import AudioPlayer from "../components/AudioPlayer.svelte";
-    import { GENRES } from "../lib/genres.js";
-
-    export let Rank;
+    export let Rank = undefined;
     export let Title;
     export let Subtitle;
     export let Difficulties = [-1, -1, -1, -1, -1, -1, -1];
     export let AudioFilePath;
     export let Genre;
-    export let MaxListPoints;
-    export let UniqueId;
+    export let MaxListPoints = undefined;
+    export let UniqueId = undefined;
     export let BestStatus = null;
+    export let Plays = undefined;
 
-    $: statusStripeStyle = (() => {
-        switch (BestStatus) {
-            case 'Perfect':    return 'background:linear-gradient(180deg,hsl(0,100%,50%),hsl(60,100%,50%),hsl(120,100%,50%),hsl(180,100%,50%),hsl(240,100%,50%),hsl(300,100%,50%),hsl(0,100%,50%));background-size:100% 300%;animation:rainbow-stripe 3s linear infinite;';
-            case 'Full Combo': return 'animation:gold-stripe 2s linear infinite;';
-            case 'Clear':      return 'background-color:#fcc2c2;';
-            default:           return 'background-color:#888;';
-        }
-    })();
+    $: isHof = Rank !== undefined;
+    $: courses = isHof
+        ? Difficulties.map((lv, i) => ({ i, lv })).filter(d => d.i <= 4 && d.lv >= 0)
+        : [0, 1, 2, 3, 4].map(i => ({ i, lv: Difficulties[i] ?? -1 }));
+    $: tower = (Difficulties[5] ?? -1) >= 0 ? Difficulties[5] : null;
+    $: dan = (Difficulties[6] ?? -1) >= 0 ? Difficulties[6] : null;
+    $: special = tower !== null || dan !== null;
+    $: towerCat = towerCategoryByCss(Genre)?.key ?? 'sweet';
 
-    $: AudioLink = `https://github.com/OpenTaiko/OpenTaiko-Soundtrack/raw/refs/heads/main/${AudioFilePath}`;
-    $: SongDetailsUrl = `/songinfo/${UniqueId}`;
-
-    // Tower (5) / Dan (6) charts carry no regular difficulty — render their own
-    // blocks instead of five Easy–Edit ghosts.
-    $: specialDiffs = [5, 6].filter(i => (Difficulties[i] ?? -1) >= 0);
-
-    $: genreData = GENRES.find(g => g.css === Genre);
-    $: barStyle = genreData
-        ? `--gc:${genreData.accent}; color:${genreData.text}; --overlay:${genreData.overlay}; --bar-image:url('/image/genreBar/${Genre}.png')`
-        : `--gc:#888; color:white; --overlay:rgba(128,128,128,0.75); --bar-image:url('/image/genreBar/hq.png')`;
-
-    const MoveToSongInfo = (e) => {
+    const openSongInfo = (e) => {
         if (UniqueId === undefined) return;
-        const isControl = e.target.closest('button')
-                       || e.target.closest('.slider')
-                       || e.target.closest('.volume-slider');
-        if (!isControl) window.open(SongDetailsUrl, '_blank');
-    }
-
+        if (e.target.closest('button, .slider')) return;
+        window.open(`/songinfo/${UniqueId}`, '_blank');
+    };
 </script>
 
-<div class="song_bar {Rank !== undefined ? 'hof' : ''} {UniqueId !== undefined ? 'song_bar_clickable' : ''}" style={barStyle} on:click={MoveToSongInfo}>
-    {#if Rank !== undefined}
-    <div class="status-stripe" style={statusStripeStyle}></div>
-    <div class="song_bar_rank {Rank === 1 ? 'rank-gold' : Rank === 2 ? 'rank-silver' : Rank === 3 ? 'rank-bronze' : ''}">
-        <span class="rank-nb">#{Rank}</span>
-        <span class="rank-pts">{MaxListPoints} LP</span>
-    </div>
-    {/if}
-
-    <div class="song_bar_main_info">
-        <AudioPlayer
-            Title={Title}
-            Subtitle={Subtitle}
-            AudioLink={AudioLink}
-        />
-    </div>
-
-    {#if Rank !== undefined}
-        <!-- HoF: difficulty wrapped in same card style as main_info -->
-        <div class="hof_diff_card">
-            {#each Difficulties as diff, i}
-                {#if diff >= 0}
-                <DifficultyBlock Level={diff} Difficulty={i} roundLeft={true} />
-                {/if}
-            {/each}
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+<div class="bar" class:clickable={UniqueId !== undefined} class:hof={isHof} style="background:{barArt(Genre)}" on:click={openSongInfo}>
+    {#if isHof}
+        <div class="rank" style="background:{RANK_TINT[Rank - 1] ?? '#ffffff'}">
+            {#if rankArt(Rank)}
+                <img src={rankArt(Rank)} alt="#{Rank}" />
+            {:else}
+                <span class="rank-n">#{Rank}</span>
+            {/if}
+            <span class="rank-lp">{MaxListPoints} LP</span>
         </div>
-    {:else if specialDiffs.length > 0}
-        <!-- Tower / Dan chart: only its own block(s) -->
-        {#each specialDiffs as d, i}
-            <DifficultyBlock
-                Level={Difficulties[d]}
-                Difficulty={d}
-                roundLeft={i === 0}
-            />
-        {/each}
-    {:else}
-        <!-- Regular: always 5 blocks (Easy–Edit); first one rounds left -->
-        {#each Array(5) as _, i}
-            <DifficultyBlock
-                Level={Difficulties[i] ?? -1}
-                Difficulty={i}
-                ghost={(Difficulties[i] ?? -1) < 0}
-                roundLeft={i === 0}
-            />
-        {/each}
+        {#if BestStatus === 'Perfect'}
+            <div class="stripe perfect" title="Best: Perfect"></div>
+        {:else}
+            <div class="stripe" style="background:{STATUS_STRIPE[BestStatus] ?? '#b9c7d4'}" title={BestStatus ? `Best: ${BestStatus}` : ''}></div>
+        {/if}
     {/if}
+
+    <div class="inner">
+        <div class="card">
+            <AudioPlayer Title={Title} Subtitle={Subtitle} AudioLink={audioUrl(AudioFilePath)} />
+            {#if Plays !== undefined}
+                <span class="plays">{$_('hof.plays', { values: { count: Plays } })}</span>
+            {/if}
+        </div>
+
+        <div class="emblems">
+            {#if special && !isHof}
+                {#if tower !== null}<Medallion course={5} level={tower} {towerCat} />{/if}
+                {#if dan !== null}<Medallion course={6} level={dan} />{/if}
+            {:else}
+                {#each courses as c}
+                    <Medallion course={c.i} level={c.lv} />
+                {/each}
+            {/if}
+        </div>
+    </div>
 </div>
 
 <style>
-    @keyframes flashy-glow {
-        0%  { box-shadow: 0 0 0 3px rgba(0,145,255,0.80), 0 0 14px rgba(0,145,255,0.35); }
-        50% { box-shadow: 0 0 0 3px rgba(0,145,255,1.00), 0 0 28px rgba(0,145,255,0.60); }
-        100%{ box-shadow: 0 0 0 3px rgba(0,145,255,0.80), 0 0 14px rgba(0,145,255,0.35); }
+    .bar {
+        /* long lists: bars off screen are skipped until scrolled to */
+        content-visibility: auto;
+        contain-intrinsic-size: auto 78px;
+        display: flex;
+        align-items: stretch;
+        margin: 0 0 10px;
+        border: 2px solid var(--ink);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 4px 0 rgba(13, 36, 64, 0.16);
+        text-align: left;
+        color: var(--ink);
     }
-
-    /* show glow + pointer only when hovering outside the audio controls */
-    .song_bar_clickable:hover:not(:has(button:hover)):not(:has(.slider:hover)):not(:has(.volume-slider:hover)) {
-        animation: flashy-glow 1.4s ease-in-out infinite;
+    .clickable {
         cursor: pointer;
+        transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .clickable:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 0 rgba(13, 36, 64, 0.2);
     }
 
-    .song_bar {
-        margin: 6px 0;
-        padding: 0;
-        border-radius: 12px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.45);
-        background: var(--gc, #0d0d1a);
-    }
-
-    /* HoF bars: no left border — the status-stripe div replaces it */
-    .song_bar.hof {
-        border-left: none;
-    }
-
-    .status-stripe {
-        width: 10px;
-        flex-shrink: 0;
-        align-self: stretch;
-    }
-
-    .song_bar_main_info {
-        flex: 1;
-        min-width: 0;
-        padding: 4px 8px;
-        margin: 5px 4px;
-        border: 2px solid var(--gc, #444);
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .song_bar_rank {
-        width: 110px;
-        flex-shrink: 0;
-        border-radius: 0 14px 14px 0;
-        overflow: hidden;
+    .rank {
+        width: 92px;
+        flex: none;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 6px 10px 6px 10px;
-        gap: 4px;
-        background: #15151e;
+        gap: 2px;
+        padding: 6px 0;
+        border-right: 2px solid var(--ink);
+        line-height: 1.05;
     }
-
-    .rank-nb {
-        font-size: 2.4em;
-        font-weight: 900;
-        line-height: 1;
-        color: #ffffff;
-        text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    .rank img {
+        height: 40px;
+        display: block;
     }
-
-    .rank-pts {
-        font-size: 0.78em;
+    .rank-n {
+        font-size: 24px;
         font-weight: 500;
-        color: rgba(255,255,255,0.55);
-        letter-spacing: 0.03em;
+    }
+    .rank-lp {
+        font-size: 12px;
+        color: var(--ink-soft);
+    }
+    .stripe {
+        width: 10px;
+        flex: none;
+        border-right: 2px solid var(--ink);
+    }
+    /* a Perfect's rainbow keeps flowing down the stripe, as it did on the old bars. The gradient
+       starts and ends on the same red and repeats, so shifting it by one tile (300% of the stripe,
+       i.e. a background-position of 150%) loops without a seam. */
+    .stripe.perfect {
+        background-image: linear-gradient(180deg, #ff4d4d, #ffc224, #58de85, #51c0fd, #9065e2, #ff4d4d);
+        background-size: 100% 300%;
+        background-repeat: repeat-y;
+        animation: rainbow-stripe 3s linear infinite;
+    }
+    @keyframes rainbow-stripe {
+        from { background-position: 50% 0%; }
+        to { background-position: 50% 150%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .stripe.perfect { animation: none; }
     }
 
-    .rank-bronze .rank-nb {
-        font-size: 2.7em;
-        color: #FFA726;
-        text-shadow: 0 0 12px rgba(255, 167, 38, 0.85), 0 2px 4px rgba(0,0,0,0.5);
-    }
-
-    .rank-silver .rank-nb {
-        font-size: 3em;
-        color: #E8E8E8;
-        text-shadow: 0 0 12px rgba(230, 230, 230, 0.85), 0 2px 4px rgba(0,0,0,0.4);
-    }
-
-    .rank-gold .rank-nb {
-        font-size: 3.4em;
-        color: #FFD740;
-        text-shadow: 0 0 16px rgba(255, 215, 0, 0.95), 0 0 32px rgba(255, 200, 0, 0.5), 0 2px 4px rgba(0,0,0,0.4);
-    }
-
-    /* ── Genre accent + left border — driven by inline --gc / --overlay / --bar-image ── */
-    .song_bar {
-        border-left: 8px solid var(--gc, #888);
-    }
-
-    /* ── HoF difficulty card — flex wrapper only, no border ── */
-    .hof_diff_card {
+    .inner {
+        flex: 1;
+        min-width: 0;
         display: flex;
-        align-items: stretch;
-        overflow: hidden;
-        flex-shrink: 0;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 8px 6px 6px;
+    }
+    .card {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 12px 7px 10px;
+        border: 2px solid var(--ink);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.86);
+    }
+    .plays {
+        flex: none;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: #eef7fe;
+        border: 1.5px solid var(--line);
+        white-space: nowrap;
+    }
+    .emblems {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 2px;
     }
 
-    /* ── Background overlay — generic, driven by CSS variables ── */
-    .song_bar_main_info {
-        background: linear-gradient(var(--overlay, rgba(128,128,128,0.75)), var(--overlay, rgba(128,128,128,0.75))),
-                    var(--bar-image, none) center/cover;
+    /* phones: the medallions move under the title card */
+    @media (max-width: 700px) {
+        .inner { flex-wrap: wrap; justify-content: flex-end; }
+        .card { flex-basis: 100%; }
+        .rank { width: 70px; }
+        .rank img { height: 32px; }
     }
 </style>
